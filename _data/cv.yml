@@ -1,189 +1,187 @@
 cv:
-  name: Albert Einstein
-  label: Scientist
-  email: einstein@example.com
-  location: Princeton, NJ
+  name: Abanoub Abdelmalak
+  label: PhD Student & Machine Learning Researcher
+  email: abanoub_abdelmalak@gatech.edu
+  location: Atlanta, GA, USA
   image: ""
-  summary: A German-born theoretical physicist, widely ranked among the greatest and most influential scientists of all time
+  summary: PhD Candidate in Electrical & Computer Engineering at Georgia Institute of Technology, specializing in Hardware-Aware Machine Learning and Quantum Error Correction. Ex-Siemens EDA Principal Product Architect and IC Design Consultant.
 
   social_networks:
-    - network: X
-      username: AlbertEinstein
-    - network: GitHub
-      username: example
     - network: LinkedIn
-      username: example
-
-  address:
-    street: 2712 Broadway St
-    city: San Francisco
-    region: California
-    postalCode: CA 94115
-    countryCode: US
+      username: abanoub-wahib
+    - network: GitHub
+      username: AbanoubElkess
 
   sections:
     Education:
-      - institution: University of Zurich
-        location: Zurich, Switzerland
-        url: https://www.uzh.ch/
-        area: Physics
-        studyType: PhD
-        start_date: 1900
-        end_date: 1905
-        score: ""
-        courses: "Theory of Relativity"
+      - institution: Georgia Institute of Technology
+        location: Atlanta, GA, United States
+        url: https://www.gatech.edu/
+        area: Electrical & Computer Engineering
+        studyType: PhD Candidate
+        start_date: 2025
+        end_date: Present
+        score: "Full Scholarship and Fellowship Recipient"
+        courses: ""
         highlights:
-          - Description 1.
-          - Description 2.
+          - Advised by Prof. Ali Adibi.
+          - Developing Syndrome Learning, an AI-driven framework for hardware-aware QEC targeting Penning trap ion crystals.
+          - Training explicit surrogate noise models on simulated and empirical hardware data to replace idealized i.i.d. noise assumptions with physical reality.
 
-      - institution: Eidgenössische Technische Hochschule
-        location: Zurich, Switzerland
-        area: Physics
-        studyType: Federal teaching diploma
-        start_date: 1896
-        end_date: 1900
+      - institution: Georgia Institute of Technology
+        location: Atlanta, GA, United States
+        url: https://www.gatech.edu/
+        area: Computer Science (Machine Learning Specialization)
+        studyType: MSc
+        start_date: 2021
+        end_date: 2024
+        score: "GPA: 3.8"
         highlights:
-          - Description 1.
-          - Description 2.
+          - Specialized in advanced machine learning algorithms through graduate research and coursework in Deep Learning, NLP, information security, and algorithmic design.
+          - Headed the Shanghai student chapter, supporting new students in the program and arranging meetings accordingly.
+
+      - institution: Ain Shams University
+        location: Cairo, Egypt
+        area: Communication Systems Engineering (Optics Specialization)
+        studyType: BSc
+        start_date: 2012
+        end_date: 2017
+        score: "GPA: 3.85, BAC+5"
+        highlights:
+          - Ranked first in the Optics track and seventh overall.
+          - Graduation Project: Low power phase locked loops for internet of things applications.
 
     Experience:
-      - company: Institute for Advanced Study, Princeton University
-        position: Professor of Theoretical Physics
-        location: Princeton University, NJ
-        start_date: 1933
-        end_date: 1955
-        summary: Teaching at Palmer Physical Laboratory (now 302 Frist Campus Center). While not a professor at Princeton, I associated with the physics professors and continued to give lectures on campus.
+      - company: Siemens Digital Industries Software (EDA)
+        position: Principal Product Architect
+        location: Cairo, Egypt | Shanghai, China
+        start_date: 2022
+        end_date: 2025
+        summary: Architected AI and image processing automation for chip verification and design rule development.
         highlights:
-          - Relativity
-          - Description 2.
+          - Architected an SVRF Copilot (a domain specific coding language) to automate design rule decks development. Pipeline involved LLM, LangChain, and an MCP protocol with tool-aware reasoning. Published as first-author IEEE ICLAD 2025; reduced rule development time by ~40%.
+          - Designed an AI and image processing tool that utilizes Scanning Electron Microscope (SEM) images to automate process modeling; reduced manual review by 30%.
+          - Led global delivery across China, Europe, and the US. Orchestrated an Agile infrastructure transition for major Chinese fab, transforming an initial one-month engagement into a 6-year partnership.
+          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF; improved run time/throughput by 70%.
 
-      - company: California Institute of Technology
-        position: Visiting Professor
-        location: Pasadena, California, US
-        start_date: 1933
-        end_date: 1933
+      - company: Siemens Digital Industries Software (EDA)
+        position: IC Design Consultant
+        location: Shanghai, China
+        start_date: 2017
+        end_date: 2022
+        summary: Designed and automated optical proximity correction (OPC) model building and resolution enhancement techniques.
         highlights:
-          - Description 1.
-          - Description 2.
-
-      - company: Kaiser Wilhelm Institute for Physics
-        position: Director
-        location: Berlin, Germany
-        start_date: 1917
-        end_date: 1933
-
-      - company: Karl-Ferdinand University
-        position: Professor of Theoretical Physics
-        location: Prague, Czechoslovakia
-        start_date: 1911
-        end_date: 1917
-
-      - company: University of Zurich
-        position: Associate Professor of Theoretical Physics
-        location: Zurich, Switzerland
-        start_date: 1909
-        end_date: 1911
-
-    Volunteer:
-      - company: People's Climate March
-        position: Lead Organizer
-        location: Zurich, Switzerland
-        start_date: 2014-04-01
-        end_date: 2015-07-01
-        summary: Lead organizer for the New York City branch of the People's Climate March, the largest climate march in history.
-        highlights:
-          - "Awarded 'Climate Hero' award by Greenpeace for my efforts organizing the march."
-          - "Men of the year 2014 by Time magazine"
+          - Developed an OPC model-building automation system covering test-pattern creation, data filtering/prep, SEM metrology recipe development, and OPC verification; accelerated calibration cycles and reduced manual steps by 90%.
+          - Interfaced with physical metrology tools to auto-generate measurement; defined spatial pattern "uniqueness" via the mathematical entropy of extracted features.
+          - Architected a web-based recipe/version management platform with role-based access, improving security, tractability, and collaboration across teams.
+          - Implemented RET automation (pattern-coverage checks, DRM management) using C/C++ LAPI and ML-based feature extraction; increased coverage by 25% and cut setup time by 50%.
+          - Built computational models and test masks for technology ramps, meeting strict physical accuracy targets for hardware nodes from 90nm KrF to 5nm ArF.
 
     Awards:
-      - title: Nobel Prize in Physics
-        authors:
-          - "Royal Swedish Academy of Sciences"
-        date: 1921-11-01
-        awarder: Royal Swedish Academy of Sciences
-        url: https://www.nobelprize.org/prizes/physics/1921/einstein/biographical/
-        summary: The Nobel Prizes are five separate prizes that, according to Alfred Nobel's will of 1895, are awarded to 'those who, during the preceding year, have conferred the greatest benefit to humankind.'
-
-      - title: Max Planck Medal
-        authors:
-          - "German Physical Society"
-        date: 2029
-        awarder: German Physical Society
-        summary: Awarded for outstanding scientific achievement
-
-    Publications:
-      - title: Zur Elektrodynamik bewegter Körper
-        authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1905-06-30
-        url: https://en.wikisource.org/wiki/Translation:On_the_Electrodynamics_of_Moving_Bodies
-        summary: It concerned an interpretation of the Michelson–Morley experiment and the properties of light and time. Special relativity incorporates the principle that the speed of light is the same for all inertial observers regardless of the state of motion of the source.
-
-      - title: Über einen die Erzeugung und Verwandlung des Lichtes betreffenden heuristischen Gesichtspunkt
-        authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1905-03-18
-        url: https://de.wikisource.org/wiki/Über_einen_die_Erzeugung_und_Verwandlung_des_Lichtes_betreffenden_heuristischen_Gesichtspunkt
-        summary: In the second paper, he applied the quantum theory to light to explain the photoelectric effect. In particular, he used the idea of light quanta (photons) to explain experimental results, but stressed the importance of the experimental results. The importance of his work on the photoelectric effect earned him the Nobel Prize in Physics in 1921.
-
-      - title: Die Grundlage der allgemeinen Relativitätstheorie
-        authors:
-          - Albert Einstein
-        publisher: Annalen der Physik
-        releaseDate: 1916-03-20
-        url: https://de.wikisource.org/wiki/Die_Grundlage_der_allgemeinen_Relativitätstheorie
-        summary: The publication of the theory of general relativity made him internationally famous. He was professor of physics at the universities of Zurich (1909–1911) and Prague (1911–1912), before he returned to ETH Zurich (1912–1914).
+      - title: Consultant Excellence
+        awarder: Siemens DI SW EDA
+        date: 2024-02-01
+        summary: Awarded for outstanding professional contribution.
+      - title: Consultant Excellence
+        awarder: Siemens DI SW EDA
+        date: 2022-01-01
+        summary: Awarded for outstanding professional contribution.
+      - title: Consultant Excellence
+        awarder: Siemens DI SW EDA
+        date: 2020-10-01
+        summary: Awarded for outstanding professional contribution.
+      - title: Student Exchange Program
+        awarder: DAAD Organization
+        date: 2015-09-01
+        summary: DAAD-sponsored student exchange.
 
     Skills:
-      - name: Physics
-        level: Master
-        icon: fa-solid fa-hashtag
-        keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
+      - name: AI & Machine Learning
+        level: Expert
+        icon: fa-solid fa-brain
+        keywords: "Deep Learning, Generative AI, NLP, Reinforcement Learning, Bayesian Optimization, PyTorch, TensorFlow, Scikit-learn, LangChain, MCP, Computer Vision, Image Processing"
+      - name: Semiconductor & Quantum
+        level: Expert
+        icon: fa-solid fa-microchip
+        keywords: "Quantum Error Correction (QEC), Qiskit, Stim, Amazon Braket, Computational Lithography, Optical Proximity Correction (OPC), Resolution Enhancement Techniques (RET), Metrology, CD-SEM"
+      - name: Software & Tools
+        level: Expert
+        icon: fa-solid fa-code
+        keywords: "Python, C/C++, Java, MATLAB, Perl, Tcl/Tk, Linux Shell Scripting, Git, Azure, AWS, Django, REST, LSF (High-Performance Computing)"
 
     Languages:
-      - name: German
-        summary: "Native speaker"
-
+      - name: Arabic
+        summary: "Native"
       - name: English
-        summary: "Fluent"
-
-    Interests:
-      - name: Physics
-        icon: fa-solid fa-tag
-        keywords: "Quantum Mechanics, Quantum Computing, Quantum Information, Quantum Cryptography, Quantum Communication, Quantum Teleportation"
+        summary: "Full Professional Proficiency"
+      - name: French
+        summary: "Elementary Proficiency"
+      - name: German
+        summary: "B1 Proficiency"
 
     Certificates:
+      - name: Quantum Information and Computation
+        date: 2025-08-01
+        issuer: IBM Quantum Curriculum
+        icon: fa-solid fa-atom
+      - name: Introduction to Psychology
+        date: 2023-11-01
+        issuer: Yale University, Coursera
+        icon: fa-solid fa-brain
+      - name: Project Initiation - Starting a Successful Project
+        date: 2023-11-01
+        issuer: Google, Coursera
+        icon: fa-solid fa-briefcase
+      - name: Foundations of Project Management
+        date: 2023-10-01
+        issuer: Google, Coursera
+        icon: fa-solid fa-tasks
+      - name: Fundamentals of Quantum Mechanics
+        date: 2023-09-01
+        issuer: University of Colorado Boulder, Coursera
+        icon: fa-solid fa-compass
+      - name: Agile Project Leadership
+        date: 2023-09-01
+        issuer: LinkedIn Learning
+        icon: fa-solid fa-users
       - name: Machine Learning
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-location-dot
-
-      - name: Quantum Computing
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-tag
-
-      - name: Quantum Information
-        date: 2018-01-01
-        issuer: Stanford University
-        icon: fa-solid fa-envelope
+        date: 2018-06-01
+        issuer: Stanford University, Coursera
+        icon: fa-solid fa-graduation-cap
 
     Projects:
-      - name: Quantum Computing
-        summary: Quantum computing is the use of quantum-mechanical phenomena such as superposition and entanglement to perform computation. Computers that perform quantum computations are known as quantum computers.
+      - name: Domain Specific Language Copilot
+        summary: Minimal viable product that automatically generates Standard Verification Rule Format (SVRF) language code from natural-language descriptions.
+        start_date: 2024
+        end_date: 2025
         highlights:
-          - Quantum Teleportation
-          - Quantum Cryptography
-        start_date: 2018-01-01
-        end_date: 2018-01-01
-
-    References:
-      - name: Professor John Doe
-        icon: fa-solid fa-laptop
-        reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
-
-      - name: Professor Jane Smith
-        icon: fa-solid fa-thumbtack
-        reference: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam condimentum, diam quis convallis euismod, arcu mi ullamcorper lorem, a vestibulum nunc magna at sem. Sed in risus ac felis varius blandit.
+          - Integrated a chat interface using LangChain and connected the model to a language server for contextual suggestions.
+          - Integrated the system with Model Context Protocol (MCP) for agentic custom function execution.
+      - name: Agent Solutions for EDA & Pattern-less PDK Verification
+        summary: AI agentic flow to automate EDA verification tasks, orchestrating design checks, simulation, and optimization.
+        start_date: 2024
+        end_date: 2025
+        highlights:
+          - Developed a pattern-less framework for verifying Process Design Kit (PDK) rules and multiple MCP functions.
+          - Integrated agents into existing workflows enabling continuous validation of PDKs.
+      - name: SEM Image Deep Learning Cleaning
+        summary: Deep neural network system that automatically classifies physical SEM images by quality and structural feature type.
+        start_date: 2024
+        end_date: 2024
+        highlights:
+          - Created a cross-platform QT interface to visualize and review large datasets.
+          - Automated generation of modeling files from cleaned data, reducing manual effort.
+      - name: Big Data Quantum Mechanics
+        summary: Vertically Integrated Project at Georgia Tech.
+        start_date: 2023
+        end_date: 2023
+        highlights:
+          - Conducted quantum mechanical simulations using Quantum Espresso.
+          - Benchmarked the Equiformer_v2 graph GNN model.
+      - name: Reinforcement Learning for Stock Trading
+        summary: Research Project at Georgia Tech.
+        start_date: 2022
+        end_date: 2022
+        highlights:
+          - Architected a reinforcement learning system focusing on dynamic environment adaptation.
+          - Designed custom reward functions and non-stationary exploration policies.
