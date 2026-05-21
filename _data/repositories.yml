@@ -4,15 +4,4 @@ github_users:
 repo_description_lines_max: 2
 
 github_repos:
-  - AbanoubElkess/SyndromeLearning
-  - AbanoubElkess/qec-study
-  - AbanoubElkess/autodesign
-  - AbanoubElkess/PhotonicsWorldModel
-  - AbanoubElkess/PhotonicsOptimizationAlgorithms
-  - AbanoubElkess/n8code
-  - AbanoubElkess/Neuro-Mesh
   - AbanoubElkess/ai-kernel
-  - AbanoubElkess/SmartWomenHealthApp
-  - AbanoubElkess/openrouter
-  - AbanoubElkess/applyai
-  - AbanoubElkess/database-git-interface

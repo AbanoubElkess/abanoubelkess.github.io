@@ -185,3 +185,27 @@ cv:
         highlights:
           - Architected a reinforcement learning system focusing on dynamic environment adaptation.
           - Designed custom reward functions and non-stationary exploration policies.
+      - name: AI Kernel
+        summary: AI-First OS featuring a polyglot microkernel with Rust core and Python orchestration.
+        start_date: 2024
+        end_date: 2025
+        highlights:
+          - Minimal, memory-safe kernel core handling hardware abstraction, IPC, and task scheduling.
+          - High-level Python layer for managing AI workload pipelines, model loading, and GPU resource allocation.
+          - Custom scheduler optimized for the bursty, GPU-heavy compute patterns of deep learning.
+      - name: Tennis Match Winner Predictions
+        summary: ML-driven winner prediction platform for professional men's tennis matches.
+        start_date: 2022
+        end_date: 2022
+        highlights:
+          - Engineered robust data processing pipeline scaling from 182k raw records to 16k cleaned data points.
+          - Evaluated multiple models including decision trees, boosting, and neural networks; selected Gradient Boosting.
+          - Developed an interactive web application using Dash and Plotly showing player head-to-head metrics.
+      - name: Randomized Optimization & Clustering Benchmarks
+        summary: Comparative analysis of randomized search heuristics and unsupervised grouping techniques on high-dimensional data.
+        start_date: 2024
+        end_date: 2024
+        highlights:
+          - Benchmarked RHC, Simulated Annealing, GA, and MIMIC on constraint satisfaction and neural net tuning.
+          - Combined K-Means and Expectation Maximization clustering with PCA/ICA to generate features for classification.
+          - Demonstrated significant training speedups and accuracy improvements using ICA-derived feature spaces.
