@@ -44,7 +44,51 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "projects-domain-specific-language-copilot",
+        },{id: "post-unsupervised-learning-clustering-and-dimensionality-reduction-in-high-noise-domains",
+        
+          title: "Unsupervised Learning: Clustering and Dimensionality Reduction in High-Noise Domains",
+        
+        description: "Benchmarking K-Means, Expectation Maximization, PCA, ICA, and Randomized Projections, and their integration as feature generators for Neural Network classifiers.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/unsupervised-learning-dimensionality-reduction/";
+          
+        },
+      },{id: "post-heuristic-optimization-analyzing-rhc-simulated-annealing-and-genetic-algorithms",
+        
+          title: "Heuristic Optimization: Analyzing RHC, Simulated Annealing, and Genetic Algorithms",
+        
+        description: "A comparative study of randomized optimization heuristics across binary, combinatorial, and neural network weight space problems.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/heuristic-randomized-optimization/";
+          
+        },
+      },{id: "post-online-fake-news-detection-using-convolutional-neural-networks-and-transformers",
+        
+          title: "Online Fake News Detection using Convolutional Neural Networks and Transformers",
+        
+        description: "A deep learning framework comparing pre-trained Transformer embeddings and CNN architectures to classify and detect online misinformation.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2024/online-fake-news-detection/";
+          
+        },
+      },{id: "post-predicting-professional-tennis-match-winners-using-gradient-boosting",
+        
+          title: "Predicting Professional Tennis Match Winners using Gradient Boosting",
+        
+        description: "How we engineered a robust data pipeline and compared classifier ensembles to predict ATP tennis match outcomes with over 80% accuracy.",
+        section: "Posts",
+        handler: () => {
+          
+            window.location.href = "/blog/2022/predicting-tennis-match-winners/";
+          
+        },
+      },{id: "projects-domain-specific-language-copilot",
           title: 'Domain Specific Language Copilot',
           description: "Generative AI tool that automatically writes Standard Verification Rule Format (SVRF) language code from natural language prompts.",
           section: "Projects",handler: () => {
@@ -69,36 +113,11 @@ ninja.data = [{
           description: "Reinforcement learning models utilizing non-stationary exploration policies for automated trading strategies.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/5_rl_stock_trading/";
-            },},{id: "projects-syndrome-learning",
-          title: 'Syndrome Learning',
-          description: "AI-driven framework for hardware-aware Quantum Error Correction targeting Penning trap ion crystals.",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/6_syndrome_learning/";
-            },},{id: "projects-autodesign",
-          title: 'AutoDesign',
-          description: "AI agents running inverse design for photonics on any specs input on single-GPU automatically.",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/7_autodesign/";
-            },},{id: "projects-neuro-mesh",
-          title: 'Neuro-Mesh',
-          description: "Multi-user collaborative AI runtime enabling cheap, iterative multi-agent conversations across users.",
-          section: "Projects",handler: () => {
-              window.location.href = "/projects/8_neuro_mesh/";
             },},{id: "projects-ai-kernel",
           title: 'AI Kernel',
           description: "AI-First OS: polyglot microkernel with Rust core and Python orchestration for AI workloads.",
           section: "Projects",handler: () => {
-              window.location.href = "/projects/9_ai_kernel/";
-            },},{id: "teachings-data-science-fundamentals",
-          title: 'Data Science Fundamentals',
-          description: "This course covers the foundational aspects of data science, including data collection, cleaning, analysis, and visualization. Students will learn practical skills for working with real-world datasets.",
-          section: "Teachings",handler: () => {
-              window.location.href = "/teachings/data-science-fundamentals/";
-            },},{id: "teachings-introduction-to-machine-learning",
-          title: 'Introduction to Machine Learning',
-          description: "This course provides an introduction to machine learning concepts, algorithms, and applications. Students will learn about supervised and unsupervised learning, model evaluation, and practical implementations.",
-          section: "Teachings",handler: () => {
-              window.location.href = "/teachings/introduction-to-machine-learning/";
+              window.location.href = "/projects/6_ai_kernel/";
             },},{
         id: 'social-cv',
         title: 'CV',
