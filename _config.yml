@@ -10,9 +10,7 @@ contact_note: >
   Feel free to reach out via email or LinkedIn.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   PhD Candidate in Electrical & Computer Engineering at Georgia Institute of Technology, specializing in Hardware-Aware Machine Learning and Quantum Error Correction.
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a>.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+footer_text: ""
 keywords: machine-learning, quantum-error-correction, photonics, eda, semiconductor, portfolio
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: "AA" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
