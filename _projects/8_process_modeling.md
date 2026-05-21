@@ -4,6 +4,7 @@ title: ML TCAD Process Modeling
 description: Neural-network surrogates for semiconductor process simulation (etch, deposition, CMP), accelerating TCAD workflows by 100x.
 importance: 8
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/process_modeling_thumb.png
 toc:
   sidebar: left

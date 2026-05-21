@@ -4,6 +4,7 @@ title: SEM Image Deep Learning Cleaning
 description: Deep neural network pipelines and interactive dashboards to classify, filter, and clean Scanning Electron Microscope (SEM) data for chip metrology.
 importance: 3
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/sem_cleaning_thumb.png
 toc:
   sidebar: left

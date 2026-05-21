@@ -4,6 +4,7 @@ title: Analog IC Design Optimization
 description: Automated multi-objective optimization and geometric programming routines for analog integrated circuit sizing.
 importance: 9
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/analog_design_thumb.png
 toc:
   sidebar: left

@@ -4,6 +4,7 @@ title: Big Data Quantum Mechanics
 description: High-throughput Density Functional Theory (DFT) simulations and equivariant GNN modeling for material adsorption energies.
 importance: 4
 category: academic
+area: "Systems & Quantum Computing"
 img: /assets/img/quantum_mechanics_thumb.png
 toc:
   sidebar: left

@@ -5,6 +5,7 @@ description: "AI-First OS: Polyglot microkernel with Rust core and Python orches
 importance: 6
 category: academic
 github: https://github.com/AbanoubElkess/ai-kernel
+area: "Systems & Quantum Computing"
 img: /assets/img/ai_kernel_thumb.png
 toc:
   sidebar: left

@@ -4,6 +4,7 @@ title: Reinforcement Learning for Stock Trading
 description: Deep reinforcement learning models and non-stationary policy optimization engines for automated financial trading.
 importance: 5
 category: academic
+area: "Machine Learning & Data Science"
 img: /assets/img/stock_trading_thumb.png
 toc:
   sidebar: left

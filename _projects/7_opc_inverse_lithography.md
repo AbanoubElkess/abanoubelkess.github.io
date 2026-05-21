@@ -4,6 +4,7 @@ title: OPC & Inverse Lithography
 description: GPU-accelerated Inverse Lithography Technology (ILT) and model-based Optical Proximity Correction (OPC) optimization for sub-14nm semiconductor manufacturing nodes.
 importance: 7
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/opc_lithography_thumb.png
 toc:
   sidebar: left

@@ -4,6 +4,7 @@ title: Domain Specific Language Copilot
 description: Generative AI tool that automatically writes Standard Verification Rule Format (SVRF) language code from natural language prompts.
 importance: 1
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/dsl_copilot_thumb.png
 related_publications: true
 toc:
@@ -112,3 +113,13 @@ To overcome model hallucination and guarantee compilation, the Copilot executes 
 - **Developer Efficiency**: Reduced physical verification rule deck writing cycles by **$40\%$** at Siemens EDA, translating complex physical specs to functional code blocks in seconds.
 - **Syntactic Correctness**: Increased the compiler pass-rate of first-generation code from **$62\%$** to **$94\%$** using the agentic self-reflection compiler loop (typically converging within 3 iterations).
 - **Tool Integration**: Designed a Model Context Protocol (MCP) server that links the linter engine to modern IDEs, providing developers with real-time, inline SVRF synthesis and verification feedback.
+
+---
+
+### Reference Publication
+
+If you find this work useful, please cite our corresponding publication:
+
+<div class="publications">
+{% bibliography --query @*[key=abdelmalak2025ast]* %}
+</div>

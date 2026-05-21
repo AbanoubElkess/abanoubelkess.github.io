@@ -4,6 +4,7 @@ title: DRC & Layout Verification Automation
 description: AI agentic flows and geometric engines to automate complex EDA physical verification and PDK validation.
 importance: 2
 category: work
+area: "Electronic Design Automation (EDA)"
 img: /assets/img/eda_agents_thumb.png
 toc:
   sidebar: left
