@@ -5,6 +5,8 @@ date: 2024-07-10
 categories: machine-learning
 description: "A comparative study of randomized optimization heuristics across binary, combinatorial, and neural network weight space problems."
 related_posts: false
+chart:
+  plotly: true
 ---
 
 Deterministic optimization methods, such as gradient descent, form the backbone of modern machine learning. However, when faced with non-convex, non-smooth, or highly restricted search spaces, deterministic algorithms can easily get trapped in local optima. This project, completed in Summer 2024 for _CS 7641: Machine Learning_ at Georgia Tech, investigates the performance of four Randomized Optimization (RO) heuristics: **Randomized Hill Climbing (RHC)**, **Simulated Annealing (SA)**, **Genetic Algorithms (GA)**, and **Mutual Information Maximizing Input Clustering (MIMIC)**.
@@ -62,7 +64,49 @@ We trained an MLP classifier using RHC, SA, and GA to optimize its weights direc
 - Among the RO methods, **Simulated Annealing** performed best, presenting a robust alternative in complex, volatile environments where gradient calculations might be noisy or unavailable.
 - **Genetic Algorithms** struggled in neural network training due to the high-dimensional weight space, which caused massive population evaluation overhead (wall-clock times exceeding 4,000 seconds).
 
-{% include figure.liquid path="/assets/img/optimization_curves.png" title="Figure 1: Fitness Convergence Profiles - Comparing RHC, Simulated Annealing (SA), and Genetic Algorithms (GA) over Generations" class="img-fluid rounded z-depth-1" %}
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 35, 55, 68, 76, 82, 85, 88, 90, 92, 93, 94, 95, 96, 96.5, 97, 97.2, 97.5, 97.8, 98, 98.2],
+      "mode": "lines+markers",
+      "type": "scatter",
+      "name": "Genetic Algorithm (GA)",
+      "line": { "color": "#8e24aa", "width": 3 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 28, 42, 38, 55, 62, 59, 70, 78, 83, 85, 87, 88.5, 89.2, 89.8, 90.1, 90.3, 90.5, 90.6, 90.8, 90.9],
+      "mode": "lines+markers",
+      "type": "scatter",
+      "name": "Simulated Annealing (SA)",
+      "line": { "color": "#ff6f00", "width": 2.5 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 45, 52, 52, 52, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5],
+      "mode": "lines+markers",
+      "type": "scatter",
+      "name": "Randomized Hill Climbing (RHC)",
+      "line": { "dash": "dash", "color": "#0050c0", "width": 2 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 50, 72, 83, 89, 91, 92, 92.5, 92.8, 93, 93.2, 93.3, 93.4, 93.5, 93.6, 93.6, 93.7, 93.7, 93.8, 93.8, 93.8],
+      "mode": "lines+markers",
+      "type": "scatter",
+      "name": "MIMIC",
+      "line": { "color": "#0f9d58", "width": 2.5 }
+    }
+  ],
+  "layout": {
+    "title": "Heuristic Optimization Algorithm Convergence (N-Queens)",
+    "xaxis": { "title": "Iterations / Generations" },
+    "yaxis": { "title": "Best Fitness Score" }
+  }
+}
+</code></pre>
 
 > [!WARNING]
 > While GA converges to superior global optima, the computational overhead of crossover, mutation, and population fitness evaluations means it can be orders of magnitude slower in wall-clock time than local search strategies like RHC or SA.

@@ -5,6 +5,8 @@ date: 2024-07-25
 categories: machine-learning
 description: "Benchmarking K-Means, Expectation Maximization, PCA, ICA, and Randomized Projections, and their integration as feature generators for Neural Network classifiers."
 related_posts: false
+chart:
+  plotly: true
 ---
 
 In machine learning, high-dimensional datasets and noise represent major challenges for model accuracy and training efficiency. This project, completed in Summer 2024 for _CS 7641: Machine Learning_ at Georgia Tech, explores the application of unsupervised learning techniques to group data points and reduce dimensionality, ultimately using these techniques as feature engineering tools to boost supervised neural network performance.
@@ -30,7 +32,49 @@ We analyzed two primary clustering methods: **K-Means (KM)** (partition-based) a
 - For both datasets, K-Means utilizing `k-means++` initialization consistently outperformed random initialization, leading to lower inertia and faster convergence.
 - The optimal number of clusters (determined by silhouette analysis and elbow method) was **$K=5$ to $7$** for the stock market dataset, and **$K=6$ to $8$** for the tennis dataset.
 
-{% include figure.liquid path="/assets/img/clustering_comparison.png" title="Figure 1: Clustering Algorithm Comparison - K-Means (Spherical Partitioning) vs. GMM/EM (Ellipsoidal Probabilistic Clustering)" class="img-fluid rounded z-depth-1" %}
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "x": [1.2, 1.5, 1.8, 2.1, 1.4, 1.6, 2.0, 1.7, 1.9, 1.3],
+      "y": [2.5, 3.1, 2.8, 3.5, 2.9, 3.0, 3.4, 3.2, 2.7, 3.3],
+      "mode": "markers",
+      "type": "scatter",
+      "name": "Cluster 1: High Growth",
+      "marker": { "size": 10, "color": "#0050c0" }
+    },
+    {
+      "x": [-1.5, -1.2, -1.8, -1.0, -1.4, -1.6, -1.1, -1.3, -1.7, -1.9],
+      "y": [-0.5, -0.8, -0.2, -0.6, -0.4, -0.7, -0.3, -0.5, -0.9, -0.1],
+      "mode": "markers",
+      "type": "scatter",
+      "name": "Cluster 2: Defensive",
+      "marker": { "size": 10, "color": "#0f9d58" }
+    },
+    {
+      "x": [0.1, 0.5, -0.2, 0.3, -0.5, 0.2, -0.1, 0.4, 0.0, -0.3],
+      "y": [1.1, 1.5, 0.8, 1.2, 0.9, 1.4, 1.0, 1.3, 0.7, 1.2],
+      "mode": "markers",
+      "type": "scatter",
+      "name": "Cluster 3: Moderate Yield",
+      "marker": { "size": 10, "color": "#ff6f00" }
+    },
+    {
+      "x": [1.65, -1.45, 0.09],
+      "y": [3.07, -0.5, 1.11],
+      "mode": "markers",
+      "type": "scatter",
+      "name": "Cluster Centroids",
+      "marker": { "size": 15, "symbol": "x", "color": "#8e24aa", "line": { "width": 2 } }
+    }
+  ],
+  "layout": {
+    "title": "K-Means Clustering Analysis of Financial Assets (PCA)",
+    "xaxis": { "title": "Principal Component 1" },
+    "yaxis": { "title": "Principal Component 2" }
+  }
+}
+</code></pre>
 
 > [!NOTE]
 > GMM/EM is a soft-clustering method that models clusters as probability distributions with flexible covariance shapes (spherical, diagonal, tied, or full), allowing it to fit complex financial data where K-Means (which assumes isotropic spherical clusters) fails to generalize.

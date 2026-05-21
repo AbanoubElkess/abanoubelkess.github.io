@@ -5,6 +5,8 @@ date: 2022-12-10
 categories: machine-learning
 description: "How we engineered a robust data pipeline and compared classifier ensembles to predict ATP tennis match outcomes with over 80% accuracy."
 related_posts: false
+chart:
+  plotly: true
 ---
 
 In professional sports, tennis stands out as a unique 1v1 contest with no fixed time limit. While sports like soccer and baseball have seen massive revolutions in data analytics, tennis analytics remains in a relatively early stage. This project, completed as part of the _CSE 6242: Data and Visual Analytics_ course at Georgia Tech in Fall 2022, addresses this opportunity by building an end-to-end machine learning system and an interactive web dashboard to predict professional men's tennis match winners.
@@ -54,7 +56,38 @@ The application allows users to select any two active ATP players and customize 
 2. **Player Radar Charts**: A multi-axis comparison of the players' win percentages across different surfaces.
 3. **Geographic Choropleth Map**: Visualizing the home countries of the selected players.
 
-{% include figure.liquid path="/assets/img/tennis_dashboard.png" title="Figure 1: Interactive Player Selection Dashboard & Prediction Interface Mockup" class="img-fluid rounded z-depth-1" %}
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "type": "scatterpolar",
+      "r": [82, 75, 90, 85, 78, 82],
+      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
+      "fill": "toself",
+      "name": "Player A (Novak Djokovic)",
+      "line": { "color": "#008080" }
+    },
+    {
+      "type": "scatterpolar",
+      "r": [76, 92, 70, 83, 80, 76],
+      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
+      "fill": "toself",
+      "name": "Player B (Rafael Nadal)",
+      "line": { "color": "#ff6f00" }
+    }
+  ],
+  "layout": {
+    "polar": {
+      "radialaxis": {
+        "visible": true,
+        "range": [0, 100]
+      }
+    },
+    "showlegend": true,
+    "title": "Player Performance Radar Comparison"
+  }
+}
+</code></pre>
 
 > [!TIP]
 > Mitigating player ordering bias is a crucial step in sports prediction. Scrambling the historical data from winner/loser to Player 1/Player 2 prevents the classifier from learning simple positional patterns instead of actual player attributes.

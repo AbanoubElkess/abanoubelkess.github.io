@@ -27,7 +27,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am an ECE PhD Researcher at the **Georgia Institute of Technology**, advised by Prof. Ali Adibi. My research focuses on **Hardware-Aware Machine Learning** and **Quantum Error Correction (QEC)**. Specifically, I am developing _Syndrome Learning_, an AI-driven framework for hardware-aware QEC targeting Penning trap ion crystals.
+I am an ECE PhD Researcher at the **Georgia Institute of Technology**, advised by Prof. Ali Adibi. My research focuses on **Hardware-Aware Machine Learning** and **Quantum Error Correction (QEC)**. Specifically, I am developing an AI-driven framework for hardware-aware QEC targeting Penning trap ion crystals.
 
 Prior to starting my PhD, I spent several years in the semiconductor EDA industry at **Siemens Digital Industries Software**. As a Principal Product Architect and IC Design Consultant, I architected AI/LLM-powered developer tools (such as an SVRF Copilot built on LangChain and the Model Context Protocol) and designed automation systems for Resolution Enhancement Techniques (RET) and Optical Proximity Correction (OPC).
 

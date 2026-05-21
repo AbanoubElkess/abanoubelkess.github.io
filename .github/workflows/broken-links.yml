@@ -7,11 +7,11 @@ on:
       - main
     paths:
       - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
+      - "**/*.html"
+      - "**/*.js"
+      - "**/*.liquid"
       - "**/*.md"
-      - "**.yml"
+      - "**/*.yml"
       - "!.github/workflows/axe.yml"
       - "!.github/workflows/deploy-docker-tag.yml"
       - "!.github/workflows/deploy-image.yml"
@@ -25,11 +25,11 @@ on:
       - main
     paths:
       - "assets/**"
-      - "**.html"
-      - "**.js"
-      - "**.liquid"
+      - "**/*.html"
+      - "**/*.js"
+      - "**/*.liquid"
       - "**/*.md"
-      - "**.yml"
+      - "**/*.yml"
       - "!.github/workflows/axe.yml"
       - "!.github/workflows/deploy-docker-tag.yml"
       - "!.github/workflows/deploy-image.yml"

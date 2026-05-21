@@ -25,7 +25,7 @@ cv:
         courses: ""
         highlights:
           - Advised by Prof. Ali Adibi.
-          - Developing Syndrome Learning, an AI-driven framework for hardware-aware QEC targeting Penning trap ion crystals.
+          - Developing an AI-driven framework for hardware-aware QEC targeting Penning trap ion crystals.
           - Training explicit surrogate noise models on simulated and empirical hardware data to replace idealized i.i.d. noise assumptions with physical reality.
 
       - institution: Georgia Institute of Technology

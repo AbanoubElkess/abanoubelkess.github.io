@@ -5,6 +5,9 @@ date: 2024-04-28
 categories: deep-learning
 description: "A deep learning framework comparing pre-trained Transformer embeddings and CNN architectures to classify and detect online misinformation."
 related_posts: false
+mermaid:
+  enabled: true
+  zoomable: true
 ---
 
 Misinformation and fake news on social media represent a significant threat to political, economic, and social stability. As part of a collaborative final project for _CS 7643: Deep Learning_ at Georgia Tech in Spring 2024, our team ("News Detectives") designed and benchmarked a deep learning pipeline to automate the detection of online fake news. We compared the performance of Convolutional Neural Networks (CNNs) and sequence-to-sequence Transformers, specifically **BERT** and **RoBERTa**.
@@ -41,7 +44,82 @@ In addition to Transformers, we implemented CNNs tailored for natural language p
 - **1D Convolutions**: We applied 1D convolutional filters of varying sizes (bigrams, trigrams, and four-grams) to capture local contextual patterns in the text.
 - **Pooling**: Global max pooling was applied to extract the most salient features before passing them to a fully connected classifier.
 
-{% include figure.liquid path="/assets/img/fake_news_pipeline.png" title="Figure 1: Deep Learning Text Classification Pipeline - Pre-trained Transformer Encoder (BERT/RoBERTa) vs. 1D CNN Architectures" class="img-fluid rounded z-depth-1" %}
+<pre><code class="language-mermaid">
+graph TD
+    %% Input Layer
+    subgraph Input ["Input Layer"]
+        InText["Raw Article Text & Headline Title"]
+    end
+
+    %% Embedding & Tokenization
+    subgraph Preprocess ["Preprocessing & Tokenization"]
+        TokTrans["Subword Tokenization (BPE/WordPiece)"]
+        TokCNN["Word Tokenization & Padding"]
+    end
+
+    %% Deep Learning Feature Extraction Paths
+    subgraph Models ["Deep Learning Model Architectures"]
+        %% Transformer Path
+        subgraph TransPath ["Transformer Architecture (BERT / RoBERTa)"]
+            EmbTrans["Transformer Embedding Layer"]
+            EncTrans["12/24 Bidirectional Encoder Layers"]
+            ClsToken["Extract CLS Token State"]
+        end
+
+        %% CNN Path
+        subgraph CNNPath ["1D Convolutional Neural Network (CNN)"]
+            EmbCNN["Pre-trained Word Embeddings (GloVe / Word2Vec)"]
+            Conv1D["Multi-scale 1D Convolutions (Bigram, Trigram, 4-gram)"]
+        end
+    end
+
+    %% Classifier Head
+    subgraph Classifiers ["Pooling, Regularization & Fully Connected Heads"]
+        PoolTrans["Dense Layer (Activation) + Dropout"]
+        PoolCNN["Global 1D Max Pooling + Dense Layer"]
+        ConcatFC["Fully Connected Output Layer"]
+        LossFn["Softmax Output / Cross-Entropy Loss"]
+    end
+
+    %% Output
+    subgraph Output ["Prediction Output"]
+        PredClass["Classification Label (Fake, Real, Bias, Satire, Conspiracy)"]
+    end
+
+    %% Connections
+    InText --> TokTrans
+    InText --> TokCNN
+
+    TokTrans --> EmbTrans
+    EmbTrans --> EncTrans
+    EncTrans --> ClsToken
+    ClsToken --> PoolTrans
+
+    TokCNN --> EmbCNN
+    EmbCNN --> Conv1D
+    Conv1D --> PoolCNN
+
+    PoolTrans --> ConcatFC
+    PoolCNN --> ConcatFC
+    ConcatFC --> LossFn
+    LossFn --> PredClass
+
+    %% Styling
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    classDef input fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef process fill:#fff3e0,stroke:#f57c00,stroke-width:1px;
+    classDef trans fill:#ede7f6,stroke:#5e35b1,stroke-width:2px;
+    classDef cnn fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef head fill:#fceff1,stroke:#c62828,stroke-width:1px;
+    classDef output fill:#efebe9,stroke:#4e342e,stroke-width:2px;
+
+    class InText input;
+    class TokTrans,TokCNN process;
+    class EmbTrans,EncTrans,ClsToken trans;
+    class EmbCNN,Conv1D cnn;
+    class PoolTrans,PoolCNN,ConcatFC,LossFn head;
+    class PredClass output;
+</code></pre>
 
 > [!IMPORTANT]
 > Because Transformer feature extraction involves massive pre-trained weights that remain fixed or are fine-tuned, they capture bidirectionally deep semantic relationships. In contrast, 1D CNNs rely on local n-gram window convolutions, making them faster to train but more sensitive to stylistic choice rather than actual factuality.
