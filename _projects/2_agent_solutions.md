@@ -5,6 +5,8 @@ description: AI agentic flows and geometric engines to automate complex EDA phys
 importance: 2
 category: work
 img: /assets/img/eda_agents_thumb.png
+toc:
+  sidebar: left
 ---
 
 ### Project Overview
@@ -15,7 +17,25 @@ This project developed an intelligent agentic framework that compiles rule decks
 
 ---
 
-### Geometric Layout Operations & Formulation
+### PDK Verification & Constraint Compilation
+
+Verification decks are written in languages like SVRF or TVF (Tcl Verification Format). The deck compiles into an execution tree of layer operations.
+
+#### 1. Layer Definitions and Derived Layers
+
+Layout files store raw layers (e.g. active area, poly-silicon gate, metal routing). The compiler first derives functional layers using Boolean operations:
+
+$$\text{Gate} = \text{Poly} \cap \text{Active}$$
+
+This gate layer is then used to verify channel length, channel width, and source/drain spacings.
+
+#### 2. DRC Violation Database (DFDB)
+
+When verification runs, the DRC engine writes violations to a Database. The database stores the violating rule name, cell name, and coordinates of the polygon vertices causing the error. Our tool parses this data to build a spatial index of errors.
+
+---
+
+### Geometric Layout Verification Operations
 
 DRC rules are defined as topological and spatial relations between layout polygons. Our engine models these checks as set-theoretic and distance queries on 2D planar geometries.
 
@@ -37,7 +57,7 @@ Our engine compiles these constraints into a computational DAG (Directed Acyclic
 
 ---
 
-### Hierarchical Layout Processing & Agentic Flow
+### Hierarchical Layout Processing & Cell Trees
 
 To handle modern layout files containing billions of transistors, flat processing is infeasible. The engine processes layouts hierarchically using a cell dependency graph:
 
@@ -47,6 +67,12 @@ where:
 
 - $C$ represents the set of cells (sub-circuits and standard cells).
 - $E$ represents instantiation edges representing parent-child relationships in the layout tree.
+
+By traversing $H$ in reverse topological order (bottom-up), our engine corrects violations inside leaf cells first (e.g., standard cells). This ensures that corrections propagate automatically to all parent instances, avoiding duplicate calculations and maintaining hierarchical consistency.
+
+---
+
+### Collaborative Multi-Agent Layout Repair Flow
 
 The automated verification and repair system is orchestrated as a collaborative multi-agent workflow:
 
@@ -80,13 +106,15 @@ The automated verification and repair system is orchestrated as a collaborative 
           Updated GDSII / OASIS
 ```
 
-1. **Log Parser Agent**: Ingests massive ascii/binary DRC summary reports and classifies error signatures.
-2. **Geometry Analyzer Agent**: Identifies the local cell coordinate boundaries and extracts the local polygon mesh surrounding the violation.
-3. **Auto-Corrector Agent**: Formulates a localized constrained optimization problem:
+1. **Log Parser Agent**: Ingests massive ascii/binary DRC summary reports, extracts error codes, cell references, and coordinate polygons, and builds a spatial index using an R-tree.
+2. **Geometry Analyzer Agent**: Identifies the local cell coordinate boundaries and extracts the local polygon mesh surrounding the violation. It crops the layout to isolate the problem region.
+3. **Auto-Corrector Agent**: Formulates a localized constrained optimization problem to resolve spacing or width violations by adjusting polygon vertex positions:
 
-   $$\min_{\Delta x, \Delta y} \sum_{i} \left( \Delta x_i^2 + \Delta y_i^2 \right)$$
+   $$\min_{\Delta \mathbf{x}, \Delta \mathbf{y}} \sum_{i} \left( \Delta x_i^2 + \Delta y_i^2 \right)$$
 
-   subject to meeting the DRC minimum spacing/width constraints and preserving electrical connectivity (no LVS shorts/opens).
+   subject to:
+   - Spacing constraints: $x_{i, \text{right}} - x_{j, \text{left}} \ge d_{\text{min}}$ (for horizontal spacing errors).
+   - Electrical connectivity preservation: ensuring no new shorts or opens are created by comparing the modified layout graph against the schematic network (LVS validation).
 
 ---
 

@@ -5,6 +5,8 @@ description: Deep neural network pipelines and interactive dashboards to classif
 importance: 3
 category: work
 img: /assets/img/sem_cleaning_thumb.png
+toc:
+  sidebar: left
 ---
 
 ### Project Overview
@@ -15,29 +17,69 @@ This project built a deep-learning-based image cleaning and metrology extraction
 
 ---
 
-### Denoising Architecture & Metrology Formulation
+### Image Noise Modeling in CD-SEM
 
-The image enhancement system uses a two-stage computer vision pipeline: an image-to-image denoising network and a contour extraction optimizer.
+To clean SEM images, we must model the underlying physical noise processes.
 
-#### 1. U-Net Denoising Autoencoder
+#### 1. Poisson Noise (Shot Noise)
 
-To reconstruct clean, high-contrast structural boundaries from noisy scans, we deployed a modified U-Net autoencoder with residual connections. The network learns a mapping $f_{\theta}$ from the noisy input image $I_{\text{noisy}}$ to a clean approximation $\hat{I}_{\text{clean}}$:
+The primary source of high-frequency noise is the statistical variation in the number of secondary electrons detected per pixel. Since the electron dose is minimized to prevent resist shrinkage, the pixel intensities follow a Poisson distribution:
 
-$$\hat{I}_{\text{clean}} = f_{\theta}(I_{\text{noisy}})$$
+$$P(k \text{ electrons} \mid \lambda) = \frac{\lambda^k e^{-\lambda}}{k!}$$
 
-The model is trained using a composite loss function combining Mean Squared Error (MSE) and Structural Similarity Index Measure (SSIM) to preserve critical boundary edges:
+where $\lambda$ represents the true structural intensity.
+
+#### 2. Charging Effects
+
+As the electron beam scans the wafer, negative charges accumulate on insulated photoresist features, deflecting incoming electrons. This produces slow-frequency intensity drifts and shadow artifacts, which we model as an additive spatial drift term:
+
+$$I_{\text{noisy}}(x, y) = \text{Poisson}\left(I_{\text{clean}}(x, y)\right) + \eta_{\text{charge}}(x, y)$$
+
+---
+
+### Denoising Autoencoder Architecture
+
+The image enhancement system uses a modified U-Net autoencoder with residual skip connections to remove noise while preserving structural edges.
+
+#### 1. Residual Convolutional Blocks
+
+Each layer block in the encoder and decoder contains two $3 \times 3$ convolutional layers followed by Batch Normalization and a LeakyReLU activation. Residual connections bypass the blocks:
+
+$$\mathbf{x}_{l+1} = \text{LeakyReLU}\left( \text{BN}\left( \text{Conv}(\mathbf{x}_l) \right) \right) + \mathbf{x}_l$$
+
+This prevents gradient degradation in deep architectures, preserving sub-nanometer line-edge details.
+
+#### 2. Composite Loss Function
+
+The network is trained using a composite loss function combining Mean Squared Error (MSE) and Structural Similarity Index Measure (SSIM) to preserve sharp boundary gradients:
 
 $$\mathcal{L}_{\text{total}} = (1 - \gamma)\mathcal{L}_{\text{MSE}} + \gamma \left( 1 - \text{SSIM}\left(I_{\text{clean}}, \hat{I}_{\text{clean}}\right) \right)$$
 
-where $\gamma = 0.4$ controls the structural reconstruction weight.
+where $\gamma = 0.4$ controls the structural reconstruction weight, and $\text{SSIM}$ evaluates luminance, contrast, and structural similarity over local $11 \times 11$ pixel patches.
 
-#### 2. Line-Edge Roughness (LER) Formulation
+---
 
-Once the image is denoised, our engine extracts the boundary coordinates of the resist patterns. Line-Edge Roughness (LER), a critical metric for semiconductor yields, is calculated as the $3\sigma$ standard deviation of the edge coordinates $x_i$ from a fitted straight line $\bar{x}$:
+### Metrology & Contour Fitting Optimization
 
-$$\text{LER} = 3 \sqrt{\frac{1}{N} \sum_{i=1}^{N} \left( x_i - \bar{x} \right)^2}$$
+Once the image is denoised, our engine extracts the boundary coordinates of the resist patterns.
 
-This calculation is performed dynamically along the feature length, enabling sub-nanometer metrology tracking.
+#### 1. Active Contour Fitting (Snakes)
+
+We initialize a parametric contour curve $\mathbf{v}(s) = (x(s), y(s))$ near the denoised edge and minimize its energy functional:
+
+$$E_{\text{snake}} = \int_{0}^{1} \left( E_{\text{internal}}(\mathbf{v}(s)) + E_{\text{external}}(\mathbf{v}(s)) \right) ds$$
+
+where $E_{\text{internal}}$ maintains curve smoothness and $E_{\text{external}} = -\beta \|\nabla \hat{I}_{\text{clean}}(\mathbf{v}(s))\|^2$ pulls the contour toward the steepest image gradients.
+
+#### 2. LER and LWR Formulation
+
+- **Line-Edge Roughness (LER)** is calculated as the $3\sigma$ standard deviation of the edge coordinates $x_i$ from a fitted straight line $\bar{x}$:
+
+  $$\text{LER} = 3 \sqrt{\frac{1}{N} \sum_{i=1}^{N} \left( x_i - \bar{x} \right)^2}$$
+
+- **Line-Width Roughness (LWR)** tracks the variation in local linewidth $w_i$ (distance between left and right contours):
+
+  $$\text{LWR} = 3 \sqrt{\frac{1}{N} \sum_{i=1}^{N} \left( w_i - \bar{w} \right)^2}$$
 
 ---
 
@@ -59,7 +101,7 @@ To allow calibration engineers to audit the neural network's predictions, we bui
 └────────────────────────────────────────────────────────┘
 ```
 
-- **Asynchronous Execution**: By dispatching image reading, GPU neural network inference, and contour fitting to a managed `QThreadPool`, we kept the user interface fully interactive at $60\text{ fps}$ even when processing gigabytes of raw TIFF files.
+- **Asynchronous QThread Execution**: By dispatching disk I/O and GPU neural network inference to a managed `QThreadPool`, we kept the user interface fully interactive at $60\text{ fps}$ even when processing gigabytes of raw TIFF files.
 - **Interactive Annotation**: Integrated interactive canvas tools using `QGraphicsView`, enabling users to adjust metrology search boxes and inspect individual sub-pixel edge points overlaid on the denoised image.
 
 ---

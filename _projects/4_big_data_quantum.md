@@ -5,6 +5,8 @@ description: High-throughput Density Functional Theory (DFT) simulations and equ
 importance: 4
 category: academic
 img: /assets/img/quantum_mechanics_thumb.png
+toc:
+  sidebar: left
 ---
 
 ### Project Overview
@@ -15,7 +17,25 @@ This Vertically Integrated Project (VIP) at the Georgia Institute of Technology,
 
 ---
 
-### DFT Physics Formulation
+### High-Throughput Quantum Espresso Pipelines
+
+To generate dataset samples, we built automated pipelines to execute DFT calculations on high-performance computing (HPC) clusters.
+
+#### 1. Input Deck Generation and Job Automation
+
+We wrote Python wrappers to construct Quantum Espresso input decks. The pipeline:
+
+- Parses molecular structures from ASE (Atomic Simulation Environment) databases.
+- Automates boundary cell setups and K-point grids (typically $4 \times 4 \times 1$ for surfaces).
+- Generates Slurm batch scripts to distribute calculations across compute nodes.
+
+#### 2. Plane-Wave Cutoff Validation
+
+Calculations utilized Vanderbilt ultrasoft pseudopotentials. We conducted convergence tests to set the kinetic energy cutoff for wavefunctions at $40\text{ Ry}$ and the charge density cutoff at $400\text{ Ry}$, ensuring numerical error in computed energies was below $0.001\text{ Ry}$ per atom.
+
+---
+
+### Kohn-Sham Physics Formulation
 
 We executed first-principles quantum simulations to establish ground-truth relaxed atomic geometries and adsorption energies.
 
@@ -35,15 +55,17 @@ $$V_{\text{eff}}(\mathbf{r}) = V_{\text{ext}}(\mathbf{r}) + \int \frac{n(\mathbf
 
 Here, $V_{\text{ext}}$ is the external ionic potential, the integral is the classical Hartree electrostatic potential of the electron density $n(\mathbf{r})$, and $V_{\text{xc}}$ is the exchange-correlation potential, which we modeled using the Generalized Gradient Approximation (GGA-PBE).
 
-#### 2. Simulation Execution
+#### 2. Energy Minimization
 
-The calculations were run in Quantum Espresso using plane-wave basis sets and Vanderbilt ultrasoft pseudopotentials to model core-electron interactions, relaxing structures until ionic forces fell below $0.01\text{ eV}/\text{Å}$.
+The electron density is calculated iteratively until the system energy converges. The final adsorption energy $E_{\text{ads}}$ is:
+
+$$E_{\text{ads}} = E_{\text{slab+adsorbate}} - \left( E_{\text{slab}} + E_{\text{adsorbate}} \right)$$
 
 ---
 
-### Equivariant Graph Neural Network Surrogate (Equiformer_v2)
+### Equivariant Graph Neural Network (Equiformer_v2)
 
-To replace expensive DFT relaxation runs, the adsorbate-catalyst system is represented as a 3D molecular graph $G = (V, E)$. To ensure physical consistency, the surrogate network must be equivariant to 3D rotations and translations (the Euclidean group $E(3)$).
+To bypass expensive DFT relaxation runs, the adsorbate-catalyst system is represented as a 3D molecular graph $G = (V, E)$. To ensure physical consistency, the surrogate network must be equivariant to 3D rotations and translations (the Euclidean group $E(3)$).
 
 ```
 Molecular Graph Nodes (Atoms) & Edges (3D Vectors)
@@ -67,6 +89,20 @@ Molecular Graph Nodes (Atoms) & Edges (3D Vectors)
 $$h_i^{(l+1)} = h_i^{(l)} + \sum_{j \in \mathcal{N}(i)} \text{EquivAttn}\left(h_i^{(l)}, h_j^{(l)}, Y_{lm}(\mathbf{\hat{r}}_{ij})\right)$$
 
 - **Irreps Mapping**: Features are decomposed into scalar (tensor type-0, $l=0$) and vector/tensor components ($l > 0$), allowing the network to track both coordinate-independent quantities (energies) and coordinate-dependent quantities (atomic forces) simultaneously.
+
+---
+
+### Force and Energy Gradient Training
+
+Training only on target energies leads to physical instability during structure relaxation. To address this, we optimized the network to predict atomic forces, which are the negative gradients of the total energy with respect to atomic coordinates:
+
+$$\mathbf{F}_i = -\nabla_{\mathbf{R}_i} E(\mathbf{R}_1, \dots, \mathbf{R}_N)$$
+
+By applying backpropagation through the GNN to calculate the analytical gradient of the predicted energy, we trained the model using a joint loss function:
+
+$$\mathcal{L} = \mathcal{L}_{\text{energy}} + \lambda_{\text{force}} \frac{1}{3N}\sum_{i=1}^{N} \|\mathbf{F}_{i,\text{pred}} - \mathbf{F}_{i,\text{dft}}\|^2$$
+
+where $\lambda_{\text{force}} = 10.0$ balances energy and force training.
 
 ---
 
