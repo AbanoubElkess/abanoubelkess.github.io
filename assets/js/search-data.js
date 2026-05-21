@@ -44,6 +44,13 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
+        },{id: "nav-travel-amp-fun",
+          title: "travel &amp; fun",
+          description: "Visual highlights and stories from my travels.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/travel/";
+          },
         },{id: "post-unsupervised-learning-clustering-and-dimensionality-reduction-in-high-noise-domains",
         
           title: "Unsupervised Learning: Clustering and Dimensionality Reduction in High-Noise Domains",
@@ -93,31 +100,46 @@ ninja.data = [{
           description: "Generative AI tool that automatically writes Standard Verification Rule Format (SVRF) language code from natural language prompts.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_dsl_copilot/";
-            },},{id: "projects-agent-solutions-for-eda",
-          title: 'Agent Solutions for EDA',
-          description: "AI agentic flows to automate complex EDA verification and PDK (Process Design Kit) validation.",
+            },},{id: "projects-drc-amp-layout-verification-automation",
+          title: 'DRC &amp;amp; Layout Verification Automation',
+          description: "AI agentic flows and geometric engines to automate complex EDA physical verification and PDK validation.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/2_agent_solutions/";
-            },},{id: "projects-sem-image-dl-cleaning",
-          title: 'SEM Image DL Cleaning',
-          description: "Deep neural network pipelines to classify, filter, and clean Scanning Electron Microscope (SEM) data for chip manufacturing.",
+            },},{id: "projects-sem-image-deep-learning-cleaning",
+          title: 'SEM Image Deep Learning Cleaning',
+          description: "Deep neural network pipelines and interactive dashboards to classify, filter, and clean Scanning Electron Microscope (SEM) data for chip metrology.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/3_sem_cleaning/";
             },},{id: "projects-big-data-quantum-mechanics",
           title: 'Big Data Quantum Mechanics',
-          description: "High-throughput quantum Espresso simulations and GNN modeling for material adsorption energies.",
+          description: "High-throughput Density Functional Theory (DFT) simulations and equivariant GNN modeling for material adsorption energies.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/4_big_data_quantum/";
-            },},{id: "projects-rl-for-stock-trading",
-          title: 'RL for Stock Trading',
-          description: "Reinforcement learning models utilizing non-stationary exploration policies for automated trading strategies.",
+            },},{id: "projects-reinforcement-learning-for-stock-trading",
+          title: 'Reinforcement Learning for Stock Trading',
+          description: "Deep reinforcement learning models and non-stationary policy optimization engines for automated financial trading.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/5_rl_stock_trading/";
             },},{id: "projects-ai-kernel",
           title: 'AI Kernel',
-          description: "AI-First OS: polyglot microkernel with Rust core and Python orchestration for AI workloads.",
+          description: "AI-First OS: Polyglot microkernel with Rust core and Python orchestration for AI workloads.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_ai_kernel/";
+            },},{id: "projects-opc-amp-inverse-lithography",
+          title: 'OPC &amp;amp; Inverse Lithography',
+          description: "GPU-accelerated Inverse Lithography Technology (ILT) and model-based Optical Proximity Correction (OPC) optimization for sub-14nm semiconductor manufacturing nodes.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/7_opc_inverse_lithography/";
+            },},{id: "projects-ml-tcad-process-modeling",
+          title: 'ML TCAD Process Modeling',
+          description: "Neural-network surrogates for semiconductor process simulation (etch, deposition, CMP), accelerating TCAD workflows by 100x.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/8_process_modeling/";
+            },},{id: "projects-analog-ic-design-optimization",
+          title: 'Analog IC Design Optimization',
+          description: "Automated multi-objective optimization and geometric programming routines for analog integrated circuit sizing.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/9_analog_design/";
             },},{
         id: 'social-cv',
         title: 'CV',
