@@ -1,6 +1,6 @@
 ---
 layout: page
-title: travel & fun
+title: Travel & Fun
 permalink: /travel/
 description: Visual highlights and stories from my travels.
 nav: true

@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
 subtitle: ECE PhD Researcher | Georgia Institute of Technology
 
@@ -14,7 +14,7 @@ profile:
     <p>Atlanta, GA 30332</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
+social: false # includes social icons at the bottom of the page
 
 announcements:
   enabled: false # includes a list of news items
@@ -32,3 +32,40 @@ I am an ECE PhD Researcher at the **Georgia Institute of Technology**, advised b
 Prior to starting my PhD, I spent several years in the semiconductor EDA industry at **Siemens Digital Industries Software**. As a Principal Product Architect and IC Design Consultant, I architected AI/LLM-powered developer tools (such as an SVRF Copilot built on LangChain and the Model Context Protocol) and designed automation systems for Resolution Enhancement Techniques (RET) and Optical Proximity Correction (OPC).
 
 I hold an MSc in Computer Science with a specialization in Machine Learning from Georgia Tech and a BSc in Communication Systems Engineering with an Optics Specialization from Ain Shams University.
+
+---
+
+## Contact Me
+
+If you would like to discuss research, collaborations, or consulting opportunities, please feel free to reach out.
+
+<div class="contact-grid">
+  <a class="contact-card" href="mailto:abanoub_abdelmalak@gatech.edu">
+    <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+    <div class="contact-details">
+      <strong>Email</strong>
+      <span>abanoub_abdelmalak@gatech.edu</span>
+    </div>
+  </a>
+  <a class="contact-card" href="https://linkedin.com/in/abanoub-wahib" target="_blank">
+    <div class="contact-icon"><i class="fa-brands fa-linkedin"></i></div>
+    <div class="contact-details">
+      <strong>LinkedIn</strong>
+      <span>abanoub-wahib</span>
+    </div>
+  </a>
+  <a class="contact-card" href="https://github.com/AbanoubElkess" target="_blank">
+    <div class="contact-icon"><i class="fa-brands fa-github"></i></div>
+    <div class="contact-details">
+      <strong>GitHub</strong>
+      <span>AbanoubElkess</span>
+    </div>
+  </a>
+  <div class="contact-card">
+    <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+    <div class="contact-details">
+      <strong>Office</strong>
+      <span>School of ECE, Georgia Tech</span>
+    </div>
+  </div>
+</div>

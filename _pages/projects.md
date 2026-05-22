@@ -1,6 +1,6 @@
 ---
 layout: page
-title: projects
+title: Projects
 permalink: /projects/
 description: A curated dashboard of research, academic projects, and industrial automation solutions in EDA, Machine Learning, and Systems.
 nav: true
