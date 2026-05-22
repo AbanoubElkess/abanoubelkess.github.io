@@ -25,17 +25,10 @@ ninja.data = [{
           },
         },{id: "nav-projects",
           title: "projects",
-          description: "A growing collection of your cool projects.",
+          description: "A curated dashboard of research, academic projects, and industrial automation solutions in EDA, Machine Learning, and Systems.",
           section: "Navigation",
           handler: () => {
             window.location.href = "/projects/";
-          },
-        },{id: "nav-repositories",
-          title: "repositories",
-          description: "A selection of my open-source repositories on GitHub.",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/repositories/";
           },
         },{id: "nav-cv",
           title: "CV",
@@ -95,7 +88,22 @@ ninja.data = [{
             window.location.href = "/blog/2022/predicting-tennis-match-winners/";
           
         },
-      },{id: "projects-domain-specific-language-copilot",
+      },{id: "projects-tennis-match-winner-predictions",
+          title: 'Tennis Match Winner Predictions',
+          description: "Predictive modeling framework for professional tennis matches using surface-specific Elo ratings, time-decay factors, Platt calibration, and Gradient Boosting machines.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/10_tennis_prediction/";
+            },},{id: "projects-randomized-optimization-amp-clustering-benchmarks",
+          title: 'Randomized Optimization &amp;amp; Clustering Benchmarks',
+          description: "Comparative analysis of randomized search heuristics and unsupervised learning algorithms across discrete optimization spaces and high-dimensional clustering problems.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/11_randomized_optimization/";
+            },},{id: "projects-online-fake-news-detection",
+          title: 'Online Fake News Detection',
+          description: "Deep learning framework using hybrid Transformer-CNN architectures and multi-head self-attention mechanisms to detect misinformation in online news text.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/12_fake_news_detection/";
+            },},{id: "projects-domain-specific-language-copilot",
           title: 'Domain Specific Language Copilot',
           description: "Generative AI tool that automatically writes Standard Verification Rule Format (SVRF) language code from natural language prompts.",
           section: "Projects",handler: () => {
