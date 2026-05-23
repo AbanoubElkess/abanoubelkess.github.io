@@ -16,6 +16,12 @@ In advanced semiconductor manufacturing nodes (sub-14nm), the wavelength of ligh
 
 To address these physical limits, we developed a GPU-accelerated **Inverse Lithography Technology (ILT)** and **Model-Based Optical Proximity Correction (OPC)** engine. The software treats mask synthesis as a mathematical inverse problem. By modeling the forward optical and photoresist physics, the engine optimizes the photomask layout to minimize the discrepancy between the printed wafer contours and the target integrated circuit design.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/opc_lithography_thumb.png" title="OPC and Inverse Lithography Technology" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Inverse lithography optimization process from mask design to wafer print simulation." %}
+  </div>
+</div>
+
 ---
 
 ### Forward Lithography Modeling

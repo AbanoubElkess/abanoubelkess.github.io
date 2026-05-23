@@ -17,6 +17,12 @@ Physical verification rule decks for semiconductor layouts are traditionally wri
 
 To address this challenge, we developed a specialized generative AI Copilot. The system translates natural language verification specifications directly into syntactically valid SVRF code blocks, utilizing a closed-loop validation engine to eliminate compiler and linter errors.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/dsl_copilot_thumb.png" title="SVRF Copilot Architecture" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: SVRF Copilot Architecture pipeline illustrating LLM translation, compiler loop, and IDE integration." %}
+  </div>
+</div>
+
 ---
 
 ### Compiler Front-End & Grammar Parsing

@@ -16,6 +16,12 @@ Discovering novel catalyst materials for chemical synthesis, hydrogen production
 
 This Vertically Integrated Project (VIP) at the Georgia Institute of Technology, supervised by Prof. Andrew J. Medford, utilized high-throughput DFT simulation pipelines and equivariant Graph Neural Networks (GNNs) to create fast, physically-consistent surrogate models for predicting material adsorption properties.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/quantum_mechanics_thumb.png" title="Equivariant GNN Message Passing Flow" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: High-throughput DFT simulation pipeline and equivariant Graph Neural Network surrogate architecture." %}
+  </div>
+</div>
+
 ---
 
 ### High-Throughput Quantum Espresso Pipelines

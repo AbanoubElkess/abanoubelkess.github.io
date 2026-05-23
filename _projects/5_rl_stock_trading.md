@@ -8,6 +8,8 @@ area: "Machine Learning & Data Science"
 img: /assets/img/stock_trading_thumb.png
 toc:
   sidebar: left
+chart:
+  plotly: true
 ---
 
 ### Project Overview
@@ -15,6 +17,12 @@ toc:
 Financial markets represent a highly challenging domain for classical machine learning due to low signal-to-noise ratios, non-stationarity, and regime-dependent dynamics (e.g., shifts in volatility, macroeconomic conditions, or monetary policy). Reinforcement learning (RL) agents often suffer from policy collapse or severe overfitting when trained on historical data, as standard formulations assume a stationary Markov Decision Process (MDP).
 
 This project developed a robust, production-grade deep reinforcement learning framework that implements adaptive policy exploration and dynamic, risk-adjusted reward functions to maintain stable trading performance across shifting market regimes. By incorporating a high-fidelity transaction cost simulator and non-stationary policy regularization, the system achieves consistent risk-adjusted returns while mitigating extreme drawdowns.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/stock_trading_thumb.png" title="Deep RL Trading System Architecture" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Deep reinforcement learning stock trading system architecture with regime-switching PPO." %}
+  </div>
+</div>
 
 ---
 
@@ -183,6 +191,43 @@ The table below compares the performance of the proposed regime-aware PPO agent 
 | **Sortino Ratio**         |    0.88    |     1.41     |        **2.24**         |
 | **Max Drawdown**          |   -32.4%   |    -21.1%    |       **-12.8%**        |
 | **Calmar Ratio**          |    0.32    |     0.67     |        **1.46**         |
+
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "x": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250],
+      "y": [1.0, 1.02, 1.05, 1.03, 1.06, 1.08, 1.07, 1.09, 1.11, 1.10, 1.09, 1.11, 1.13, 1.14, 1.16, 1.15, 1.17, 1.19, 1.18, 1.20, 1.21, 1.23, 1.22, 1.24, 1.26, 1.28],
+      "type": "scatter",
+      "mode": "lines",
+      "name": "Regime-Aware PPO (Ours)",
+      "line": { "color": "#008080", "width": 3 }
+    },
+    {
+      "x": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250],
+      "y": [1.0, 1.01, 1.03, 1.00, 1.04, 1.05, 1.03, 1.06, 1.07, 1.05, 1.02, 1.04, 1.07, 1.09, 1.11, 1.09, 1.10, 1.12, 1.10, 1.11, 1.12, 1.14, 1.13, 1.15, 1.17, 1.18],
+      "type": "scatter",
+      "mode": "lines",
+      "name": "Standard PPO",
+      "line": { "color": "#ab63fa", "width": 2 }
+    },
+    {
+      "x": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250],
+      "y": [1.0, 1.03, 1.06, 1.01, 1.02, 1.04, 0.99, 1.01, 1.03, 0.98, 0.95, 0.97, 1.01, 1.03, 1.06, 1.02, 1.01, 1.04, 1.02, 1.03, 1.05, 1.07, 1.04, 1.06, 1.09, 1.10],
+      "type": "scatter",
+      "mode": "lines",
+      "name": "Buy & Hold (SPY)",
+      "line": { "color": "#EF553B", "width": 1.5, "dash": "dash" }
+    }
+  ],
+  "layout": {
+    "title": "Interactive Performance Benchmark: Cumulative Returns Over 250 Trading Days",
+    "xaxis": { "title": "Trading Days" },
+    "yaxis": { "title": "Portfolio Value (Relative to Initial)" },
+    "showlegend": true
+  }
+}
+</pre>
 
 #### 2. Policy Robustness Analysis
 

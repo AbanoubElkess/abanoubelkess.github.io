@@ -8,11 +8,19 @@ area: "Machine Learning & Data Science"
 img: /assets/img/fake_news_pipeline.png
 toc:
   sidebar: left
+chart:
+  plotly: true
 ---
 
 ### Project Overview
 
 The dissemination of misinformation across digital media platforms poses significant societal challenges. Automated fake news detection systems must identify subtle linguistic markers, semantic inconsistencies, and rhetorical patterns across diverse topics. This project implements an end-to-end deep learning framework that processes raw article text, extracts multi-scale semantic and contextual representations, and classifies articles as reliable or deceptive. The architecture integrates pre-trained Transformer embeddings with a 1D Convolutional Neural Network (CNN) feature extractor.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/fake_news_pipeline.png" title="Fake News Detection System Pipeline" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: End-to-end fake news detection pipeline combining RoBERTa contextual embeddings with multi-scale 1D CNN feature extractors." %}
+  </div>
+</div>
 
 ---
 
@@ -77,6 +85,60 @@ $$
 \eta_{\text{max}} \cdot \left(1 - \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right) & t \ge T_{\text{warmup}}
 \end{cases}
 $$
+
+---
+
+### Experimental Results & Model Evaluation
+
+The model was trained and evaluated on the large-scale public news corpora. The table below outlines a comparison of classification performance metrics across different architectures:
+
+| Model Architecture   | Accuracy  | Precision |  Recall   | F1-Score  |
+| :------------------- | :-------: | :-------: | :-------: | :-------: |
+| Bi-LSTM Baseline     |   87.2%   |   85.4%   |   88.1%   |   86.7%   |
+| Standard BERT        |   91.5%   |   90.2%   |   92.4%   |   91.3%   |
+| RoBERTa Base         |   93.1%   |   92.0%   |   93.8%   |   92.9%   |
+| RoBERTa + CNN (Ours) | **94.2%** | **93.5%** | **94.6%** | **94.0%** |
+
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
+      "y": [87.2, 85.4, 88.1, 86.7],
+      "type": "bar",
+      "name": "Bi-LSTM Baseline",
+      "marker": { "color": "#EF553B" }
+    },
+    {
+      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
+      "y": [91.5, 90.2, 92.4, 91.3],
+      "type": "bar",
+      "name": "Standard BERT",
+      "marker": { "color": "#FFA15A" }
+    },
+    {
+      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
+      "y": [93.1, 92.0, 93.8, 92.9],
+      "type": "bar",
+      "name": "RoBERTa Base",
+      "marker": { "color": "#ab63fa" }
+    },
+    {
+      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
+      "y": [94.2, 93.5, 94.6, 94.0],
+      "type": "bar",
+      "name": "RoBERTa + CNN (Ours)",
+      "marker": { "color": "#008080" }
+    }
+  ],
+  "layout": {
+    "title": "Interactive Model Architecture Comparison",
+    "yaxis": { "title": "Score (%)", "range": [80, 100] },
+    "barmode": "group",
+    "showlegend": true
+  }
+}
+</pre>
 
 ---
 

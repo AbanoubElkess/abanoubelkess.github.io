@@ -16,6 +16,12 @@ In semiconductor manufacturing, Critical Dimension Scanning Electron Microscopes
 
 This project built a deep-learning-based image cleaning and metrology extraction pipeline. The system filters out unusable images, denoises raw SEM scans, and extracts critical edge dimensions, supported by a custom multi-threaded desktop GUI for data auditing.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/sem_cleaning_thumb.png" title="SEM Image Denoising Pipeline" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Deep-learning-based image cleaning and metrology extraction pipeline for CD-SEM scans." %}
+  </div>
+</div>
+
 ---
 
 ### Image Noise Modeling in CD-SEM

@@ -76,8 +76,7 @@ We analyzed two primary clustering methods: **K-Means (KM)** (partition-based) a
 }
 </code></pre>
 
-> [!NOTE]
-> GMM/EM is a soft-clustering method that models clusters as probability distributions with flexible covariance shapes (spherical, diagonal, tied, or full), allowing it to fit complex financial data where K-Means (which assumes isotropic spherical clusters) fails to generalize.
+GMM/EM is a soft-clustering method that models clusters as probability distributions with flexible covariance shapes (spherical, diagonal, tied, or full), allowing it to fit complex financial data where K-Means (which assumes isotropic spherical clusters) fails to generalize.
 
 ---
 

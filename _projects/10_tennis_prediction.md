@@ -8,11 +8,19 @@ area: "Machine Learning & Data Science"
 img: /assets/img/tennis_dashboard.png
 toc:
   sidebar: left
+chart:
+  plotly: true
 ---
 
 ### Project Overview
 
 Predicting the outcome of professional tennis matches is a complex task due to the influence of surface types (hard, clay, and grass), recent player form, head-to-head dynamics, and physical recovery times. This project implements a predictive pipeline designed to estimate match-winner probabilities for ATP and WTA matches. The architecture combines custom mathematical feature-engineering pipelines with Gradient Boosting Decision Trees (GBDTs), calibrated using Platt scaling to output reliable, probabilistic predictions.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/tennis_dashboard.png" title="Tennis Prediction Application Dashboard" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Interface layout of the ATP/WTA predictive match-winner application dashboard." %}
+  </div>
+</div>
 
 ---
 
@@ -77,6 +85,39 @@ The system achieves competitive predictive performance, outperforming baseline b
 | Baseline Elo         |        66.8%        |        65.2%        |        64.9%         |        0.612         |
 | Optimized GBDT (Raw) |        68.9%        |        67.5%        |        66.8%         | 0.589 (Uncalibrated) |
 | Calibrated GBDT      |        69.4%        |        68.1%        |        67.3%         |        0.565         |
+
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "type": "scatterpolar",
+      "r": [84.2, 82.5, 85.8, 98.2, 86.4, 84.2],
+      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
+      "fill": "toself",
+      "name": "Novak Djokovic",
+      "line": { "color": "#008080" }
+    },
+    {
+      "type": "scatterpolar",
+      "r": [77.8, 91.3, 78.2, 97.4, 85.1, 77.8],
+      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
+      "fill": "toself",
+      "name": "Rafael Nadal",
+      "line": { "color": "#ff6f00" }
+    }
+  ],
+  "layout": {
+    "polar": {
+      "radialaxis": {
+        "visible": true,
+        "range": [0, 100]
+      }
+    },
+    "showlegend": true,
+    "title": "Interactive Player Performance Radar: Djokovic vs. Nadal"
+  }
+}
+</pre>
 
 ---
 

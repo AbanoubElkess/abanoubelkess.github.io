@@ -108,8 +108,7 @@ We trained an MLP classifier using RHC, SA, and GA to optimize its weights direc
 }
 </code></pre>
 
-> [!WARNING]
-> While GA converges to superior global optima, the computational overhead of crossover, mutation, and population fitness evaluations means it can be orders of magnitude slower in wall-clock time than local search strategies like RHC or SA.
+While GA converges to superior global optima, the computational overhead of crossover, mutation, and population fitness evaluations means it can be orders of magnitude slower in wall-clock time than local search strategies like RHC or SA.
 
 ---
 

@@ -16,6 +16,12 @@ Semiconductor physical verification—comprising Design Rule Checking (DRC) and 
 
 This project developed an intelligent agentic framework that compiles rule decks, executes verification runs (e.g., using Siemens Calibre), parses violation logs, and executes closed-loop geometric modifications to automatically correct layout DRC violations.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/eda_agents_thumb.png" title="DRC Verification Agentic Workflow" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Multi-agent cooperative loop orchestrating DRC run parsing, geometry error mapping, and layout correction." %}
+  </div>
+</div>
+
 ---
 
 ### PDK Verification & Constraint Compilation

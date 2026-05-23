@@ -121,8 +121,7 @@ graph TD
     class PredClass output;
 </code></pre>
 
-> [!IMPORTANT]
-> Because Transformer feature extraction involves massive pre-trained weights that remain fixed or are fine-tuned, they capture bidirectionally deep semantic relationships. In contrast, 1D CNNs rely on local n-gram window convolutions, making them faster to train but more sensitive to stylistic choice rather than actual factuality.
+Because Transformer feature extraction involves massive pre-trained weights that remain fixed or are fine-tuned, they capture bidirectionally deep semantic relationships. In contrast, 1D CNNs rely on local n-gram window convolutions, making them faster to train but more sensitive to stylistic choice rather than actual factuality.
 
 ---
 

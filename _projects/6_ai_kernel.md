@@ -17,6 +17,12 @@ Modern general-purpose operating systems (such as Linux or Windows) are designed
 
 To address these limitations, we designed and built **AI-Kernel**, a custom polyglot microkernel operating system. It features a bare-metal kernel core written in Rust for hardware-level safety, combined with a high-level Python orchestration layer that manages tensor compute graph scheduling. By bridging the low-level systems programming paradigm with high-level AI orchestration, AI-Kernel provides a dedicated operating environment for high-throughput, low-latency machine learning execution.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/ai_kernel_thumb.png" title="AI-Kernel OS Architecture" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Hybrid microkernel design of AI-Kernel showing the Rust hardware core and Python tensor orchestration." %}
+  </div>
+</div>
+
 ---
 
 ### System Architecture & Microkernel Core

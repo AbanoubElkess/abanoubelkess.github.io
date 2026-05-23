@@ -16,6 +16,12 @@ Analog integrated circuit (IC) sizing is one of the most time-consuming steps in
 
 To address these challenges, we built an automated design framework that formulates transistor sizing as a **Geometric Programming (GP)** problem. By modeling performance metrics as posynomial functions and coupling the optimization with a closed-loop SPICE simulation engine, the framework sizing circuit parameters in seconds while ensuring physical accuracy.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/analog_design_thumb.png" title="Analog IC Design Schematic" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Operational Transconductance Amplifier (OTA) circuit schematic and design optimization parameter mappings." %}
+  </div>
+</div>
+
 ---
 
 ### Geometric Programming (GP) Formulation

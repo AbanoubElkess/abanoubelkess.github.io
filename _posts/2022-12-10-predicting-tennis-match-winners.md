@@ -89,8 +89,7 @@ The application allows users to select any two active ATP players and customize 
 }
 </code></pre>
 
-> [!TIP]
-> Mitigating player ordering bias is a crucial step in sports prediction. Scrambling the historical data from winner/loser to Player 1/Player 2 prevents the classifier from learning simple positional patterns instead of actual player attributes.
+Mitigating player ordering bias is a crucial step in sports prediction. Scrambling the historical data from winner/loser to Player 1/Player 2 prevents the classifier from learning simple positional patterns instead of actual player attributes.
 
 ## Future Extensions
 

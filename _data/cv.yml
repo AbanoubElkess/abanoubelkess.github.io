@@ -151,6 +151,7 @@ cv:
 
     Projects:
       - name: Domain Specific Language Copilot
+        url: /projects/1_dsl_copilot/
         summary: Minimal viable product that automatically generates Standard Verification Rule Format (SVRF) language code from natural-language descriptions.
         start_date: 2024
         end_date: 2025
@@ -158,6 +159,7 @@ cv:
           - Integrated a chat interface using LangChain and connected the model to a language server for contextual suggestions.
           - Integrated the system with Model Context Protocol (MCP) for agentic custom function execution.
       - name: Agent Solutions for EDA & Pattern-less PDK Verification
+        url: /projects/2_agent_solutions/
         summary: AI agentic flow to automate EDA verification tasks, orchestrating design checks, simulation, and optimization.
         start_date: 2024
         end_date: 2025
@@ -165,6 +167,7 @@ cv:
           - Developed a pattern-less framework for verifying Process Design Kit (PDK) rules and multiple MCP functions.
           - Integrated agents into existing workflows enabling continuous validation of PDKs.
       - name: SEM Image Deep Learning Cleaning
+        url: /projects/3_sem_cleaning/
         summary: Deep neural network system that automatically classifies physical SEM images by quality and structural feature type.
         start_date: 2024
         end_date: 2024
@@ -172,6 +175,7 @@ cv:
           - Created a cross-platform QT interface to visualize and review large datasets.
           - Automated generation of modeling files from cleaned data, reducing manual effort.
       - name: Big Data Quantum Mechanics
+        url: /projects/4_big_data_quantum/
         summary: Vertically Integrated Project at Georgia Tech.
         start_date: 2023
         end_date: 2023
@@ -179,6 +183,7 @@ cv:
           - Conducted quantum mechanical simulations using Quantum Espresso.
           - Benchmarked the Equiformer_v2 graph GNN model.
       - name: Reinforcement Learning for Stock Trading
+        url: /projects/5_rl_stock_trading/
         summary: Research Project at Georgia Tech.
         start_date: 2022
         end_date: 2022
@@ -186,6 +191,7 @@ cv:
           - Architected a reinforcement learning system focusing on dynamic environment adaptation.
           - Designed custom reward functions and non-stationary exploration policies.
       - name: AI Kernel
+        url: /projects/6_ai_kernel/
         summary: AI-First OS featuring a polyglot microkernel with Rust core and Python orchestration.
         start_date: 2024
         end_date: 2025
@@ -193,7 +199,32 @@ cv:
           - Minimal, memory-safe kernel core handling hardware abstraction, IPC, and task scheduling.
           - High-level Python layer for managing AI workload pipelines, model loading, and GPU resource allocation.
           - Custom scheduler optimized for the bursty, GPU-heavy compute patterns of deep learning.
+      - name: OPC & Inverse Lithography Automation
+        url: /projects/7_opc_inverse_lithography/
+        summary: Automated software system for optical proximity correction and wafer print simulation using Calibre and LSF.
+        start_date: 2017
+        end_date: 2022
+        highlights:
+          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF, improving run time and throughput by 70%.
+          - Developed computational models and test masks for technology ramps, meeting strict physical accuracy targets for nodes from 90nm KrF to 5nm ArF.
+      - name: ML TCAD Process Modeling
+        url: /projects/8_process_modeling/
+        summary: Machine learning-driven physical process simulator using Fourier Neural Operators and image processing algorithms.
+        start_date: 2022
+        end_date: 2025
+        highlights:
+          - Designed an AI and image processing tool utilizing CD-SEM images to automate process modeling, reducing manual review by 30%.
+          - Interfaced with physical metrology tools to auto-generate measurements; defined spatial pattern uniqueness via mathematical entropy of features.
+      - name: Analog IC Design
+        url: /projects/9_analog_design/
+        summary: Design and optimization of high-performance analog and mixed-signal circuits using advanced semiconductor nodes.
+        start_date: 2012
+        end_date: 2017
+        highlights:
+          - Designed low-power Phase Locked Loops (PLL) for Internet of Things (IoT) applications (ranked 1st in Optics track).
+          - Modeled and optimized two-stage Miller Operational Transconductance Amplifiers (OTA) across multiple process variations.
       - name: Tennis Match Winner Predictions
+        url: /projects/10_tennis_prediction/
         summary: ML-driven winner prediction platform for professional men's tennis matches.
         start_date: 2022
         end_date: 2022
@@ -202,6 +233,7 @@ cv:
           - Evaluated multiple models including decision trees, boosting, and neural networks; selected Gradient Boosting.
           - Developed an interactive web application using Dash and Plotly showing player head-to-head metrics.
       - name: Randomized Optimization & Clustering Benchmarks
+        url: /projects/11_randomized_optimization/
         summary: Comparative analysis of randomized search heuristics and unsupervised grouping techniques on high-dimensional data.
         start_date: 2024
         end_date: 2024
@@ -209,3 +241,11 @@ cv:
           - Benchmarked RHC, Simulated Annealing, GA, and MIMIC on constraint satisfaction and neural net tuning.
           - Combined K-Means and Expectation Maximization clustering with PCA/ICA to generate features for classification.
           - Demonstrated significant training speedups and accuracy improvements using ICA-derived feature spaces.
+      - name: Online Fake News Detection
+        url: /projects/12_fake_news_detection/
+        summary: Deep learning natural language processing framework using hybrid Transformer-CNN architectures to detect online misinformation.
+        start_date: 2024
+        end_date: 2024
+        highlights:
+          - Evaluated hybrid RoBERTa-CNN architectures with custom multi-head self-attention mechanisms.
+          - Achieved 94.2% binary classification accuracy on large-scale public news corpora.

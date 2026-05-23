@@ -8,6 +8,8 @@ area: "Machine Learning & Data Science"
 img: /assets/img/optimization_curves.png
 toc:
   sidebar: left
+chart:
+  plotly: true
 ---
 
 ### Project Overview
@@ -19,6 +21,12 @@ This project presents a multi-part empirical study covering two core domains in 
 ### Part I: Randomized Optimization Heuristics
 
 Traditional gradient-based methods (e.g., Backpropagation) require differentiable loss landscapes. When optimizing non-differentiable or highly complex discrete loss surfaces, randomized search heuristics provide robust alternatives. We analyze four key algorithms.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/optimization_curves.png" title="Optimization Fitness Curves" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Comparative fitness convergence of randomized search heuristics across discrete optimization problems." %}
+  </div>
+</div>
 
 #### 1. Simulated Annealing (SA)
 
@@ -44,11 +52,62 @@ where $\pi(j)$ represents the parent node of index $j$ in the spanning tree stru
 
 The heuristics were evaluated on three discrete spaces: Continuous Peaks, FlipFlop, and Knapsack. The performance curves illustrate the efficiency of population-based heuristics (Genetic Algorithms and MIMIC) in scaling to high-dimensional spaces compared to local search heuristics (RHC and SA).
 
+<pre><code class="language-plotly">
+{
+  "data": [
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 35, 55, 68, 76, 82, 85, 88, 90, 92, 93, 94, 95, 96, 96.5, 97, 97.2, 97.5, 97.8, 98, 98.2],
+      "type": "scatter",
+      "mode": "lines+markers",
+      "name": "Genetic Algorithm (GA)",
+      "line": { "color": "#8e24aa", "width": 3 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 28, 42, 38, 55, 62, 59, 70, 78, 83, 85, 87, 88.5, 89.2, 89.8, 90.1, 90.3, 90.5, 90.6, 90.8, 90.9],
+      "type": "scatter",
+      "mode": "lines+markers",
+      "name": "Simulated Annealing (SA)",
+      "line": { "color": "#ff6f00", "width": 2.5 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 45, 52, 52, 52, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5],
+      "type": "scatter",
+      "mode": "lines+markers",
+      "name": "Randomized Hill Climbing (RHC)",
+      "line": { "dash": "dash", "color": "#0050c0", "width": 2 }
+    },
+    {
+      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
+      "y": [10, 12, 18, 25, 32, 45, 58, 69, 78, 85, 91, 93, 95, 96, 97, 97.5, 98, 98.2, 98.4, 98.6, 98.8],
+      "type": "scatter",
+      "mode": "lines+markers",
+      "name": "MIMIC",
+      "line": { "color": "#00cc96", "width": 2 }
+    }
+  ],
+  "layout": {
+    "title": "Continuous Peaks Fitness Convergence comparison",
+    "xaxis": { "title": "Iterations / Generation Count" },
+    "yaxis": { "title": "Fitness Value" },
+    "showlegend": true
+  }
+}
+</pre>
+
 ---
 
 ### Part II: Clustering & Dimensionality Reduction
 
 Unsupervised learning workflows are evaluated by combining clustering partitions with dimensionality reduction algorithms to process complex high-dimensional datasets.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-8 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/clustering_comparison.png" title="Clustering in Reduced Dimensional Space" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 2: Analysis of K-Means and Expectation Maximization clustering on dimensionality-reduced spaces (PCA, ICA, RP)." %}
+  </div>
+</div>
 
 #### 1. Expectation-Maximization (EM) for Gaussian Mixture Models (GMM)
 
