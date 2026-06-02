@@ -6,7 +6,15 @@
   {% for entry in entries %}
     <li class="list-group-item">
       {% if entry.icon %}
-        <i class="{{ entry.icon }}"></i>
+        {% if entry.icon contains 'assets/img/' %}
+          <img
+            src="{{ entry.icon | relative_url }}"
+            class="cv-certificate-logo"
+            style="width: 22px; height: 22px; margin-right: 8px; object-fit: contain; vertical-align: middle;"
+          >
+        {% else %}
+          <i class="{{ entry.icon }}"></i>
+        {% endif %}
       {% endif %}
       {% if entry.url %}
         <strong

@@ -123,31 +123,31 @@ cv:
       - name: Quantum Information and Computation
         date: 2025-08-01
         issuer: IBM Quantum Curriculum
-        icon: fa-solid fa-atom
+        icon: assets/img/logo_ibm.svg
       - name: Introduction to Psychology
         date: 2023-11-01
         issuer: Yale University, Coursera
-        icon: fa-solid fa-brain
+        icon: assets/img/logo_yale.svg
       - name: Project Initiation - Starting a Successful Project
         date: 2023-11-01
         issuer: Google, Coursera
-        icon: fa-solid fa-briefcase
+        icon: assets/img/logo_google.svg
       - name: Foundations of Project Management
         date: 2023-10-01
         issuer: Google, Coursera
-        icon: fa-solid fa-tasks
+        icon: assets/img/logo_google.svg
       - name: Fundamentals of Quantum Mechanics
         date: 2023-09-01
         issuer: University of Colorado Boulder, Coursera
-        icon: fa-solid fa-compass
+        icon: assets/img/logo_cuboulder.svg
       - name: Agile Project Leadership
         date: 2023-09-01
         issuer: LinkedIn Learning
-        icon: fa-solid fa-users
+        icon: assets/img/logo_linkedin.svg
       - name: Machine Learning
         date: 2018-06-01
         issuer: Stanford University, Coursera
-        icon: fa-solid fa-graduation-cap
+        icon: assets/img/logo_stanford.svg
 
     Projects:
       - name: Domain Specific Language Copilot
