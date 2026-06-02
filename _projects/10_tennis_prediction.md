@@ -117,7 +117,7 @@ The system achieves competitive predictive performance, outperforming baseline b
     "title": "Interactive Player Performance Radar: Djokovic vs. Nadal"
   }
 }
-</pre>
+</code></pre>
 
 ---
 

@@ -227,7 +227,7 @@ The table below compares the performance of the proposed regime-aware PPO agent 
     "showlegend": true
   }
 }
-</pre>
+</code></pre>
 
 #### 2. Policy Robustness Analysis
 

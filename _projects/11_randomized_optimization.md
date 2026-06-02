@@ -95,7 +95,7 @@ The heuristics were evaluated on three discrete spaces: Continuous Peaks, FlipFl
     "showlegend": true
   }
 }
-</pre>
+</code></pre>
 
 ---
 

@@ -138,7 +138,7 @@ The model was trained and evaluated on the large-scale public news corpora. The 
     "showlegend": true
   }
 }
-</pre>
+</code></pre>
 
 ---
 
