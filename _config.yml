@@ -4,8 +4,8 @@
 
 title: blank # the website title (if blank, full name will be used instead)
 first_name: Abanoub
-middle_name: ""
-last_name: Abdelmalak
+middle_name: "E."
+last_name: Pola
 contact_note: >
   Feel free to reach out via email or LinkedIn.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
@@ -13,7 +13,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
 footer_text: ""
 keywords: machine-learning, quantum-error-correction, photonics, eda, semiconductor, portfolio
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: "AA" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
+icon: "AP" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://abanoubelkess.github.io # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
@@ -266,8 +266,8 @@ display_categories: ["machine-learning", "deep-learning"] # these categories wil
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Abdelmalak]
-  first_name: [Abanoub, A. E., Abanoub E.]
+  last_name: [Abdelmalak, Pola]
+  first_name: [Abanoub, A. E., Abanoub E., Abanoub E. Pola]
 
   style: apa
   locale: en
