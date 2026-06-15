@@ -112,4 +112,37 @@ nav_order: 6
     </div>
   </div>
 
+  <div class="travel-card">
+    <div class="travel-img-container">
+      <img src="{{ '/assets/images/China_1.jpg' | relative_url }}" alt="Pudong skyline at night, Shanghai" class="travel-img" loading="lazy">
+    </div>
+    <div class="travel-info">
+      <span class="travel-location">Shanghai, China</span>
+      <h3 class="travel-title">Pudong Skyline from the Bund</h3>
+      <p class="travel-description">The Pudong skyline glowing across the Huangpu River at night, with the Oriental Pearl Tower, Shanghai Tower, and the Shanghai World Financial Center lighting up the waterfront. A city I came to know well while leading the OMSCS Shanghai student chapter.</p>
+    </div>
+  </div>
+
+  <div class="travel-card">
+    <div class="travel-img-container">
+      <img src="{{ '/assets/images/China_3.jpg' | relative_url }}" alt="At the base of the Oriental Pearl Tower, Shanghai" class="travel-img" loading="lazy">
+    </div>
+    <div class="travel-info">
+      <span class="travel-location">Shanghai, China</span>
+      <h3 class="travel-title">At the Oriental Pearl Tower</h3>
+      <p class="travel-description">A clear-sky afternoon at the foot of the Oriental Pearl Tower in the Lujiazui financial district, one of Shanghai's most recognizable landmarks.</p>
+    </div>
+  </div>
+
+  <div class="travel-card">
+    <div class="travel-img-container">
+      <img src="{{ '/assets/images/China_2.jpg' | relative_url }}" alt="Snow-covered ski resort in China" class="travel-img" loading="lazy">
+    </div>
+    <div class="travel-info">
+      <span class="travel-location">China</span>
+      <h3 class="travel-title">Winter on the Slopes</h3>
+      <p class="travel-description">A crisp, sunny day at a snow-covered ski resort, with groomed runs carved into the mountainside and a lone sunflower brightening the railing in the foreground.</p>
+    </div>
+  </div>
+
 </div>
