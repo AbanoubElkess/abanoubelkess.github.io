@@ -60,7 +60,7 @@ The predictive core utilizes a Gradient Boosting Machine (LightGBM) to handle no
 
 #### 1. Optimization Objective
 
-The classifier is trained to minimize the Binary Cross-Entropy (Log-Loss) of the predicted probabilities, ensuring that the model penalizes overconfident incorrect predictions:
+The classifier is trained to minimize the Binary Cross-Entropy (Log-Loss) of the predicted probabilities, which penalizes overconfident incorrect predictions:
 
 $$\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]$$
 

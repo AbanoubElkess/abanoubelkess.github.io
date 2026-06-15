@@ -1,3 +1,4 @@
+# Build and Temp Directories
 _site
 .bundle
 .DS_store
@@ -13,3 +14,29 @@ assets/rendercv/rendercv_output/*.typ
 Gemfile.lock
 node_modules/
 vendor
+
+# Cybersecurity: Exclude Sensitive Files and Credentials
+*.key
+*.pem
+*.p12
+*.cert
+*.secret
+*.env
+*.env.*
+.envrc
+credentials.json
+client_secret*.json
+*.local
+*.bak
+*.tmp
+*.swp
+*~
+
+# IDE / Editor / Agent tooling
+.vscode/
+.idea/
+.antigravitycli/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln

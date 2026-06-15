@@ -16,7 +16,7 @@ chart:
 
 Financial markets represent a highly challenging domain for classical machine learning due to low signal-to-noise ratios, non-stationarity, and regime-dependent dynamics (e.g., shifts in volatility, macroeconomic conditions, or monetary policy). Reinforcement learning (RL) agents often suffer from policy collapse or severe overfitting when trained on historical data, as standard formulations assume a stationary Markov Decision Process (MDP).
 
-This project developed a robust, production-grade deep reinforcement learning framework that implements adaptive policy exploration and dynamic, risk-adjusted reward functions to maintain stable trading performance across shifting market regimes. By incorporating a high-fidelity transaction cost simulator and non-stationary policy regularization, the system achieves consistent risk-adjusted returns while mitigating extreme drawdowns.
+This project developed a deep reinforcement learning framework that uses adaptive policy exploration and dynamic, risk-adjusted reward functions to keep trading performance stable across shifting market regimes. A transaction cost simulator and non-stationary policy regularization help the agent hold risk-adjusted returns while limiting drawdowns.
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-8 mt-3 mt-md-0">
@@ -32,7 +32,7 @@ The portfolio trading task is formulated as a discrete-time Markov Decision Proc
 
 #### 1. State Representation $\mathbf{s}_t$
 
-The state vector at time step $t$ encodes both local market features and the current internal portfolio status to ensure the Markov property holds:
+The state vector at time step $t$ encodes both local market features and the current internal portfolio status, so the Markov property holds:
 
 $$\mathbf{s}_t = [\mathbf{p}_t, \mathbf{v}_t, \mathbf{f}_t, \mathbf{w}_{t-1}, c_t]$$
 
@@ -130,7 +130,7 @@ where:
 - $v_t$ is the current rolling volatility of the market index.
 - $\bar{v}$ and $\sigma_v$ are the historical mean and standard deviation of market volatility, respectively.
 - $\beta_0$ is the baseline entropy regularization coefficient.
-- Under high market stress ($v_t \gg \bar{v}$), $\beta(v_t)$ increases, prompting the agent to maintain high policy entropy $\mathcal{H}$, which prevents premature convergence and encourages robust exploration.
+- Under high market stress ($v_t \gg \bar{v}$), $\beta(v_t)$ increases, prompting the agent to maintain high policy entropy $\mathcal{H}$, which delays premature convergence and sustains exploration.
 
 #### 3. Proximal Policy Optimization (PPO) Clip Loss
 
@@ -166,9 +166,9 @@ $$\text{Cost}(\Delta w) = \text{Commission} + \text{Slippage}$$
 
   where $\Delta V_i$ is the volume traded and $\eta$ is a market impact coefficient.
 
-#### 2. Robust Validation Strategy
+#### 2. Validation Strategy
 
-To prevent overfitting to specific historical regimes, we designed a rigorous evaluation pipeline:
+To limit overfitting to specific historical regimes, we used the following evaluation pipeline:
 
 - **Walk-Forward Validation**: The model is trained on a rolling window of 3 years, validated on the subsequent 6 months, and tested on the following 6 months, stepping forward iteratively.
 - **Regime-Specific Stress Testing**: We evaluated the policy on historical high-stress periods, including the 2008 financial crisis and the 2020 market crash, to test drawdown mitigation.

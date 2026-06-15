@@ -2,7 +2,7 @@
 layout: page
 permalink: /activity/
 title: Activity
-nav: true
+nav: false
 nav_order: 4
 description: Recent professional updates, academic milestones, and research presentations.
 ---
@@ -27,13 +27,10 @@ description: Recent professional updates, academic milestones, and research pres
           </div>
           <h3 class="timeline-title">Research Presentation at Stanford University (ICLAD 2025)</h3>
         </div>
-        <div class="timeline-image-wrapper">
-          <img src="{{ '/assets/img/stanford_talk.png' | relative_url }}" alt="Research Presentation at Stanford University" class="timeline-image" loading="lazy">
-        </div>
         <div class="timeline-card-body">
-          <p>I had the honor of presenting our latest research paper, <strong>“An AST-Guided Approach for SVRF Code Synthesis,”</strong> at the inaugural <strong>IEEE International Conference on LLM-Aided Design (ICLAD 2025)</strong> hosted at <strong>Stanford University</strong>!</p>
-          <p>What started as a late-night rant—<em>“Why are we still hand-writing SVRF rules?”</em>—turned into a full-blown research journey. We fused Abstract Syntax Trees (AST) with LLM reasoning and built a workflow that generates clean, verification-ready SVRF code in minutes, reducing development cycle time by ~40% at Siemens EDA. Seeing the idea resonate with peers (and a few skeptics!) on stage was beyond rewarding.</p>
-          <p>A special shout-out to my debug partner and caffeine co-conspirator, Mohamed Adel Elsayed, and to Ilhami Torunoglu, Ivan Kissiov, Scott Thompson, and David Abercrombie for their support and believing in this project from day one.</p>
+          <p>I presented our paper, <strong>“An AST-Guided Approach for SVRF Code Synthesis,”</strong> at the inaugural <strong>IEEE International Conference on LLM-Aided Design (ICLAD 2025)</strong>, hosted at <strong>Stanford University</strong>.</p>
+          <p>The work began with a simple question: why are we still hand-writing SVRF rules? We combined Abstract Syntax Trees (AST) with LLM reasoning to generate verification-ready SVRF code in minutes, cutting development cycle time by roughly 40% at Siemens EDA. Presenting the approach and discussing it with peers afterward was a genuine highlight.</p>
+          <p>Thanks to my debugging partner Mohamed Adel Elsayed, and to Ilhami Torunoglu, Ivan Kissiov, Scott Thompson, and David Abercrombie for their support of this project from the start.</p>
           <div class="timeline-footer">
             <div class="timeline-tags">
               <span class="timeline-tag">#ICLAD2025</span>
@@ -65,8 +62,8 @@ description: Recent professional updates, academic milestones, and research pres
           <img src="{{ '/assets/img/gt_graduation.png' | relative_url }}" alt="Georgia Tech OMSCS Graduation" class="timeline-image" loading="lazy">
         </div>
         <div class="timeline-card-body">
-          <p>Officially graduated with my <strong>Master of Science in Computer Science</strong> (specializing in Machine Learning) from the <strong>Georgia Institute of Technology (OMSCS)</strong>! Achieving a 3.8 GPA while working full-time was a challenging but incredibly rewarding experience.</p>
-          <p>During my studies, I also had the privilege of heading the Shanghai student chapter, supporting incoming students, and organizing local meetings to foster a collaborative learning environment. Grateful for the support of family, friends, and colleagues along the way!</p>
+          <p>Graduated with my <strong>Master of Science in Computer Science</strong> (Machine Learning specialization) from the <strong>Georgia Institute of Technology (OMSCS)</strong>, earning a 3.8 GPA while working full-time.</p>
+          <p>During the program I also led the Shanghai student chapter, supporting incoming students and organizing local meetings. Grateful for the support of family, friends, and colleagues along the way.</p>
           <div class="timeline-footer">
             <div class="timeline-tags">
               <span class="timeline-tag">#OMSCS</span>

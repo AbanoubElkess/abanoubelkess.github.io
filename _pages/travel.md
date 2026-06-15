@@ -3,7 +3,7 @@ layout: page
 title: Travel & Fun
 permalink: /travel/
 description: Visual highlights and stories from my travels.
-nav: true
+nav: false
 nav_order: 6
 ---
 

@@ -26,7 +26,7 @@ The dissemination of misinformation across digital media platforms poses signifi
 
 ### Model Architecture & Attention Mechanism
 
-The model leverages a hybrid architecture combining the contextual capabilities of bidirectional encoder representations with the localized pattern-extraction properties of convolution filters.
+The model uses a hybrid architecture that combines the contextual capabilities of bidirectional encoder representations with the localized pattern-extraction of convolution filters.
 
 ```mermaid
 graph TD

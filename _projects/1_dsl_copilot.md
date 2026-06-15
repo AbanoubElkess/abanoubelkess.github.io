@@ -15,7 +15,7 @@ toc:
 
 Physical verification rule decks for semiconductor layouts are traditionally written in proprietary Domain-Specific Languages (DSLs), most notably Siemens SVRF (Standard Verification Rule Format). These rule decks specify thousands of geometric, topological, and electrical constraints that a circuit design must satisfy to be manufacturable. Creating and maintaining these decks is a major bottleneck in semiconductor design-technology co-optimization (DTCO).
 
-To address this challenge, we developed a specialized generative AI Copilot. The system translates natural language verification specifications directly into syntactically valid SVRF code blocks, utilizing a closed-loop validation engine to eliminate compiler and linter errors.
+We developed a generative AI Copilot that translates natural-language verification specifications into syntactically valid SVRF code blocks, using a closed-loop validation engine to catch compiler and linter errors.
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-8 mt-3 mt-md-0">
@@ -46,7 +46,7 @@ where:
 
 The parser processes natural-language-generated SVRF candidates into an AST. This AST representation is passed through a compiler visitor pattern that checks:
 
-- **Layer References**: Ensures all input layers are declared and connected.
+- **Layer References**: Checks that all input layers are declared and connected.
 - **Dimensional Correctness**: Validates that distance parameters use correct units (e.g., microns) and obey physical limits.
 - **Topological Integrity**: Confirms that Boolean layer operations do not yield empty sets.
 

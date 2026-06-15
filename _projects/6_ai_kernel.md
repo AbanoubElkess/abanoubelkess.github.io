@@ -13,9 +13,9 @@ toc:
 
 ### Project Overview
 
-Modern general-purpose operating systems (such as Linux or Windows) are designed to balance interactive desktop responsiveness, generic file system access, and network I/O. When executing deep learning workloads, this general-purpose design introduces significant overhead due to frequent CPU-GPU context switches, complex virtual memory hierarchies, and CPU thread schedulers that are blind to tensor pipeline execution states. This architectural mismatch causes accelerator starvation and reduces overall hardware efficiency.
+Modern general-purpose operating systems (such as Linux or Windows) balance interactive desktop responsiveness, generic file system access, and network I/O. Under deep learning workloads, this design adds overhead from frequent CPU-GPU context switches, complex virtual memory hierarchies, and CPU thread schedulers that are blind to tensor pipeline execution states, which leaves the accelerator starved and lowers hardware efficiency.
 
-To address these limitations, we designed and built **AI-Kernel**, a custom polyglot microkernel operating system. It features a bare-metal kernel core written in Rust for hardware-level safety, combined with a high-level Python orchestration layer that manages tensor compute graph scheduling. By bridging the low-level systems programming paradigm with high-level AI orchestration, AI-Kernel provides a dedicated operating environment for high-throughput, low-latency machine learning execution.
+To address this, we built **AI-Kernel**, a polyglot microkernel operating system. A bare-metal kernel core written in Rust handles hardware-level safety, while a Python orchestration layer manages tensor compute graph scheduling, giving machine learning workloads a dedicated high-throughput, low-latency operating environment.
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-8 mt-3 mt-md-0">
@@ -67,7 +67,7 @@ The buffer synchronizes write (producer) and read (consumer) pointers using atom
 
 $$\text{CAS}(P, V_{\text{expected}}, V_{\text{new}}) = \begin{cases} \text{true} & \text{if } *P = V_{\text{expected}} \text{ (set } *P = V_{\text{new}}\text{)} \\ \text{false} & \text{otherwise} \end{cases}$$
 
-This design guarantees thread safety and minimizes communication latency. The atomic pointer updates allow user-space drivers and the kernel core to exchange control commands with sub-microsecond latency, preventing message-queue bottlenecks.
+The atomic pointer updates let user-space drivers and the kernel core exchange control commands with sub-microsecond latency, avoiding message-queue bottlenecks while preserving thread safety.
 
 ---
 
@@ -101,7 +101,7 @@ py.allow_threads(|| {
 });
 ```
 
-This ensures that the Rust-based driver threads can respond to hardware interrupts and schedule concurrent operations even when the Python runtime is parsing the next layer of the computation graph.
+This lets the Rust-based driver threads respond to hardware interrupts and schedule concurrent operations even while the Python runtime is parsing the next layer of the computation graph.
 
 ---
 

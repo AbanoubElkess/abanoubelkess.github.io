@@ -75,7 +75,7 @@ where:
 - $C$ represents the set of cells (sub-circuits and standard cells).
 - $E$ represents instantiation edges representing parent-child relationships in the layout tree.
 
-By traversing $H$ in reverse topological order (bottom-up), our engine corrects violations inside leaf cells first (e.g., standard cells). This ensures that corrections propagate automatically to all parent instances, avoiding duplicate calculations and maintaining hierarchical consistency.
+By traversing $H$ in reverse topological order (bottom-up), our engine corrects violations inside leaf cells first (e.g., standard cells), so corrections propagate to all parent instances without duplicate calculations.
 
 ---
 
@@ -121,7 +121,7 @@ The automated verification and repair system is orchestrated as a collaborative 
 
    subject to:
    - Spacing constraints: $x_{i, \text{right}} - x_{j, \text{left}} \ge d_{\text{min}}$ (for horizontal spacing errors).
-   - Electrical connectivity preservation: ensuring no new shorts or opens are created by comparing the modified layout graph against the schematic network (LVS validation).
+   - Electrical connectivity preservation: comparing the modified layout graph against the schematic network (LVS validation) to confirm no new shorts or opens are created.
 
 ---
 

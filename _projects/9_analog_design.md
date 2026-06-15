@@ -12,9 +12,9 @@ toc:
 
 ### Project Overview
 
-Analog integrated circuit (IC) sizing is one of the most time-consuming steps in semiconductor design. Choosing transistor channel widths ($W$), lengths ($L$), bias currents, and passive component values is a challenging task. Designers must balance multiple competing performance specifications—such as low-frequency open-loop gain, unity-gain bandwidth, phase margin, power dissipation, noise, and silicon area. Because transistor behaviors in sub-micron regimes are highly non-linear, designers typically rely on manual sizing and iterative SPICE simulations.
+Analog integrated circuit (IC) sizing is one of the most time-consuming steps in semiconductor design. Choosing transistor channel widths ($W$), lengths ($L$), bias currents, and passive component values means balancing competing performance specifications—low-frequency open-loop gain, unity-gain bandwidth, phase margin, power dissipation, noise, and silicon area. Because transistor behavior in sub-micron regimes is highly non-linear, designers typically rely on manual sizing and iterative SPICE simulations.
 
-To address these challenges, we built an automated design framework that formulates transistor sizing as a **Geometric Programming (GP)** problem. By modeling performance metrics as posynomial functions and coupling the optimization with a closed-loop SPICE simulation engine, the framework sizing circuit parameters in seconds while ensuring physical accuracy.
+We built an automated design framework that formulates transistor sizing as a **Geometric Programming (GP)** problem. By modeling performance metrics as posynomial functions and coupling the optimization with a closed-loop SPICE simulation engine, the framework sizes circuit parameters in seconds while keeping results physically accurate.
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-8 mt-3 mt-md-0">

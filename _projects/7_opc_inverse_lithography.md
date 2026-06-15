@@ -155,7 +155,7 @@ We evaluated the quality of the printed patterns across three metrics: Edge Plac
 | **Contact Hole (Array)** |   Max EPE    |  $3.5\text{ nm}$  |  **$1.2\text{ nm}$**   |    65.7%    |
 |                          |     MEEF     |        3.8        |        **2.1**         |    44.7%    |
 
-- **EPE Reduction**: Across all test patterns, the continuous pixel-level ILT engine reduced the maximum Edge Placement Error by over **$50\%$**, ensuring that the printed shapes matched the target layout geometries within tolerances.
+- **EPE Reduction**: Across all test patterns, the continuous pixel-level ILT engine reduced the maximum Edge Placement Error by over **$50\%$**, bringing the printed shapes within tolerance of the target layout geometries.
 - **Process Window Stability**: The common depth of focus (DoF) increased by **$35\%$**, indicating that the optimized mask layout maintains pattern fidelity even under focal-plane drift and exposure dose fluctuations inside the scanner.
 
 #### 2. GPU Speedup Benchmarks
