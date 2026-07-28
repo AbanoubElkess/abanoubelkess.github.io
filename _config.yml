@@ -13,7 +13,7 @@ description: > # the ">" symbol means to ignore newlines until "footer_text:"
 footer_text: ""
 keywords: machine-learning, quantum-error-correction, photonics, eda, semiconductor, portfolio
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: "AP" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
+icon: "AA" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
 
 url: https://abanoubelkess.github.io # the base hostname & protocol for your site
 baseurl: # the subpath of your site, e.g. /blog/. Leave blank for root
@@ -361,6 +361,7 @@ imagemagick:
     - 1400
   input_directories:
     - assets/img/
+    - assets/images/
   input_formats:
     - ".jpg"
     - ".jpeg"
@@ -389,12 +390,12 @@ enable_openpanel_analytics: false # enables Openpanel analytics (https://openpan
 enable_google_verification: false # enables google site verification
 enable_bing_verification: false # enables bing site verification
 enable_cookie_consent: false # enables GDPR-compliant cookie consent dialog (https://github.com/orestbida/cookieconsent)
-enable_masonry: true # enables automatic project cards arrangement
+enable_masonry: false # the custom dashboard in _pages/projects.md uses CSS grid, so the masonry JS is dead weight
 enable_math: true # enables math typesetting (uses MathJax)
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
 enable_darkmode: false # enables switching between light/dark modes
 enable_navbar_social: false # enables displaying social links in the navbar on the about page
-enable_project_categories: true # enables categorization of projects into multiple categories
+enable_project_categories: true # superseded: _pages/projects.md renders its own category and area filters
 enable_medium_zoom: true # enables image zoom feature (as on medium.com)
 enable_progressbar: true # enables a horizontal progress bar linked to the vertical scroll position
 enable_video_embedding: false # enables video embedding for bibtex entries. If false, the button opens the video link in a new window.

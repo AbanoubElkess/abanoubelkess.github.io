@@ -63,7 +63,14 @@ nav_order: 3
           <div class="project-card-inner">
             {% if project.img %}
               <div class="project-image-wrapper">
-                <img src="{{ project.img | relative_url }}" alt="{{ project.title }}" class="project-image" loading="lazy">
+                {%
+                  include figure.liquid
+                  path=project.img
+                  alt=project.title
+                  class="project-image"
+                  sizes="(min-width: 768px) 300px, 100vw"
+                  loading="lazy"
+                %}
               </div>
             {% endif %}
             <div class="project-details">
@@ -347,6 +354,15 @@ nav_order: 3
   background: var(--global-bg-color);
 }
 
+/* figure.liquid wraps the image in <figure><picture>; both need to be
+   transparent block boxes so object-fit still applies to the <img> itself */
+.project-image-wrapper figure,
+.project-image-wrapper picture {
+  display: block;
+  height: 100%;
+  margin: 0;
+}
+
 .project-image {
   width: 100%;
   height: 100%;
@@ -382,7 +398,7 @@ nav_order: 3
 
 .project-area-badge {
   font-size: 0.7rem;
-  background: rgba(131, 56, 236, 0.08);
+  background: color-mix(in srgb, var(--global-theme-color) 8%, transparent);
   color: var(--global-theme-color);
   padding: 0.2rem 0.6rem;
   border-radius: 12px;
