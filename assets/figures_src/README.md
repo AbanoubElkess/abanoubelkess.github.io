@@ -29,10 +29,17 @@ than an illustrative one.
 | `ro_nn_generalization_gap`    | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, Table IV `mean` row                               |
 | `ro_run_spread`               | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, Table IV min/quartile/max rows                    |
 | `tennis_generalization_slope` | `assets/pdf/TennisMatchPrediction_Project.pdf`, §5.4 (same table as `tennis_model_f1`, different question) |
+| `research_venn`               | Not data. Positioning claims sourced from `_pages/about.md` and `_bibliography/papers.bib`                 |
 
 `ro_converged_fitness` is the one figure whose source states some values as
 approximations in prose rather than in a table. That is disclosed in the script
 docstring and in the caption on the site.
+
+`research_venn` is the only figure here that plots no measurements. It states
+where the work sits across machine learning, quantum computing, and semiconductor
+design, and what the PhD is aiming at. Its labels are claims rather than results,
+so they are listed in the script docstring with the site text each comes from. If
+the research direction changes, edit the labels there and re-run.
 
 ## Diagrams
 
