@@ -33,6 +33,12 @@ Prior to starting my PhD, I spent several years in the semiconductor EDA industr
 
 I hold an MSc in Computer Science with a specialization in Machine Learning from Georgia Tech and a BSc in Communication Systems Engineering with an Optics Specialization from Ain Shams University.
 
+<div class="row justify-content-sm-center">
+  <div class="col-sm-11 mt-4 mt-md-3">
+    {% include figure.liquid loading="eager" path="assets/img/figures/research_venn.svg" title="Research positioning: machine learning, quantum computing, and semiconductor design" class="img-fluid" zoomable=true caption="My work sits across three fields. The pairwise areas are where I have built things: AI for EDA at Siemens, and machine learning applied to quantum error correction. My PhD objective is the region where all three meet." %}
+  </div>
+</div>
+
 ---
 
 ## Contact Me
