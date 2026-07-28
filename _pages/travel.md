@@ -81,39 +81,6 @@ nav_order: 6
 
   <div class="travel-card">
     <div class="travel-img-container">
-      <img src="{{ '/assets/img/travel_swiss_alps.png' | relative_url }}" alt="Lauterbrunnen Valley, Switzerland" class="travel-img" loading="lazy">
-    </div>
-    <div class="travel-info">
-      <span class="travel-location">Lauterbrunnen, Switzerland</span>
-      <h3 class="travel-title">The Valley of 72 Waterfalls</h3>
-      <p class="travel-description">A scenic look at the Lauterbrunnen valley in the Swiss Alps. Surrounded by towering rock faces and dramatic mountain peaks, a classic red alpine train winds through lush green meadows in the shadow of the Jungfrau massif.</p>
-    </div>
-  </div>
-
-  <div class="travel-card">
-    <div class="travel-img-container">
-      <img src="{{ '/assets/img/travel_tokyo_night.png' | relative_url }}" alt="Tokyo Tower at night, Japan" class="travel-img" loading="lazy">
-    </div>
-    <div class="travel-info">
-      <span class="travel-location">Tokyo, Japan</span>
-      <h3 class="travel-title">Tokyo Tower Nightscape</h3>
-      <p class="travel-description">The iconic Tokyo Tower glowing in warm orange and red hues against the deep indigo twilight of the city. Seen from a distance, the tower anchors a high-density skyline of skyscrapers, blending technological modernism with iconic landmarks.</p>
-    </div>
-  </div>
-
-  <div class="travel-card">
-    <div class="travel-img-container">
-      <img src="{{ '/assets/img/travel_egypt_pyramids.png' | relative_url }}" alt="Giza Pyramids, Egypt" class="travel-img" loading="lazy">
-    </div>
-    <div class="travel-info">
-      <span class="travel-location">Giza, Egypt</span>
-      <h3 class="travel-title">Sunset at the Giza Plateau</h3>
-      <p class="travel-description">The Great Pyramids of Giza rising above the desert sands during a golden sunset. A silhouette of camels crossing the dunes captures the historical heritage of this ancient site.</p>
-    </div>
-  </div>
-
-  <div class="travel-card">
-    <div class="travel-img-container">
       <img src="{{ '/assets/images/China_1.jpg' | relative_url }}" alt="Pudong skyline at night, Shanghai" class="travel-img" loading="lazy">
     </div>
     <div class="travel-info">
