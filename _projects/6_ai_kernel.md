@@ -23,7 +23,7 @@ To address this, we built **AI-Kernel**, a polyglot microkernel operating system
 
 ### System Architecture & Microkernel Core
 
-AI-Kernel uses a microkernel design where only essential services—such as physical memory allocation, process coordination, and interrupt handling—run in supervisor mode (ring 0). All other services, including device drivers and the graph parser, run in user mode (ring 3).
+AI-Kernel uses a microkernel design where only essential services (such as physical memory allocation, process coordination, and interrupt handling) run in supervisor mode (ring 0). All other services, including device drivers and the graph parser, run in user mode (ring 3).
 
 ```mermaid
 flowchart TD

@@ -134,3 +134,66 @@ blockquote {
     }
   }
 }
+
+/*******************************************************************************
+ * Reading measure
+ *
+ * WCAG caps line length at 80 characters for Latin scripts, and typographic
+ * research puts the comfortable range at 50 to 75 (Bringhurst's 45-75, with 66
+ * commonly cited as the optimum). Measured on the deployed site, blog posts and
+ * the about page were running about 116 characters per line, roughly 45% over
+ * the accessibility ceiling.
+ *
+ * Only the prose elements are constrained. Figures, tables, equations and code
+ * keep the full column width, because narrowing those costs legibility rather
+ * than adding it. The `ch` unit ties the measure to the font, so the constraint
+ * survives a font-size change.
+ ******************************************************************************/
+
+.post > article,
+.post > .post-content {
+  > p,
+  > ul,
+  > ol,
+  > dl,
+  > blockquote,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    max-width: v.$reading-measure;
+  }
+
+  // list items inherit the parent's constrained width, but nested prose inside
+  // a list item still needs its own bound
+  > ul > li,
+  > ol > li {
+    max-width: none;
+  }
+}
+
+/* Heading permalinks. Hidden until the heading is hovered or the link itself is
+   focused, so the marker never competes with the heading text. */
+.heading-anchor {
+  margin-left: 0.4rem;
+  font-weight: 400;
+  color: var(--global-divider-color);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+    color: var(--global-theme-color);
+    text-decoration: none;
+  }
+}
+
+h2:hover > .heading-anchor,
+h3:hover > .heading-anchor,
+h4:hover > .heading-anchor {
+  opacity: 1;
+}

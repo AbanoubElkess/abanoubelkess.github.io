@@ -79,4 +79,10 @@ The methods this project builds on, and the gap each leaves:
 
 ### Reference Material
 
-- [Online Fake News Detection: Project Proposal (PDF)](/assets/pdf/CS_7643___Final_Project.pdf) — problem framing, approach, datasets, and the related-work survey.
+- [Online Fake News Detection: Project Proposal (PDF)](/assets/pdf/CS_7643___Final_Project.pdf): problem framing, approach, datasets, and the related-work survey.
+
+---
+
+### Related writing
+
+- [Online Fake News Detection using Convolutional Neural Networks and Transformers]({{ '/blog/2024/online-fake-news-detection/' | relative_url }})

@@ -118,5 +118,12 @@ Ranked by effect on the neural network classifier trained on the reduced feature
 
 ### Reports
 
-- [Randomized Optimization Report (PDF)](/assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf) — problem definitions, hyperparameter sweep ranges, per-algorithm fitness curves, and the full 272-run summary table.
-- [Unsupervised Learning & Dimensionality Reduction Report (PDF)](/assets/pdf/CS7641_ML_Unsupervised_Learning___Su24.pdf) — clustering hyperparameter ranges, AIC/BIC and silhouette analysis, pairplots, and the downstream classifier comparison.
+- [Randomized Optimization Report (PDF)](/assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf): problem definitions, hyperparameter sweep ranges, per-algorithm fitness curves, and the full 272-run summary table.
+- [Unsupervised Learning & Dimensionality Reduction Report (PDF)](/assets/pdf/CS7641_ML_Unsupervised_Learning___Su24.pdf): clustering hyperparameter ranges, AIC/BIC and silhouette analysis, pairplots, and the downstream classifier comparison.
+
+---
+
+### Related writing
+
+- [Heuristic Optimization: Analyzing RHC, Simulated Annealing, and Genetic Algorithms]({{ '/blog/2024/heuristic-randomized-optimization/' | relative_url }})
+- [Unsupervised Learning: Clustering and Dimensionality Reduction in High-Noise Domains]({{ '/blog/2024/unsupervised-learning-dimensionality-reduction/' | relative_url }})

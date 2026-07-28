@@ -50,3 +50,6 @@ $back-to-top-width: $back-to-top-diameter;
 
 // Max width default
 $max-content-width: 930px !default;
+// Prose line length. 72ch lands near 75 rendered characters, inside the
+// WCAG 80-character ceiling. See the reading measure block in _typography.scss.
+$reading-measure: 72ch !default;

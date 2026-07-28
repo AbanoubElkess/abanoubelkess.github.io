@@ -87,7 +87,7 @@ $$\mathcal{L} = \mathcal{L}_{\text{data}} + \lambda_{\text{mass}} \mathcal{L}_{\
 
 ### Closed-Loop Recipe Optimization
 
-By replacing slow TCAD solvers with a fast, differentiable FNO surrogate, we can perform inverse process design—finding the exact process recipe parameters needed to achieve a target profile geometry.
+By replacing slow TCAD solvers with a fast, differentiable FNO surrogate, we can perform inverse process design: finding the exact process recipe parameters needed to achieve a target profile geometry.
 
 ```mermaid
 flowchart TD

@@ -3,13 +3,17 @@ layout: post
 title: "Predicting Professional Tennis Match Winners using Gradient Boosting"
 date: 2022-12-10
 categories: machine-learning
-description: "How we engineered a robust data pipeline and compared classifier ensembles to predict ATP tennis match outcomes with over 80% accuracy."
+description: "How we engineered a data pipeline over 182,964 ATP matches and compared five classifier families, reaching a test F1 of 0.733 with gradient boosting."
 related_posts: false
-chart:
-  plotly: true
+toc:
+  beginning: true
 ---
 
 In professional sports, tennis stands out as a unique 1v1 contest with no fixed time limit. While sports like soccer and baseball have seen massive revolutions in data analytics, tennis analytics remains in a relatively early stage. This project, completed as part of the _CSE 6242: Data and Visual Analytics_ course at Georgia Tech in Fall 2022, addresses this opportunity by building an end-to-end machine learning system and an interactive web dashboard to predict professional men's tennis match winners.
+
+> The full write-up, including the feature set and deployment details, lives on
+> the project page:
+> [Tennis Match Winner Predictions]({{ '/projects/10_tennis_prediction/' | relative_url }}).
 
 ## The Data Pipeline & Preprocessing Challenge
 
@@ -44,7 +48,13 @@ We approached the prediction as a binary classification problem. Using an $80\%/
 | **k-Nearest Neighbors**  |      0.719      |     0.684     |
 | **Decision Tree**        |      0.712      |     0.677     |
 
-**Gradient Boosting** emerged as our champion model, demonstrating superior resilience against overfitting while delivering a strong test F1-score.
+**Gradient Boosting** emerged as our champion model, delivering the strongest test F1 while resisting the overfitting that AdaBoost shows plainly: a perfect 1.000 on train buys it nothing on test.
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-11 mt-3 mt-md-0">
+    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_model_f1.svg" title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Train and test F1 for the five model families tried. Gradient boosting reaches the highest test F1 at 0.733." %}
+  </div>
+</div>
 
 ## The Interactive Dashboard
 
@@ -55,39 +65,6 @@ The application allows users to select any two active ATP players and customize 
 1. **Predicted Winner**: The predicted winning player and probability.
 2. **Player Radar Charts**: A multi-axis comparison of the players' win percentages across different surfaces.
 3. **Geographic Choropleth Map**: Visualizing the home countries of the selected players.
-
-<pre><code class="language-plotly">
-{
-  "data": [
-    {
-      "type": "scatterpolar",
-      "r": [82, 75, 90, 85, 78, 82],
-      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
-      "fill": "toself",
-      "name": "Player A (Novak Djokovic)",
-      "line": { "color": "#008080" }
-    },
-    {
-      "type": "scatterpolar",
-      "r": [76, 92, 70, 83, 80, 76],
-      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
-      "fill": "toself",
-      "name": "Player B (Rafael Nadal)",
-      "line": { "color": "#ff6f00" }
-    }
-  ],
-  "layout": {
-    "polar": {
-      "radialaxis": {
-        "visible": true,
-        "range": [0, 100]
-      }
-    },
-    "showlegend": true,
-    "title": "Player Performance Radar Comparison"
-  }
-}
-</code></pre>
 
 Mitigating player ordering bias is a crucial step in sports prediction. Scrambling the historical data from winner/loser to Player 1/Player 2 prevents the classifier from learning simple positional patterns instead of actual player attributes.
 

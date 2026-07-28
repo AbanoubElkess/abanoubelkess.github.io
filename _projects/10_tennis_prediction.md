@@ -26,10 +26,10 @@ The match database records who won and who lost. Storing the data that way would
 
 Twelve features were selected using entropy and information gain, aided by domain knowledge:
 
-- **Match context** — match format, surface, indoor or outdoor
-- **Player attributes** — height, age, one-handed or two-handed backhand
-- **Ranking** — official ATP ranking and ELO rating, both taken from the dataset as inputs
-- **Win rates** — overall win percentage, and win percentage restricted to the same match format, the same tournament surface, and this format
+- **Match context**: match format, surface, indoor or outdoor
+- **Player attributes**: height, age, one-handed or two-handed backhand
+- **Ranking**: official ATP ranking and ELO rating, both taken from the dataset as inputs
+- **Win rates**: overall win percentage, and win percentage restricted to the same match format, the same tournament surface, and this format
 
 ---
 
@@ -73,4 +73,10 @@ The final model was serialized and deployed inside a web application built with 
 
 ### Report
 
-- [Tennis Match Predictions Project Report](/assets/pdf/TennisMatchPrediction_Project.pdf) — full methodology, dataset selection trials, feature engineering, and the learning and validation curves for the final model.
+- [Tennis Match Predictions Project Report](/assets/pdf/TennisMatchPrediction_Project.pdf): full methodology, dataset selection trials, feature engineering, and the learning and validation curves for the final model.
+
+---
+
+### Related writing
+
+- [Predicting Professional Tennis Match Winners using Gradient Boosting]({{ '/blog/2022/predicting-tennis-match-winners/' | relative_url }})

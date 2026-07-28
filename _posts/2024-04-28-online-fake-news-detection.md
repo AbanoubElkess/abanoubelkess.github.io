@@ -5,12 +5,19 @@ date: 2024-04-28
 categories: deep-learning
 description: "A deep learning framework comparing pre-trained Transformer embeddings and CNN architectures to classify and detect online misinformation."
 related_posts: false
+toc:
+  beginning: true
 mermaid:
   enabled: true
   zoomable: true
 ---
 
-Misinformation and fake news on social media represent a significant threat to political, economic, and social stability. As part of a collaborative final project for _CS 7643: Deep Learning_ at Georgia Tech in Spring 2024, our team ("News Detectives") designed and benchmarked a deep learning pipeline to automate the detection of online fake news. We compared the performance of Convolutional Neural Networks (CNNs) and sequence-to-sequence Transformers, specifically **BERT** and **RoBERTa**.
+Misinformation and fake news on social media represent a significant threat to political, economic, and social stability. As part of a collaborative final project for _CS 7643: Deep Learning_ at Georgia Tech in Spring 2024, our team ("News Detectives") designed a deep learning pipeline to automate the detection of online fake news, comparing Convolutional Neural Networks (CNNs) against sequence-to-sequence Transformers, specifically **BERT** and **RoBERTa**.
+
+> The write-up available for this project is the proposal, which sets out the
+> approach, datasets, and evaluation plan without reporting trained-model
+> results. This post describes the design on the same basis. See the project
+> page: [Online Fake News Detection]({{ '/projects/12_fake_news_detection/' | relative_url }}).
 
 ---
 
@@ -131,13 +138,13 @@ A key focus of our research was performing a detailed error analysis of misclass
 
 - **Sarcasm and Satire**: Models frequently misclassified satirical articles (like _The Onion_) as news because they mimic the syntactic structure and vocabulary of real news reports.
 - **Topic Bias**: Models trained purely on U.S. political datasets initially struggled on our out-of-domain validation dataset (the Syrian War corpus), highlighting the need for domain-agnostic pre-training and diverse validation datasets.
-- **Factuality vs. Style**: CNN models are highly sensitive to writing style and specific keywords, whereas Transformer models (BERT/RoBERTa) demonstrate a much better grasp of overall article context and semantic consistency.
+- **Factuality vs. Style**: CNN models are highly sensitive to writing style and specific keywords. Transformer models (BERT/RoBERTa), by contrast, are designed to carry overall article context and semantic consistency across the full sequence.
 
 ---
 
 ## 4. Evaluation and Future Directions
 
-Our models were evaluated using standard metrics: accuracy, precision, recall, and F1-score. Pre-trained Transformer models demonstrated superior F1-scores, illustrating their ability to model complex dependencies and contextual nuances compared to standard CNNs.
+The evaluation plan used standard metrics: accuracy, precision, recall, and F1-score, applied to the pre-trained Transformer models and the CNN baselines alike. The proposal does not report the resulting scores, so no comparison between the two is claimed here.
 
 Potential future directions for this work include:
 
