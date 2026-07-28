@@ -5,6 +5,9 @@ description: Deep neural network pipelines and interactive dashboards to classif
 importance: 3
 category: work
 area: "Electronic Design Automation (EDA)"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -87,18 +90,16 @@ where $E_{\text{internal}}$ maintains curve smoothness and $E_{\text{external}} 
 
 To allow calibration engineers to audit the neural network's predictions, we built a cross-platform desktop application using Python, PyQt5, and PySide.
 
-```
-┌────────────────────────────────────────────────────────┐
-│  PyQt GUI Event Loop (Main Thread - Responsive UI)      │
-│     │                                            ▲     │
-│     ▼ (Asynchronous QRunnable Job)               │     │
-│  ┌───────────────────────────────────────────────┴──┐  │
-│  │ QThreadPool Backend (Worker Threads)              │  │
-│  │  ├── Thread 1: Async I/O (Load TIFF Images)        │  │
-│  │  ├── Thread 2: GPU PyTorch Inference (Denoise)    │  │
-│  │  └── Thread 3: Metrology Edge & LER Calculator     │  │
-│  └───────────────────────────────────────────────────┘  │
-└────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    UI["PyQt GUI event loop<br/>(main thread, stays responsive)"]
+    subgraph pool["QThreadPool backend (worker threads)"]
+        T1["Thread 1: async I/O, load TIFF images"]
+        T2["Thread 2: GPU PyTorch inference, denoise"]
+        T3["Thread 3: metrology edge and LER calculator"]
+    end
+    UI -- "Asynchronous QRunnable job" --> pool
+    pool -- "Results returned to UI" --> UI
 ```
 
 - **Asynchronous QThread Execution**: By dispatching disk I/O and GPU neural network inference to a managed `QThreadPool`, we kept the user interface fully interactive at $60\text{ fps}$ even when processing gigabytes of raw TIFF files.

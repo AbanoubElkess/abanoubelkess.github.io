@@ -5,6 +5,9 @@ description: AI agentic flows and geometric engines to automate complex EDA phys
 importance: 2
 category: work
 area: "Electronic Design Automation (EDA)"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -76,34 +79,14 @@ By traversing $H$ in reverse topological order (bottom-up), our engine corrects 
 
 The automated verification and repair system is orchestrated as a collaborative multi-agent workflow:
 
-```
-        Raw Layout (GDSII/OASIS)
-                    │
-                    ▼
-       ┌─────────────────────────┐
-       │   DRC Engine (Calibre)  │
-       └─────────────────────────┘
-                    │
-                    ▼
-          DRC Violation Database
-                    │
-                    ▼
-       ┌─────────────────────────┐
-       │     Log Parser Agent    │ ──► Extracts coordinate & rule violations
-       └─────────────────────────┘
-                    │
-                    ▼
-       ┌─────────────────────────┐
-       │  Geometry Analyzer Agent│ ──► Crops local cell hierarchy bounding box
-       └─────────────────────────┘
-                    │
-                    ▼
-       ┌─────────────────────────┐
-       │  Auto-Corrector Agent   │ ──► Computes layout shift/sizing updates
-       └─────────────────────────┘
-                    │
-                    ▼
-          Updated GDSII / OASIS
+```mermaid
+flowchart TD
+    A["Raw layout (GDSII / OASIS)"] --> B["DRC engine (Calibre)"]
+    B --> C["DRC violation database"]
+    C --> D["Log Parser Agent"]
+    D -- "Extracts coordinate and rule violations" --> E["Geometry Analyzer Agent"]
+    E -- "Crops local cell hierarchy bounding box" --> F["Auto-Corrector Agent"]
+    F -- "Computes layout shift and sizing updates" --> G["Updated GDSII / OASIS"]
 ```
 
 1. **Log Parser Agent**: Ingests massive ascii/binary DRC summary reports, extracts error codes, cell references, and coordinate polygons, and builds a spatial index using an R-tree.

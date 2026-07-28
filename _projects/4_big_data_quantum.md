@@ -5,6 +5,9 @@ description: High-throughput Density Functional Theory (DFT) simulations and equ
 importance: 4
 category: academic
 area: "Systems & Quantum Computing"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -67,21 +70,11 @@ $$E_{\text{ads}} = E_{\text{slab+adsorbate}} - \left( E_{\text{slab}} + E_{\text
 
 To bypass expensive DFT relaxation runs, the adsorbate-catalyst system is represented as a 3D molecular graph $G = (V, E)$. To ensure physical consistency, the surrogate network must be equivariant to 3D rotations and translations (the Euclidean group $E(3)$).
 
-```
-Molecular Graph Nodes (Atoms) & Edges (3D Vectors)
-                        │
-                        ▼
-       ┌─────────────────────────────────┐
-       │     Spherical Harmonics Y_lm    │ ──► Captures directional layout geometry
-       └─────────────────────────────────┘
-                        │
-                        ▼
-       ┌─────────────────────────────────┐
-       │   SO(3)-Equivariant Attention   │ ──► Message passing using Wigner D-matrices
-       └─────────────────────────────────┘
-                        │
-                        ▼
-          Adsorption Energy Prediction (eV)
+```mermaid
+flowchart TD
+    A["Molecular graph<br/>atom nodes, 3D vector edges"] --> B["Spherical harmonics Y_lm"]
+    B -- "Captures directional layout geometry" --> C["SO(3)-equivariant attention"]
+    C -- "Message passing via Wigner D-matrices" --> D["Adsorption energy prediction (eV)"]
 ```
 
 - **Wigner Tensor Kernels**: We implemented **Equiformer_v2**, which leverages spherical harmonics $Y_{lm}(\mathbf{\hat{r}}_{ij})$ to represent relative atomic orientations. The message-passing updates node features $h_i$ using irreducible representations (irreps) of the $SO(3)$ rotation group:

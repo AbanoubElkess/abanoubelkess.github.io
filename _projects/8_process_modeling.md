@@ -5,6 +5,9 @@ description: Neural-network surrogates for semiconductor process simulation (etc
 importance: 8
 category: work
 area: "Electronic Design Automation (EDA)"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -21,25 +24,12 @@ To address this computational bottleneck, we developed a machine learning surrog
 
 Traditional process simulation tracks the physical interface boundary of materials during etch and deposition steps.
 
-```
-       ┌───────────────────────────────┐
-       │   Initial Layout Mesh G(x)    │
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Transport and Surface Flux)
-       ┌───────────────────────────────┐
-       │ Gas-Phase Transport & Kinetics│ ──► Compute Local Etch/Dep Rate v(x)
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Level-Set Boundary Evolution)
-       ┌───────────────────────────────┐
-       │ Hamilton-Jacobi PDE Solver    │ ──► Track Interface Phi(x, t) = 0
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (High CPU Overhead)
-       ┌───────────────────────────────┐
-       │   Final Material Profile      │
-       └───────────────────────────────┘
+```mermaid
+flowchart TD
+    A["Initial layout mesh G(x)"] -- "Transport and surface flux" --> B["Gas-phase transport and kinetics"]
+    B -- "Local etch / deposition rate v(x)" --> C["Hamilton-Jacobi PDE solver"]
+    C -- "Tracks interface Phi(x, t) = 0" --> D["Final material profile"]
+    D -.- N["High CPU overhead: hours per evaluation"]
 ```
 
 #### 1. Level-Set Interface Propagation
@@ -99,30 +89,13 @@ $$\mathcal{L} = \mathcal{L}_{\text{data}} + \lambda_{\text{mass}} \mathcal{L}_{\
 
 By replacing slow TCAD solvers with a fast, differentiable FNO surrogate, we can perform inverse process design—finding the exact process recipe parameters needed to achieve a target profile geometry.
 
-```
-       ┌───────────────────────────────┐
-       │ Target Profile Geometry u_tar │
-       └───────────────┬───────────────┘
-                       │
-                       ▼
-       ┌───────────────────────────────┐
-       │   Initial Guess Recipe r_0    │
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Forward Run)
-       ┌───────────────────────────────┐
-       │     FNO Process Surrogate     │ ──► Predict Profile u_pred
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Compute Loss)
-       ┌───────────────────────────────┐
-       │   Loss = ||u_pred - u_tar||   │
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Backpropagation / Optimization)
-       ┌───────────────────────────────┐
-       │ Update Recipe Parameters r    │ ──► Loop until Convergence
-       └───────────────────────────────┘
+```mermaid
+flowchart TD
+    T["Target profile geometry u_target"] --> G["Initial guess recipe r_0"]
+    G -- "Forward run" --> F["FNO process surrogate"]
+    F -- "Predicted profile u_pred" --> L["Loss between u_pred and u_target"]
+    L -- "Backpropagation" --> U["Update recipe parameters r"]
+    U -- "Loop until convergence" --> F
 ```
 
 1. **Target Profile Specification**: The user specifies a target post-etch profile, such as a high-aspect-ratio silicon trench with a target sidewall angle:

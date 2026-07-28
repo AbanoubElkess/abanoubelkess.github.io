@@ -6,6 +6,9 @@ importance: 6
 category: academic
 github: https://github.com/AbanoubElkess/ai-kernel
 area: "Systems & Quantum Computing"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -22,26 +25,19 @@ To address this, we built **AI-Kernel**, a polyglot microkernel operating system
 
 AI-Kernel uses a microkernel design where only essential services—such as physical memory allocation, process coordination, and interrupt handling—run in supervisor mode (ring 0). All other services, including device drivers and the graph parser, run in user mode (ring 3).
 
-```
-        ┌──────────────────────────────────────────────────┐
-        │                 User Space                       │
-        │  ┌──────────────────────┐  ┌──────────────────┐  │
-        │  │ Python Orchestration │  │ PyTorch/ONNX Run │  │
-        │  └──────────┬───────────┘  └────────┬─────────┘  │
-        └─────────────┼───────────────────────┼────────────┘
-                      │ (PyO3 Zero-Copy IPC)  │
-        ┌─────────────┼───────────────────────┼────────────┐
-        │             ▼                       ▼            │
-        │  ┌────────────────────────────────────────────┐  │
-        │  │ Shared-Memory Lockless Circular Ring Buffer│  │
-        │  └──────────────────────┬─────────────────────┘  │
-        │                         │ (Direct Ring 0 Sys)    │
-        │                 Kernel Space (Rust)              │
-        │                         ▼                        │
-        │  ┌────────────────────────────────────────────┐  │
-        │  │     Hardware-Direct DMA Paging & MMU       │  │
-        │  └────────────────────────────────────────────┘  │
-        └──────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph user["User space"]
+        P["Python orchestration"]
+        R["PyTorch / ONNX runtime"]
+    end
+    subgraph kern["Kernel space (Rust)"]
+        B["Shared-memory lockless circular ring buffer"]
+        D["Hardware-direct DMA paging and MMU"]
+    end
+    P -- "PyO3 zero-copy IPC" --> B
+    R -- "PyO3 zero-copy IPC" --> B
+    B -- "Direct ring 0 syscall" --> D
 ```
 
 #### 1. Hardware-Direct DMA Memory Mapping

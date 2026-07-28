@@ -5,6 +5,9 @@ description: GPU-accelerated Inverse Lithography Technology (ILT) and model-base
 importance: 7
 category: work
 area: "Electronic Design Automation (EDA)"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -21,25 +24,12 @@ To address these physical limits, we developed a GPU-accelerated **Inverse Litho
 
 The forward simulation pipeline models how light propagates through the optical projection system and how the photoresist layer reacts to the incident light intensity.
 
-```
-       ┌───────────────────────────────┐
-       │   Target Mask Layout M(x, y)  │
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Coherent Kernel Decomposition)
-       ┌───────────────────────────────┐
-       │  Hopkins Optical Model H_k    │ ──► Compute Aerial Image I(x, y)
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Sigmoid Threshold Reaction)
-       ┌───────────────────────────────┐
-       │     Photoresist Model W(x, y) │ ──► Compute Final Wafer Contour
-       └───────────────┬───────────────┘
-                       │
-                       ▼ (Edge Placement Error Evaluation)
-       ┌───────────────────────────────┐
-       │  L2 Loss & Gradient Optimizer  │ ──► Backpropagate to Update Mask M
-       └───────────────────────────────┘
+```mermaid
+flowchart TD
+    M["Target mask layout M(x, y)"] -- "Coherent kernel decomposition" --> H["Hopkins optical model H_k"]
+    H -- "Aerial image I(x, y)" --> R["Photoresist model W(x, y)"]
+    R -- "Final wafer contour" --> L["L2 loss and gradient optimizer"]
+    L -- "Backpropagate to update mask M" --> M
 ```
 
 #### 1. The Hopkins Diffraction Model
@@ -105,26 +95,11 @@ By executing the multi-channel 2D convolutions ($M * H_k$) in parallel on GPU te
 
 Sub-Resolution Assist Features (SRAFs) are narrow geometries placed on the mask that do not print on the wafer themselves but help collect diffracted light to improve the depth of focus and process window of the target features.
 
-```
-       ┌────────────────────────────────────────────────────────┐
-       │ Optimized Continuous Pixel Mask Solution M(x, y)       │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼
-       ┌────────────────────────────────────────────────────────┐
-       │ Threshold and Segment into Candidate SRAF Regions      │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼
-       ┌────────────────────────────────────────────────────────┐
-       │ Apply Mask Rule Checks (MRC) & Snap to Rectangles      │
-       │  - Min Width, Min Spacing, and Manhattan Alignments    │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼
-       ┌────────────────────────────────────────────────────────┐
-       │ Final Manufacturable Mask with Clean, Discrete SRAFs   │
-       └────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    A["Optimized continuous pixel mask M(x, y)"] --> B["Threshold and segment into candidate SRAF regions"]
+    B --> C["Apply mask rule checks and snap to rectangles<br/>min width, min spacing, Manhattan alignment"]
+    C --> D["Final manufacturable mask with clean, discrete SRAFs"]
 ```
 
 1. **Continuous SRAF Detection**: The continuous-pixel optimization naturally develops low-intensity, isolated bands around primary features, which act as model-based assist features.

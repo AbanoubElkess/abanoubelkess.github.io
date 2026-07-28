@@ -53,7 +53,15 @@ The problem was treated as binary classification. Five model families were tried
 | Ada Boost           |   1.000   |   0.731   |
 | K Nearest Neighbors |   0.719   |   0.684   |
 
-Gradient boosting was selected as the final model. Two results are worth stating plainly rather than glossing over. AdaBoost's perfect training F1 buys it nothing on test, which is exactly the overfitting signature the validation curves were generated to catch. And the neural network, despite the lowest test score of the ensembles, has the narrowest train/test gap of any model tried, at 0.712 against 0.706.
+Gradient boosting was selected as the final model. Two results are worth stating plainly rather than glossing over. AdaBoost's perfect training F1 buys it nothing on test, which is exactly the overfitting signature the validation curves were generated to catch. And the neural network, despite the lowest test score of the ensembles, has the narrowest train/test gap of any model tried.
+
+Reading the same table as a question about generalization rather than raw score makes the difference visible:
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-9 mt-3 mt-md-0">
+    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_generalization_slope.svg" title="Train to test F1 by model" class="img-fluid" zoomable=true caption="Figure 2: AdaBoost drops 0.269 from train to test, the steepest fall of any model. The neural network loses only 0.006, so it is the most honest fit even though it never tops the table." %}
+  </div>
+</div>
 
 ---
 

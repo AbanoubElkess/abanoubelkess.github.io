@@ -5,6 +5,9 @@ description: CS7643 Deep Learning team project combining pre-trained Transformer
 importance: 12
 category: academic
 area: "Machine Learning & Data Science"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---

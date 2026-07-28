@@ -5,6 +5,9 @@ description: Automated multi-objective optimization and geometric programming ro
 importance: 9
 category: work
 area: "Electronic Design Automation (EDA)"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -118,30 +121,14 @@ Using these monomial fits, we formulate the amplifier specifications:
 
 Because local monomial fits can deviate from actual behavior across wide sizing ranges, we wrap the GP solver in an automated calibration loop with the SPICE simulator.
 
-```
-       ┌────────────────────────────────────────────────────────┐
-       │ Inputs: Target Specifications & Initial Monomial Models │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼
-       ┌────────────────────────────────────────────────────────┐
-       │ Run Convex Geometric Programming (GP) Solver           │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼ (Candidate W, L, I_D)
-       ┌────────────────────────────────────────────────────────┐
-       │ Generate Netlist & Execute SPICE (Spectre/HSPICE)      │
-       └──────────────────────────┬─────────────────────────────┘
-                                  │
-                                  ▼ (Extract actual performance)
-       ┌────────────────────────────────────────────────────────┐
-       │ Verify Convergence: Do simulated specs match targets?  │
-       └──────────────────────────┬─────────────────────────────┘
-                     No           │           Yes
-         ┌────────────────────────┴────────┐  │
-         ▼ (Adjust Fitting Coefficients)   ▼  ▼
-   Update Monomial Fits Around       [ Sizing Converged! ]
-   Candidate Operating Point
+```mermaid
+flowchart TD
+    A["Target specifications and initial monomial models"] --> B["Run convex geometric programming solver"]
+    B -- "Candidate W, L, I_D" --> C["Generate netlist and run SPICE (Spectre / HSPICE)"]
+    C -- "Extract actual performance" --> D{"Simulated specs match targets?"}
+    D -- "No: adjust fitting coefficients" --> E["Update monomial fits around candidate operating point"]
+    E --> B
+    D -- "Yes" --> F["Sizing converged"]
 ```
 
 1. **GP Execution**: The optimization engine solves the convex GP problem using the current monomial model coefficients.

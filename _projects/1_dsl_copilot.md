@@ -6,6 +6,9 @@ importance: 1
 category: work
 area: "Electronic Design Automation (EDA)"
 related_publications: true
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -90,14 +93,13 @@ where:
 
 To overcome model hallucination and guarantee compilation, the Copilot executes a multi-step agentic cycle:
 
-```
- Natural Language Specification ──────► [ LoRA-Fine-Tuned LLM ]
-                                                │
-                                                ▼
-     [ Syntax Error Message ] ◄──── [ SVRF Linter / Compiler ]
-               │                                │  (No errors)
-               ▼                                ▼
-  [ Iterative Prompt Refinement ]     Executable SVRF Rule Deck
+```mermaid
+flowchart TD
+    A["Natural language specification"] --> B["LoRA fine-tuned LLM"]
+    B --> C["SVRF linter / compiler"]
+    C -- "Syntax error message" --> D["Iterative prompt refinement"]
+    D --> B
+    C -- "No errors" --> E["Executable SVRF rule deck"]
 ```
 
 1. **Candidate Generation**: The fine-tuned LLM synthesizes a candidate SVRF rule block.

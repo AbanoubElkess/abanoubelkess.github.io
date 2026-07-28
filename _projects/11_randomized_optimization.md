@@ -65,7 +65,17 @@ The third task replaced backpropagation with randomized search for the weights o
   </div>
 </div>
 
-This is a negative result and worth reporting as one. Mean test accuracy is 0.294 against 0.471 on train, and mean test F1 is 0.210 against 0.356. The best single configuration reached a test F1 of 0.653, but the mean tells the real story: randomized search over weight space overfits badly here. Wall-clock cost varied from 3.6 seconds to nearly 5,000 seconds across configurations.
+This is a negative result and worth reporting as one. Mean test accuracy is 0.294 against 0.471 on train, and mean test F1 is 0.210 against 0.356. Wall-clock cost varied from 3.6 seconds to nearly 5,000 seconds across configurations.
+
+The mean also hides how wide the spread is. Table IV reports a full five-number summary over the 272 runs, which is exactly what a box plot encodes:
+
+<div class="row justify-content-sm-center">
+  <div class="col-sm-9 mt-3 mt-md-0">
+    {% include figure.liquid loading="lazy" path="assets/img/figures/ro_run_spread.svg" title="Distribution of test scores across 272 runs" class="img-fluid" zoomable=true caption="Figure 3: Test F1 ranges from 0.022 to 0.653 across configurations, with a median of 0.102. Whiskers are the observed minimum and maximum from Table IV, not a 1.5x IQR rule. Accuracy and recall are identical in the source table, so they share one box." %}
+  </div>
+</div>
+
+The best single configuration reached a test F1 of 0.653, close to the tennis classifier's 0.733 on a different problem. But the median run scored 0.102. On this task the choice of hidden layers, activation, population size and cooling schedule matters more than the choice of search algorithm.
 
 The report's conclusion is that gradient descent remains the better choice for this task on both efficiency and generalization, with SA and GA justified only where the loss surface is genuinely non-smooth.
 

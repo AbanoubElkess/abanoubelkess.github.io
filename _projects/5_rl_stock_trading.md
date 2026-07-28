@@ -5,6 +5,9 @@ description: Deep reinforcement learning models and non-stationary policy optimi
 importance: 5
 category: academic
 area: "Machine Learning & Data Science"
+mermaid:
+  enabled: true
+  zoomable: true
 toc:
   sidebar: left
 ---
@@ -78,25 +81,14 @@ where:
 
 We implemented a custom Actor-Critic model optimized for non-stationary environments, utilizing Proximal Policy Optimization (PPO) as the core optimization algorithm.
 
-```
-       ┌───────────────────────────────┐
-       │   State Input s_t (RSI, Vol)  │
-       └───────────────────────────────┘
-                       │
-             ┌─────────┴─────────┐
-             ▼                   ▼
-     ┌──────────────┐     ┌──────────────┐
-     │ LSTM Encoder │     │ LSTM Encoder │
-     └──────────────┘     └──────────────┘
-             │                   │
-             ▼                   ▼
-     ┌──────────────┐     ┌──────────────┐
-     │  Actor Head  │     │ Critic Head  │
-     │  (Policy)    │     │ (Value Fn)   │
-     └──────────────┘     └──────────────┘
-             │                   │
-             ▼                   ▼
-       Action a_t           Value V(s_t)
+```mermaid
+flowchart TD
+    S["State input s_t (RSI, volatility)"] --> L1["LSTM encoder"]
+    S --> L2["LSTM encoder"]
+    L1 --> A["Actor head (policy)"]
+    L2 --> C["Critic head (value function)"]
+    A --> AO["Action a_t"]
+    C --> CO["Value V(s_t)"]
 ```
 
 #### 1. Temporal Feature Extraction
