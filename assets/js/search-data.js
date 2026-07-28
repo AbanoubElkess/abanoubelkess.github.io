@@ -97,17 +97,17 @@ ninja.data = [{
         },
       },{id: "projects-tennis-match-winner-predictions",
           title: 'Tennis Match Winner Predictions',
-          description: "Predictive modeling framework for professional tennis matches using surface-specific Elo ratings, time-decay factors, Platt calibration, and Gradient Boosting machines.",
+          description: "Match-winner classifier for men&#39;s professional tennis, built on 16,049 filtered matches and 12 engineered features, deployed as an interactive Dash application.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/10_tennis_prediction/";
             },},{id: "projects-randomized-optimization-amp-clustering-benchmarks",
           title: 'Randomized Optimization &amp;amp; Clustering Benchmarks',
-          description: "Comparative analysis of randomized search heuristics and unsupervised learning algorithms across discrete optimization spaces and high-dimensional clustering problems.",
+          description: "Two CS7641 studies benchmarking randomized search heuristics on discrete problems and neural network weights, and clustering with dimensionality reduction on stock and tennis datasets.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/11_randomized_optimization/";
             },},{id: "projects-online-fake-news-detection",
           title: 'Online Fake News Detection',
-          description: "Deep learning framework using hybrid Transformer-CNN architectures and multi-head self-attention mechanisms to detect misinformation in online news text.",
+          description: "CS7643 Deep Learning team project combining pre-trained Transformer embeddings with convolutional feature extraction to classify news articles as reliable or fabricated.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/12_fake_news_detection/";
             },},{id: "projects-domain-specific-language-copilot",
