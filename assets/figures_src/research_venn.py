@@ -45,7 +45,7 @@ D = 0.55
 ALPHA = 0.42
 
 use_style()
-fig, ax = plt.subplots(figsize=(6.6, 5.4))
+fig, ax = plt.subplots(figsize=(7.4, 6.0))
 ax.set_aspect("equal")
 ax.axis("off")
 
@@ -64,10 +64,13 @@ for label, angle, colour in FIELDS:
 # --- field names and icons, kept clear of each other inside each lobe ------
 # (display text, name xy, icon xy). Explicit cartesian, because the name and the
 # icon have to sit at different depths in the lobe or they overlap.
+# Icon anchors are pulled in far enough that the icon's widest reach stays inside
+# the circle. Checked arithmetically: centre-to-anchor distance plus the icon's
+# reach must stay below R, and the chip icon (pins at 0.82 * scale) is the widest.
 LOBES = {
-    "Quantum Computing": ("Quantum Computing", (0.0, 0.94), (0.0, 1.32)),
-    "Machine Learning": ("Machine\nLearning", (-1.03, -0.22), (-1.03, -0.80)),
-    "Semiconductor & EDA": ("Semiconductor\n& EDA", (1.03, -0.22), (1.03, -0.80)),
+    "Quantum Computing": ("Quantum Computing", (0.0, 0.92), (0.0, 1.24)),
+    "Machine Learning": ("Machine\nLearning", (-1.00, -0.20), (-0.92, -0.62)),
+    "Semiconductor & EDA": ("Semiconductor\n& EDA", (1.00, -0.20), (0.92, -0.62)),
 }
 for label, _, _ in FIELDS:
     text, (nx, ny), _ = LOBES[label]
@@ -154,9 +157,9 @@ icon_chip(*LOBES["Semiconductor & EDA"][2])
 # --- pairwise regions, named on leader lines -------------------------------
 # (text, text angle, text radius, dot angle, dot radius, wrapped label)
 PAIRS = [
-    ("ML-based quantum\nerror correction", 158, 1.95, 150, 0.80),
-    ("AI for EDA\nSVRF Copilot, OPC", 250, 1.72, 270, 0.80),
-    ("Quantum hardware\ndesign", 22, 1.95, 30, 0.80),
+    ("ML-based quantum\nerror correction", 158, 1.78, 150, 0.80),
+    ("AI for EDA\nSVRF Copilot, OPC", 252, 1.62, 270, 0.80),
+    ("Quantum hardware\ndesign", 22, 1.78, 30, 0.80),
 ]
 for text, ta, tr, da, dr in PAIRS:
     tx, ty = polar(ta, tr)
@@ -180,7 +183,7 @@ ax.text(
     zorder=8,
 )
 
-ax.set_xlim(-2.85, 2.85)
-ax.set_ylim(-2.05, 1.95)
+ax.set_xlim(-2.60, 2.60)
+ax.set_ylim(-1.95, 1.85)
 
 save(fig, "research_venn")
