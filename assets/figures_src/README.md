@@ -7,9 +7,8 @@ is drawn by hand, traced from an image, or produced by an image generator.
 
 ```bash
 cd assets/figures_src
-python tennis_model_f1.py          # -> ../img/figures/tennis_model_f1.svg
-python ro_converged_fitness.py     # -> ../img/figures/ro_converged_fitness.svg
-python ro_nn_generalization_gap.py # -> ../img/figures/ro_nn_generalization_gap.svg
+for f in *.py; do [ "$f" = "_style.py" ] || python "$f"; done
+# each writes ../img/figures/<name>.svg
 ```
 
 Requires `matplotlib` and `numpy` only. Output is SVG with the embedded timestamp
@@ -23,15 +22,34 @@ and table its numbers come from. A number that cannot be traced to such a source
 does not get plotted, and a project with no source gets no results figure rather
 than an illustrative one.
 
-| Figure                     | Source                                                                       |
-| -------------------------- | ---------------------------------------------------------------------------- |
-| `tennis_model_f1`          | `assets/pdf/TennisMatchPrediction_Project.pdf`, §5.4 Train/Test F1 table     |
-| `ro_converged_fitness`     | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, §IV.A–C             |
-| `ro_nn_generalization_gap` | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, Table IV `mean` row |
+| Figure                        | Source                                                                                                     |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `tennis_model_f1`             | `assets/pdf/TennisMatchPrediction_Project.pdf`, §5.4 Train/Test F1 table                                   |
+| `ro_converged_fitness`        | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, §IV.A–C                                           |
+| `ro_nn_generalization_gap`    | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, Table IV `mean` row                               |
+| `ro_run_spread`               | `assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf`, Table IV min/quartile/max rows                    |
+| `tennis_generalization_slope` | `assets/pdf/TennisMatchPrediction_Project.pdf`, §5.4 (same table as `tennis_model_f1`, different question) |
 
 `ro_converged_fitness` is the one figure whose source states some values as
 approximations in prose rather than in a table. That is disclosed in the script
 docstring and in the caption on the site.
+
+## Diagrams
+
+Process and architecture diagrams are mermaid blocks inside the project pages,
+not images. They render client-side, so each page carrying one needs
+
+```yaml
+mermaid:
+  enabled: true
+  zoomable: true
+```
+
+in its front matter, otherwise the theme never loads the library and the block
+shows as raw code. Every diagram is a transcription of a process the page's own
+prose already describes; none introduces a step or a number that is not stated
+there. The transistor-level schematic in `9_analog_design.md` stays as text,
+because a flowchart cannot express a circuit netlist.
 
 ## Colour
 
