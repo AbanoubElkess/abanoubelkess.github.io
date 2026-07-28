@@ -1,128 +1,68 @@
 ---
 layout: page
 title: Tennis Match Winner Predictions
-description: Predictive modeling framework for professional tennis matches using surface-specific Elo ratings, time-decay factors, Platt calibration, and Gradient Boosting machines.
+description: Match-winner classifier for men's professional tennis, built on 16,049 filtered matches and 12 engineered features, deployed as an interactive Dash application.
 importance: 10
 category: academic
 area: "Machine Learning & Data Science"
-img: /assets/img/tennis_dashboard.png
+img: /assets/img/figures/tennis_model_f1.svg
 toc:
   sidebar: left
-chart:
-  plotly: true
 ---
 
 ### Project Overview
 
-Predicting the outcome of professional tennis matches is a complex task due to the influence of surface types (hard, clay, and grass), recent player form, head-to-head dynamics, and physical recovery times. This project implements a predictive pipeline designed to estimate match-winner probabilities for ATP and WTA matches. The architecture combines custom mathematical feature-engineering pipelines with Gradient Boosting Decision Trees (GBDTs), calibrated using Platt scaling to output reliable, probabilistic predictions.
+Tennis is a one-on-one sport with no clock and decades of consistently recorded match data, which makes it well suited to predictive modeling. Most public analysis stops at isolated statistics, and most prediction sits locked inside betting platforms with no visualization layer. This project set out to combine the two: a classifier that estimates which of two players wins a given match, wrapped in a web application that shows the statistics behind the prediction.
+
+Team project for **CSE6242 Data & Visual Analytics**, Georgia Tech, Fall 2022, with [Sheikh Jalaluddin Mohammad](mailto:jalal@gatech.edu), [Michael S. Rivera](mailto:mrivera63@gatech.edu), and [Mohamad A. Elsayed](mailto:melsayed31@gatech.edu).
+
+---
+
+### Data
+
+Matches were pulled from a PostgreSQL database distributed as a Docker image, giving a starting pool of **182,964 matches**. Two filters were applied: both players must be currently active, and any match missing the required feature values was dropped. That left **16,049 matches** for calibration and testing.
+
+The match database records who won and who lost. Storing the data that way would let a model learn position rather than skill, so winner and loser were scrambled into player 1 and player 2, and the paired statistics were computed symmetrically to keep the model order-agnostic.
+
+Twelve features were selected using entropy and information gain, aided by domain knowledge:
+
+- **Match context** — match format, surface, indoor or outdoor
+- **Player attributes** — height, age, one-handed or two-handed backhand
+- **Ranking** — official ATP ranking and ELO rating, both taken from the dataset as inputs
+- **Win rates** — overall win percentage, and win percentage restricted to the same match format, the same tournament surface, and this format
+
+---
+
+### Models and Evaluation
+
+The problem was treated as binary classification. Five model families were tried, from a plain decision tree up through boosted ensembles, a distance-based method, and a neural network. Data was split 70/30 into training and validation, scaled where the model required it, and each family was tuned by grid search over its own hyperparameters, with validation and learning curves generated to identify overfitting.
+
+**F1 was chosen as the scoring metric** rather than accuracy, since it balances in-sample and out-of-sample behaviour across both classes and is applied identically to the training and test sets.
 
 <div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/tennis_dashboard.png" title="Tennis Prediction Application Dashboard" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Interface layout of the ATP/WTA predictive match-winner application dashboard." %}
+  <div class="col-sm-10 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/figures/tennis_model_f1.svg" title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Figure 1: Gradient boosting reaches the highest test F1 at 0.733. AdaBoost fits the training set perfectly (F1 = 1.000) without beating it on test, which is memorization rather than skill. Values transcribed from the project report, Section 5.4." %}
   </div>
 </div>
 
----
+| ML Model            | Train F1  |  Test F1  |
+| :------------------ | :-------: | :-------: |
+| Decision Tree       |   0.712   |   0.677   |
+| Gradient Boosting   | **0.812** | **0.733** |
+| Neural Network      |   0.712   |   0.706   |
+| Ada Boost           |   1.000   |   0.731   |
+| K Nearest Neighbors |   0.719   |   0.684   |
 
-### Feature Engineering & Mathematical Modeling
-
-The pipeline constructs historical and tournament-specific features to capture various dimensions of player capability and match context.
-
-#### 1. Surface-Specific Elo Ratings
-
-Standard Elo models treat all matches identically, ignoring the substantial performance disparities players exhibit on different court surfaces. We formulate a multi-dimensional Elo system where each player has a general Elo rating $R_{\text{gen}}$ and three surface-specific ratings $R_{\text{hard}}$, $R_{\text{clay}}$, and $R_{\text{grass}}$.
-
-The expected probability of player $A$ defeating player $B$ is given by:
-
-$$E_A = \frac{1}{1 + 10^{(R_B - R_A)/400}}$$
-
-Upon completion of a match, the rating update is computed as:
-
-$$R'_A = R_A + K \cdot (S_A - E_A)$$
-
-where $S_A \in \{0, 1\}$ is the actual outcome (1 for a win, 0 for a loss), and $K$ is the update weight factor. The $K$-factor is dynamically scaled based on the match format (e.g., higher weight for Grand Slams compared to ATP 250 events) and the player's total match count to ensure faster convergence for newcomers:
-
-$$K = \frac{K_{\text{base}}}{(N_{\text{matches}} + 1)^{\gamma}}$$
-
-#### 2. Time-Decay Adjustments
-
-To account for injury layoffs and aging, ratings are adjusted using an exponential time-decay function. If a player has been inactive for a duration of $\Delta t$ days, their rating decays toward the population mean $R_{\text{mean}}$:
-
-$$R_{\text{decayed}} = R_{\text{last}} \cdot e^{-\alpha \Delta t} + R_{\text{mean}} \cdot (1 - e^{-\alpha \Delta t})$$
-
-where $\alpha$ is a hyperparameter determining the rate of rating decay.
+Gradient boosting was selected as the final model. Two results are worth stating plainly rather than glossing over. AdaBoost's perfect training F1 buys it nothing on test, which is exactly the overfitting signature the validation curves were generated to catch. And the neural network, despite the lowest test score of the ensembles, has the narrowest train/test gap of any model tried, at 0.712 against 0.706.
 
 ---
 
-### Model Architecture & Loss Function
+### Deployment
 
-The predictive core utilizes a Gradient Boosting Machine (LightGBM) to handle non-linear feature interactions and missing data elements.
-
-#### 1. Optimization Objective
-
-The classifier is trained to minimize the Binary Cross-Entropy (Log-Loss) of the predicted probabilities, which penalizes overconfident incorrect predictions:
-
-$$\mathcal{L} = -\frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(p_i) + (1 - y_i) \log(1 - p_i) \right]$$
-
-where $y_i \in \{0, 1\}$ is the true label (win/loss of player $A$), and $p_i$ is the predicted probability.
-
-#### 2. Platt Scaling Calibration
-
-Since decision tree ensembles do not naturally output calibrated probabilities, we apply Platt scaling to map the raw margin outputs $f(x)$ of the gradient boosted model to well-calibrated probabilities. We fit a sigmoid function over the validation predictions:
-
-$$P(y = 1 \mid f(x)) = \frac{1}{1 + e^{A f(x) + B}}$$
-
-The parameters $A$ and $B$ are determined by minimizing the negative log-likelihood of the calibration dataset.
+The final model was serialized and deployed inside a web application built with **Plotly and Dash**, hosted on Render. A user selects two players and a match context; the application returns the predicted winner alongside the historical statistics that drove the prediction, so the number is never presented without the evidence behind it. Feature datasets were exported to CSV so the application runs without the original PostgreSQL database.
 
 ---
 
-### Implementation & Results
+### Report
 
-The system achieves competitive predictive performance, outperforming baseline bookmaker odds on several validation subsets. A summary of the model performance across different surfaces is detailed below:
-
-| Model / Surface      | Hard Court Accuracy | Clay Court Accuracy | Grass Court Accuracy |   Overall Log-Loss   |
-| :------------------- | :-----------------: | :-----------------: | :------------------: | :------------------: |
-| Baseline Elo         |        66.8%        |        65.2%        |        64.9%         |        0.612         |
-| Optimized GBDT (Raw) |        68.9%        |        67.5%        |        66.8%         | 0.589 (Uncalibrated) |
-| Calibrated GBDT      |        69.4%        |        68.1%        |        67.3%         |        0.565         |
-
-<pre><code class="language-plotly">
-{
-  "data": [
-    {
-      "type": "scatterpolar",
-      "r": [84.2, 82.5, 85.8, 98.2, 86.4, 84.2],
-      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
-      "fill": "toself",
-      "name": "Novak Djokovic",
-      "line": { "color": "#008080" }
-    },
-    {
-      "type": "scatterpolar",
-      "r": [77.8, 91.3, 78.2, 97.4, 85.1, 77.8],
-      "theta": ["Hard Court Win %", "Clay Court Win %", "Grass Court Win %", "Elo Percentile", "Service Games Won %", "Hard Court Win %"],
-      "fill": "toself",
-      "name": "Rafael Nadal",
-      "line": { "color": "#ff6f00" }
-    }
-  ],
-  "layout": {
-    "polar": {
-      "radialaxis": {
-        "visible": true,
-        "range": [0, 100]
-      }
-    },
-    "showlegend": true,
-    "title": "Interactive Player Performance Radar: Djokovic vs. Nadal"
-  }
-}
-</code></pre>
-
----
-
-### Reference Material & PDF Download
-
-For a comprehensive review of the statistical methodologies, feature correlations, and detailed experimental setups, you can download the full project report:
-
-- [Tennis Match Predictions Project Report](/assets/pdf/TennisMatchPrediction_Project.pdf)
+- [Tennis Match Predictions Project Report](/assets/pdf/TennisMatchPrediction_Project.pdf) — full methodology, dataset selection trials, feature engineering, and the learning and validation curves for the final model.

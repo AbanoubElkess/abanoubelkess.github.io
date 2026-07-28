@@ -1,149 +1,79 @@
 ---
 layout: page
 title: Online Fake News Detection
-description: Deep learning framework using hybrid Transformer-CNN architectures and multi-head self-attention mechanisms to detect misinformation in online news text.
+description: CS7643 Deep Learning team project combining pre-trained Transformer embeddings with convolutional feature extraction to classify news articles as reliable or fabricated.
 importance: 12
 category: academic
 area: "Machine Learning & Data Science"
-img: /assets/img/fake_news_pipeline.png
 toc:
   sidebar: left
-chart:
-  plotly: true
 ---
 
 ### Project Overview
 
-The dissemination of misinformation across digital media platforms poses significant societal challenges. Automated fake news detection systems must identify subtle linguistic markers, semantic inconsistencies, and rhetorical patterns across diverse topics. This project implements an end-to-end deep learning framework that processes raw article text, extracts multi-scale semantic and contextual representations, and classifies articles as reliable or deceptive. The architecture integrates pre-trained Transformer embeddings with a 1D Convolutional Neural Network (CNN) feature extractor.
+Misinformation spreads through digital media at a scale manual fact-checking cannot match. Roughly 62 percent of US adults get news from social media, and in the final three months of the 2016 US presidential campaign the top-performing fake election stories on Facebook attracted more views than the top stories from the New York Times, Washington Post, Huffington Post, or NBC News. Automated detection has to pick up subtle linguistic markers and rhetorical patterns that generalize across topics.
 
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/fake_news_pipeline.png" title="Fake News Detection System Pipeline" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: End-to-end fake news detection pipeline combining RoBERTa contextual embeddings with multi-scale 1D CNN feature extractors." %}
-  </div>
-</div>
+Team project for **CS7643 Deep Learning**, Georgia Tech, with Haochi Li, Marwa F. Qabeel, and Nicholas B. Pendley, under the team name "News Detectives".
+
+> **Scope of this page.** The document linked at the bottom is the **project proposal**. It sets out the approach, the datasets, and the evaluation plan; it does not contain trained-model results. This page describes the proposed design and stops there rather than reporting numbers the source does not establish.
 
 ---
 
-### Model Architecture & Attention Mechanism
+### Proposed Approach
 
-The model uses a hybrid architecture that combines the contextual capabilities of bidirectional encoder representations with the localized pattern-extraction of convolution filters.
+The plan was to combine the contextual strength of pre-trained transformers with the localized pattern extraction of convolutional networks, then measure that hybrid against the transformer alone.
 
 ```mermaid
 graph TD
     Input[Raw Article Text] --> Tokenizer[Byte-Pair Encoding / WordPiece]
     Tokenizer --> Transformer[BERT / RoBERTa Encoder]
     Transformer --> Embeddings[Token Embedding Sequence]
-    Embeddings --> CNN[Multi-Kernel 1D CNN]
-    Embeddings --> Attn[Global Multi-Head Attention]
-    CNN --> Concat[Feature Fusion Layer]
-    Attn --> Concat
-    Concat --> Dense[Fully Connected Layer + Dropout]
+    Embeddings --> CNN[1D CNN + Max Pooling]
+    CNN --> Dense[Fully Connected Layer]
     Dense --> Output[Binary Classification Logits]
 ```
 
-#### 1. Transformer Contextual Embeddings
-
-Articles are tokenized and processed through a pre-trained Transformer model (e.g., RoBERTa) to generate high-dimensional token representations. The self-attention mechanism computes representations by analyzing the relationships between all words in a sequence, formulated as:
+**Contextual embeddings.** Articles are tokenized and passed through a pre-trained BERT or RoBERTa encoder. Self-attention relates every token to every other token in the sequence:
 
 $$\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}}\right) \mathbf{V}$$
 
-where $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ represent the Query, Key, and Value matrices projected from the input embeddings, and $d_k$ is the dimensionality of the keys. Multi-head attention projects these matrices $h$ times to learn distinct contextual relationships:
+where $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ are the query, key, and value projections of the input embeddings and $d_k$ is the key dimensionality. Multi-head attention repeats this projection $h$ times to learn distinct relationships:
 
 $$\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O$$
 
-$$\text{head}_i = \text{Attention}(\mathbf{Q}\mathbf{W}_i^Q, \mathbf{K}\mathbf{W}_i^K, \mathbf{V}\mathbf{W}_i^V)$$
+**Fine-tuning.** The pre-trained encoders are extended with fully connected layers and max pooling, optimized with **Adam** against a **cross-entropy** objective.
 
-#### 2. Multi-Scale 1D CNN Layer
+**Feature extraction comparison.** Alongside the learned embeddings, the proposal sets out to compare TF-IDF and classical word embeddings, to establish how much of the signal lives in the article title alone.
 
-To extract local n-gram structures and phrase-level patterns, the sequence of token embeddings is concurrently fed to a parallel 1D CNN layer. The layer contains three distinct kernel sizes ($k \in \{3, 4, 5\}$). For a window of embeddings $\mathbf{x}_{i:i+k-1}$, a feature $c_i$ is generated by:
-
-$$c_i = f(\mathbf{w} \cdot \mathbf{x}_{i:i+k-1} + b)$$
-
-where $\mathbf{w}$ is the filter weight vector, $b$ is a bias term, and $f$ is a non-linear activation function (ReLU). Max-over-time pooling is applied to capture the most salient features from each filter map.
+**Evaluation.** Accuracy, precision, recall, and F1, followed by an error analysis over misclassified instances to characterize what makes a fabricated article hard to detect.
 
 ---
 
-### Training & Regularization
+### Datasets
 
-The network is optimized using AdamW (Adam with decoupled weight decay) to prevent overfitting during fine-tuning of the deep Transformer parameters.
+Three corpora were identified, the third specifically to test whether a model trained on one news domain survives contact with another:
 
-#### 1. Objective Function
+| Dataset                                  | Role                            |
+| :--------------------------------------- | :------------------------------ |
+| Kaggle _Fake and real news_              | Primary training and evaluation |
+| _News Articles_ dataset                  | Secondary organized corpus      |
+| Kaggle _Fake News around the Syrian War_ | Out-of-domain validation        |
 
-The objective is to minimize the binary cross-entropy loss augmented with L2 regularization over the linear classification parameters:
-
-$$\mathcal{L}_{\text{total}} = -\frac{1}{N} \sum_{i=1}^{N} \left[ y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \right] + \lambda \|\mathbf{W}\|^2_2$$
-
-where $y_i$ is the actual label (1 for fake news, 0 for true news), $\hat{y}_i$ is the predicted probability, and $\lambda$ is the weight decay coefficient.
-
-#### 2. Learning Rate Scheduler
-
-To stabilize training, we implement a linear warmup scheduler. The learning rate increases linearly from 0 to $\eta_{\text{max}}$ during the first 10% of training steps, followed by a linear decay to 0:
-
-$$
-\eta(t) = \begin{cases}
-\eta_{\text{max}} \cdot \frac{t}{T_{\text{warmup}}} & t < T_{\text{warmup}} \\
-\eta_{\text{max}} \cdot \left(1 - \frac{t - T_{\text{warmup}}}{T_{\text{total}} - T_{\text{warmup}}}\right) & t \ge T_{\text{warmup}}
-\end{cases}
-$$
+The primary corpus carries titles, authors, countries, and images, with labels including "BS", "bias", "fake", and "conspiracy".
 
 ---
 
-### Experimental Results & Model Evaluation
+### Related Work
 
-The model was trained and evaluated on the large-scale public news corpora. The table below outlines a comparison of classification performance metrics across different architectures:
+The methods this project builds on, and the gap each leaves:
 
-| Model Architecture   | Accuracy  | Precision |  Recall   | F1-Score  |
-| :------------------- | :-------: | :-------: | :-------: | :-------: |
-| Bi-LSTM Baseline     |   87.2%   |   85.4%   |   88.1%   |   86.7%   |
-| Standard BERT        |   91.5%   |   90.2%   |   92.4%   |   91.3%   |
-| RoBERTa Base         |   93.1%   |   92.0%   |   93.8%   |   92.9%   |
-| RoBERTa + CNN (Ours) | **94.2%** | **93.5%** | **94.6%** | **94.0%** |
-
-<pre><code class="language-plotly">
-{
-  "data": [
-    {
-      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
-      "y": [87.2, 85.4, 88.1, 86.7],
-      "type": "bar",
-      "name": "Bi-LSTM Baseline",
-      "marker": { "color": "#EF553B" }
-    },
-    {
-      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
-      "y": [91.5, 90.2, 92.4, 91.3],
-      "type": "bar",
-      "name": "Standard BERT",
-      "marker": { "color": "#FFA15A" }
-    },
-    {
-      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
-      "y": [93.1, 92.0, 93.8, 92.9],
-      "type": "bar",
-      "name": "RoBERTa Base",
-      "marker": { "color": "#ab63fa" }
-    },
-    {
-      "x": ["Accuracy", "Precision", "Recall", "F1-Score"],
-      "y": [94.2, 93.5, 94.6, 94.0],
-      "type": "bar",
-      "name": "RoBERTa + CNN (Ours)",
-      "marker": { "color": "#008080" }
-    }
-  ],
-  "layout": {
-    "title": "Interactive Model Architecture Comparison",
-    "yaxis": { "title": "Score (%)", "range": [80, 100] },
-    "barmode": "group",
-    "showlegend": true
-  }
-}
-</code></pre>
+- **N-gram analysis with TF-IDF and a linear SVM** reaches 92 percent accuracy, setting the classical baseline a deep model has to beat.
+- **Hybrid CNN-RNN architectures** validated on the ISO and FA-KES datasets outperform non-hybrid baselines, and are the direct precedent for pairing convolution with a sequence model here.
+- **Bidirectional LSTM with pre-trained word embeddings**, using back-translation to address class imbalance, outperforms plain CNN and ResNet across datasets.
+- **Multimodal consistency methods** fusing text and image features, and **language-independent filtering** applied to Twitter data during the Hong Kong protests, both point at signal outside the article body that a text-only model gives up.
 
 ---
 
-### Reference Material & PDF Download
+### Reference Material
 
-For a detailed analysis of tokenization limitations, dataset bias, and validation testing on out-of-domain news datasets, you can download the full project report:
-
-- [Online Fake News Detection Project Report](/assets/pdf/CS_7643___Final_Project.pdf)
+- [Online Fake News Detection: Project Proposal (PDF)](/assets/pdf/CS_7643___Final_Project.pdf) — problem framing, approach, datasets, and the related-work survey.

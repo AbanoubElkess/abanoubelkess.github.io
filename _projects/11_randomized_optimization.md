@@ -1,138 +1,112 @@
 ---
 layout: page
 title: Randomized Optimization & Clustering Benchmarks
-description: Comparative analysis of randomized search heuristics and unsupervised learning algorithms across discrete optimization spaces and high-dimensional clustering problems.
+description: Two CS7641 studies benchmarking randomized search heuristics on discrete problems and neural network weights, and clustering with dimensionality reduction on stock and tennis datasets.
 importance: 11
 category: academic
 area: "Machine Learning & Data Science"
-img: /assets/img/optimization_curves.png
+img: /assets/img/figures/ro_converged_fitness.svg
 toc:
   sidebar: left
-chart:
-  plotly: true
 ---
 
 ### Project Overview
 
-This project presents a multi-part empirical study covering two core domains in machine learning: randomized optimization heuristics and unsupervised learning/dimensionality reduction. The first phase evaluates randomized search algorithms for direct weight optimization in neural networks and discrete optimization problems. The second phase analyzes the performance and structural preservation of clustering algorithms when paired with various dimensionality reduction projections.
+Two empirical studies from **CS7641 Machine Learning** at Georgia Tech, Summer 2024. The first benchmarks randomized search heuristics on discrete optimization problems and then turns them loose on neural network weights. The second asks what happens to clustering when the feature space is projected down first. Both are single-author work.
+
+The two studies share a dataset. Stock market data for the **JPM** symbol from 2009 to 2021 appears in both, and the tennis match dataset from [my CSE6242 project]({{ '/projects/10_tennis_prediction/' | relative_url }}) is reused as the second clustering dataset.
 
 ---
 
-### Part I: Randomized Optimization Heuristics
+## Part I: Randomized Optimization Heuristics
 
-Traditional gradient-based methods (e.g., Backpropagation) require differentiable loss landscapes. When optimizing non-differentiable or highly complex discrete loss surfaces, randomized search heuristics provide robust alternatives. We analyze four key algorithms.
+Gradient methods need a differentiable loss surface. When the surface is discrete or riddled with local optima, randomized search is the alternative. This study compares four heuristics implemented with **mlrose-hiive**: Randomized Hill Climbing (RHC), Simulated Annealing (SA), Genetic Algorithms (GA), and Mutual-Information-Maximizing Input Clustering (MIMIC). Gradient Descent (GD) is included only as a benchmark on the neural network task.
 
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/optimization_curves.png" title="Optimization Fitness Curves" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Comparative fitness convergence of randomized search heuristics across discrete optimization problems." %}
-  </div>
-</div>
+### The problems
 
-#### 1. Simulated Annealing (SA)
+Two classic discrete problems were chosen to stress different behaviours:
 
-To escape local minima, Simulated Annealing accepts downhill moves with a probability that decreases over time. The acceptance probability for a candidate state with energy $E_{\text{candidate}}$ relative to the current state $E_{\text{current}}$ is given by:
+- **Flip Flop (FFP)**, at string lengths 40, 100, and 500. Fitness counts alternating bit transitions, so the landscape is full of shallow local optima that punish greedy search.
+- **N-Queens (NQP)**, at board sizes 20, 50, and 100. A constraint satisfaction problem whose search space grows exponentially and whose row, column, and diagonal constraints must all hold at once.
+
+### Algorithms
+
+**Simulated Annealing** accepts a worsening move with probability
 
 $$P(\text{accept}) = \exp\left(-\frac{\Delta E}{T}\right)$$
 
-where $\Delta E = E_{\text{candidate}} - E_{\text{current}} > 0$. The temperature parameter $T$ decays according to a geometric cooling schedule:
+for $\Delta E > 0$, under a geometric cooling schedule $T_k = T_0 \cdot \alpha^k$. The study swept `decay = 0.95` with geometric, arithmetic, and exponential decay variants and initial temperatures from 1 to 10.
 
-$$T_k = T_0 \cdot \alpha^k$$
-
-with decay constant $\alpha \in (0.9, 0.99)$.
-
-#### 2. Mutual-Information-Maximizing Input Clustering (MIMIC)
-
-MIMIC models the search space by fitting a probability distribution over the top $\theta$-percentile of candidate solutions. It constructs a dependency tree representing the joint distribution, optimizing the selection of parent variables to minimize the Kullback-Leibler (KL) divergence to the target distribution:
+**MIMIC** fits a probability distribution over the top $\theta$-percentile of candidates and builds a dependency tree over the variables:
 
 $$P(X_1, X_2, \dots, X_n) = P(X_{i_1}) \prod_{j=2}^{n} P(X_{i_j} \mid X_{i_{\pi(j)}})$$
 
-where $\pi(j)$ represents the parent node of index $j$ in the spanning tree structure.
+where $\pi(j)$ is the parent of index $j$ in the tree. It captures variable dependencies that RHC and SA cannot see, at a substantial computational cost.
 
-#### 3. Empirical Optimization Benchmarks
-
-The heuristics were evaluated on three discrete spaces: Continuous Peaks, FlipFlop, and Knapsack. The performance curves illustrate the efficiency of population-based heuristics (Genetic Algorithms and MIMIC) in scaling to high-dimensional spaces compared to local search heuristics (RHC and SA).
-
-<pre><code class="language-plotly">
-{
-  "data": [
-    {
-      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
-      "y": [10, 35, 55, 68, 76, 82, 85, 88, 90, 92, 93, 94, 95, 96, 96.5, 97, 97.2, 97.5, 97.8, 98, 98.2],
-      "type": "scatter",
-      "mode": "lines+markers",
-      "name": "Genetic Algorithm (GA)",
-      "line": { "color": "#8e24aa", "width": 3 }
-    },
-    {
-      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
-      "y": [10, 28, 42, 38, 55, 62, 59, 70, 78, 83, 85, 87, 88.5, 89.2, 89.8, 90.1, 90.3, 90.5, 90.6, 90.8, 90.9],
-      "type": "scatter",
-      "mode": "lines+markers",
-      "name": "Simulated Annealing (SA)",
-      "line": { "color": "#ff6f00", "width": 2.5 }
-    },
-    {
-      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
-      "y": [10, 45, 52, 52, 52, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5, 52.5],
-      "type": "scatter",
-      "mode": "lines+markers",
-      "name": "Randomized Hill Climbing (RHC)",
-      "line": { "dash": "dash", "color": "#0050c0", "width": 2 }
-    },
-    {
-      "x": [0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000],
-      "y": [10, 12, 18, 25, 32, 45, 58, 69, 78, 85, 91, 93, 95, 96, 97, 97.5, 98, 98.2, 98.4, 98.6, 98.8],
-      "type": "scatter",
-      "mode": "lines+markers",
-      "name": "MIMIC",
-      "line": { "color": "#00cc96", "width": 2 }
-    }
-  ],
-  "layout": {
-    "title": "Continuous Peaks Fitness Convergence comparison",
-    "xaxis": { "title": "Iterations / Generation Count" },
-    "yaxis": { "title": "Fitness Value" },
-    "showlegend": true
-  }
-}
-</code></pre>
-
----
-
-### Part II: Clustering & Dimensionality Reduction
-
-Unsupervised learning workflows are evaluated by combining clustering partitions with dimensionality reduction algorithms to process complex high-dimensional datasets.
+### Results on the discrete problems
 
 <div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/clustering_comparison.png" title="Clustering in Reduced Dimensional Space" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 2: Analysis of K-Means and Expectation Maximization clustering on dimensionality-reduced spaces (PCA, ICA, RP)." %}
+  <div class="col-sm-11 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/figures/ro_converged_fitness.svg" title="Converged mean fitness by algorithm and problem size" class="img-fluid" zoomable=true caption="Figure 1: Converged mean fitness for each algorithm at each problem size, as stated in the project report. GA leads on both problems and its margin widens sharply with board size on N-Queens. The report gives several of these values as approximations in prose rather than in a results table." %}
   </div>
 </div>
 
-#### 1. Expectation-Maximization (EM) for Gaussian Mixture Models (GMM)
+GA converges fastest and highest on both problems. On Flip Flop the three algorithms end up close together, with GA reaching its plateau within roughly 20 to 50 iterations while RHC needs several hundred. On N-Queens the separation is decisive: GA's population-based crossover handles the simultaneous row, column, and diagonal constraints in a way that single-point search does not, and by board size 100 it reaches a converged fitness several times that of RHC or SA.
 
-Unlike the hard partitions of K-Means, GMMs provide probabilistic soft assignments. The Expectation step computes the posterior probability (responsibility) of cluster $k$ for data point $\mathbf{x}_i$:
+RHC converges quickest of all but is the least reliable, showing the highest variability and the strongest sensitivity to its restart strategy. SA sits between the two: volatile early, then steady, with its probabilistic acceptance of worse solutions doing exactly what the cooling schedule is meant to do.
 
-$$\gamma_{ik} = \frac{\pi_k \mathcal{N}(\mathbf{x}_i \mid \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{j=1}^{K} \pi_j \mathcal{N}(\mathbf{x}_i \mid \boldsymbol{\mu}_j, \boldsymbol{\Sigma}_j)}$$
+### Results on neural network weights
 
-The Maximization step updates the parameters $\pi_k$, $\boldsymbol{\mu}_k$, and $\boldsymbol{\Sigma}_k$ using these responsibilities.
+The third task replaced backpropagation with randomized search for the weights of a network predicting buy and sell signals on JPM stock, using 2,159 training and 926 test samples across 18 technical-indicator features. Across 272 runs sweeping hidden layer sizes, activation functions, population sizes, and cooling schedules:
 
-#### 2. Dimensionality Reduction Methods
+<div class="row justify-content-sm-center">
+  <div class="col-sm-9 mt-3 mt-md-0">
+    {% include figure.liquid loading="eager" path="assets/img/figures/ro_nn_generalization_gap.svg" title="Train and test metrics for randomized-optimization network weights" class="img-fluid" zoomable=true caption="Figure 2: Mean train and test scores over 272 runs, from Table IV of the report. Every metric loses a quarter to over a third of its value on the test set." %}
+  </div>
+</div>
 
-The study systematically evaluates the preservation of cluster structures across four dimensionality reduction techniques:
+This is a negative result and worth reporting as one. Mean test accuracy is 0.294 against 0.471 on train, and mean test F1 is 0.210 against 0.356. The best single configuration reached a test F1 of 0.653, but the mean tells the real story: randomized search over weight space overfits badly here. Wall-clock cost varied from 3.6 seconds to nearly 5,000 seconds across configurations.
 
-- **Principal Component Analysis (PCA)**: Linear projection that maximizes variance by solving the eigenvalue problem for the sample covariance matrix $\boldsymbol{\Sigma}$:
-  $$\boldsymbol{\Sigma} \mathbf{v} = \lambda \mathbf{v}$$
-- **Independent Component Analysis (ICA)**: Source separation technique maximizing non-Gaussianity via FastICA approximations of negentropy.
-- **Randomized Projections (RP)**: Dimension reduction using random matrices, preserving pairwise Euclidean distances within $\epsilon$ error as bounded by the Johnson-Lindenstrauss lemma:
-  $$(1-\epsilon)\|\mathbf{u}-\mathbf{v}\|^2 \le \|f(\mathbf{u}) - f(\mathbf{v})\|^2 \le (1+\epsilon)\|\mathbf{u}-\mathbf{v}\|^2$$
+The report's conclusion is that gradient descent remains the better choice for this task on both efficiency and generalization, with SA and GA justified only where the loss surface is genuinely non-smooth.
 
 ---
 
-### Reference Materials & PDF Downloads
+## Part II: Clustering & Dimensionality Reduction
 
-For detailed reports, complete with convergence proofs, hyperparameter tuning tables, and comparative visualizations across multiple datasets, you can download the project reports:
+The second study pairs two clustering algorithms with three dimensionality reduction techniques and measures what the projection does to cluster quality and to a downstream neural network classifier.
 
-- [Randomized Optimization Report (PDF)](/assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf)
-- [Supervised Learning Benchmarks Report (PDF)](/assets/pdf/CS7641_ML_Supervised_Learning___Su24.pdf)
-- [Unsupervised Learning & Dimensionality Reduction Report (PDF)](/assets/pdf/CS7641_ML_Unsupervised_Learning___Su24.pdf)
+**Datasets.** SP-JPM, the same stock data as above, at 3,085 samples and 18 features. TLS, the tennis match dataset, at 16,049 samples and 12 features. Both split 80/20.
+
+**Clustering.** K-Means and Expectation-Maximization for Gaussian mixtures. The E step computes the responsibility of cluster $k$ for point $\mathbf{x}_i$:
+
+$$\gamma_{ik} = \frac{\pi_k \mathcal{N}(\mathbf{x}_i \mid \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{j=1}^{K} \pi_j \mathcal{N}(\mathbf{x}_i \mid \boldsymbol{\mu}_j, \boldsymbol{\Sigma}_j)}$$
+
+and the M step updates $\pi_k$, $\boldsymbol{\mu}_k$, and $\boldsymbol{\Sigma}_k$ from those responsibilities.
+
+**Dimensionality reduction.** Three techniques, swept over component counts from 2 upward:
+
+- **PCA**, solving the eigenvalue problem $\boldsymbol{\Sigma} \mathbf{v} = \lambda \mathbf{v}$ for the sample covariance matrix.
+- **ICA**, maximizing non-Gaussianity via FastICA with parallel and deflation variants.
+- **Randomized Projections**, preserving pairwise distances within $\epsilon$ under the Johnson-Lindenstrauss bound:
+  $$(1-\epsilon)\|\mathbf{u}-\mathbf{v}\|^2 \le \|f(\mathbf{u}) - f(\mathbf{v})\|^2 \le (1+\epsilon)\|\mathbf{u}-\mathbf{v}\|^2$$
+
+### What the clustering found
+
+On the stock dataset, EM performed best with a full covariance type and k-means initialization at **k = 6**, giving the highest silhouette score. K-Means, using k-means++, put the optimal cluster count at **5 to 7**, with consistently lower inertia and faster fit times than random initialization. AIC and BIC both decreased with more clusters and confirmed the full covariance choice.
+
+On the tennis dataset EM did not work. Silhouette scores were **low and negative across every covariance type**, which is what a Gaussian mixture assumption does to categorical, non-normally-distributed features. K-Means handled the same data with less computational expense and clearer structure. That contrast, rather than any single score, is the useful finding: the algorithm has to match the shape of the data, and a probabilistic mixture is the wrong shape here.
+
+### What dimensionality reduction did downstream
+
+Ranked by effect on the neural network classifier trained on the reduced features:
+
+- **ICA** was the most effective. ICA combined with K-Means at 10 components gave the highest accuracy and F1, with validation curves showing robust generalization.
+- **PCA** was close behind, with PCA plus K-Means at 10 components achieving consistently high scores and minimal overfitting.
+- **Randomized Projections** improved on the raw features but less reliably, occasionally losing information to the random projection.
+
+---
+
+### Reports
+
+- [Randomized Optimization Report (PDF)](/assets/pdf/CS7641_ML_Randomized_Optimization_Su24.pdf) — problem definitions, hyperparameter sweep ranges, per-algorithm fitness curves, and the full 272-run summary table.
+- [Unsupervised Learning & Dimensionality Reduction Report (PDF)](/assets/pdf/CS7641_ML_Unsupervised_Learning___Su24.pdf) — clustering hyperparameter ranges, AIC/BIC and silhouette analysis, pairplots, and the downstream classifier comparison.
