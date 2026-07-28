@@ -5,7 +5,6 @@ description: AI agentic flows and geometric engines to automate complex EDA phys
 importance: 2
 category: work
 area: "Electronic Design Automation (EDA)"
-img: /assets/img/eda_agents_thumb.png
 toc:
   sidebar: left
 ---
@@ -15,12 +14,6 @@ toc:
 Semiconductor physical verification—comprising Design Rule Checking (DRC) and Layout vs. Schematic (LVS)—is the final gatekeeping step before tape-out. At advanced nodes ($7\text{ nm}$ and below), the Process Design Kit (PDK) verification deck contains tens of thousands of complex geometric and electrical rules. Designing layouts that comply with these rules requires a highly repetitive cycle of running verification, analyzing massive error logs, and manually correcting polygon coordinates in GDSII/OASIS layout files.
 
 This project developed an intelligent agentic framework that compiles rule decks, executes verification runs (e.g., using Siemens Calibre), parses violation logs, and executes closed-loop geometric modifications to automatically correct layout DRC violations.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/eda_agents_thumb.png" title="DRC Verification Agentic Workflow" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Multi-agent cooperative loop orchestrating DRC run parsing, geometry error mapping, and layout correction." %}
-  </div>
-</div>
 
 ---
 

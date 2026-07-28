@@ -5,7 +5,6 @@ description: Deep neural network pipelines and interactive dashboards to classif
 importance: 3
 category: work
 area: "Electronic Design Automation (EDA)"
-img: /assets/img/sem_cleaning_thumb.png
 toc:
   sidebar: left
 ---
@@ -15,12 +14,6 @@ toc:
 In semiconductor manufacturing, Critical Dimension Scanning Electron Microscopes (CD-SEMs) are the standard instruments for measuring nano-scale features on silicon wafers. However, raw CD-SEM scans are highly noisy due to charging effects, shot noise from low-dose electron beams (required to prevent resist damage), and physical scanner vibrations. This noise corrupts edge detection, leading to errors in the calibration of Optical Proximity Correction (OPC) models.
 
 This project built a deep-learning-based image cleaning and metrology extraction pipeline. The system filters out unusable images, denoises raw SEM scans, and extracts critical edge dimensions, supported by a custom multi-threaded desktop GUI for data auditing.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/sem_cleaning_thumb.png" title="SEM Image Denoising Pipeline" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Deep-learning-based image cleaning and metrology extraction pipeline for CD-SEM scans." %}
-  </div>
-</div>
 
 ---
 

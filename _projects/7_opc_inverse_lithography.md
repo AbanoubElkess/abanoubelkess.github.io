@@ -5,7 +5,6 @@ description: GPU-accelerated Inverse Lithography Technology (ILT) and model-base
 importance: 7
 category: work
 area: "Electronic Design Automation (EDA)"
-img: /assets/img/opc_lithography_thumb.png
 toc:
   sidebar: left
 ---
@@ -15,12 +14,6 @@ toc:
 In advanced semiconductor manufacturing nodes (sub-14nm), the wavelength of light used in deep ultraviolet (DUV) photolithography ($193\text{ nm}$ argon fluoride immersion lasers) is significantly larger than the target feature sizes printed on the silicon wafer. As light passes through the scanner's projection system and photomask, severe diffraction and chemical process distortions occur. These optical distortions lead to structural defects such as line-end shortening, corner rounding, pattern merging, and overall yield loss.
 
 To address these physical limits, we developed a GPU-accelerated **Inverse Lithography Technology (ILT)** and **Model-Based Optical Proximity Correction (OPC)** engine. The software treats mask synthesis as a mathematical inverse problem. By modeling the forward optical and photoresist physics, the engine optimizes the photomask layout to minimize the discrepancy between the printed wafer contours and the target integrated circuit design.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/opc_lithography_thumb.png" title="OPC and Inverse Lithography Technology" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Inverse lithography optimization process from mask design to wafer print simulation." %}
-  </div>
-</div>
 
 ---
 

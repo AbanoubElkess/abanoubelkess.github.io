@@ -5,7 +5,6 @@ description: Generative AI tool that automatically writes Standard Verification 
 importance: 1
 category: work
 area: "Electronic Design Automation (EDA)"
-img: /assets/img/dsl_copilot_thumb.png
 related_publications: true
 toc:
   sidebar: left
@@ -16,12 +15,6 @@ toc:
 Physical verification rule decks for semiconductor layouts are traditionally written in proprietary Domain-Specific Languages (DSLs), most notably Siemens SVRF (Standard Verification Rule Format). These rule decks specify thousands of geometric, topological, and electrical constraints that a circuit design must satisfy to be manufacturable. Creating and maintaining these decks is a major bottleneck in semiconductor design-technology co-optimization (DTCO).
 
 We developed a generative AI Copilot that translates natural-language verification specifications into syntactically valid SVRF code blocks, using a closed-loop validation engine to catch compiler and linter errors.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/dsl_copilot_thumb.png" title="SVRF Copilot Architecture" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: SVRF Copilot Architecture pipeline illustrating LLM translation, compiler loop, and IDE integration." %}
-  </div>
-</div>
 
 ---
 

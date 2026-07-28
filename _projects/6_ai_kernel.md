@@ -6,7 +6,6 @@ importance: 6
 category: academic
 github: https://github.com/AbanoubElkess/ai-kernel
 area: "Systems & Quantum Computing"
-img: /assets/img/ai_kernel_thumb.png
 toc:
   sidebar: left
 ---
@@ -16,12 +15,6 @@ toc:
 Modern general-purpose operating systems (such as Linux or Windows) balance interactive desktop responsiveness, generic file system access, and network I/O. Under deep learning workloads, this design adds overhead from frequent CPU-GPU context switches, complex virtual memory hierarchies, and CPU thread schedulers that are blind to tensor pipeline execution states, which leaves the accelerator starved and lowers hardware efficiency.
 
 To address this, we built **AI-Kernel**, a polyglot microkernel operating system. A bare-metal kernel core written in Rust handles hardware-level safety, while a Python orchestration layer manages tensor compute graph scheduling, giving machine learning workloads a dedicated high-throughput, low-latency operating environment.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/ai_kernel_thumb.png" title="AI-Kernel OS Architecture" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Hybrid microkernel design of AI-Kernel showing the Rust hardware core and Python tensor orchestration." %}
-  </div>
-</div>
 
 ---
 

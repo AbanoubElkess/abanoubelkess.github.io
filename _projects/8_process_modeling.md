@@ -5,7 +5,6 @@ description: Neural-network surrogates for semiconductor process simulation (etc
 importance: 8
 category: work
 area: "Electronic Design Automation (EDA)"
-img: /assets/img/process_modeling_thumb.png
 toc:
   sidebar: left
 ---
@@ -15,12 +14,6 @@ toc:
 Technology Computer-Aided Design (TCAD) process simulation is essential for exploring the design space and manufacturing feasibility of advanced semiconductor architectures (such as FinFETs, nanosheets, and backside power delivery systems). However, traditional TCAD tools rely on solving coupled, non-linear Partial Differential Equations (PDEs) representing gas-phase transport, surface reaction kinetics, and level-set interface propagation. These physical simulations take hours to evaluate, creating a bottleneck for Design-Technology Co-Optimization (DTCO) workflows.
 
 To address this computational bottleneck, we developed a machine learning surrogate framework based on **Fourier Neural Operators (FNOs)** and **Physics-Informed Neural Networks (PINNs)**. The framework maps layout geometries and process recipe parameters directly to post-fabrication cross-sectional profiles. By bypassing numerical level-set PDE solvers, the surrogate models accelerate semiconductor process simulation while retaining physical accuracy.
-
-<div class="row justify-content-sm-center">
-  <div class="col-sm-8 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/process_modeling_thumb.png" title="ML TCAD Process Modeling" class="img-fluid rounded z-depth-1" zoomable=true caption="Figure 1: Machine learning-driven physical process modeling pipeline for semiconductor fabrication." %}
-  </div>
-</div>
 
 ---
 
