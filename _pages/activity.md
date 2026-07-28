@@ -28,7 +28,7 @@ description: Recent professional updates, academic milestones, and research pres
           <h3 class="timeline-title">Research Presentation at Stanford University (ICLAD 2025)</h3>
         </div>
         <div class="timeline-image-wrapper">
-          <img src="{{ '/assets/images/2025_stanford_disucssion.jpg' | relative_url }}" alt="Abanoub E. Abdelmalak presenting at ICLAD 2025, Stanford University" class="timeline-image" loading="lazy">
+          <img src="{{ '/assets/images/2025_stanford_discussion.jpg' | relative_url }}" alt="Abanoub E. Abdelmalak presenting at ICLAD 2025, Stanford University" class="timeline-image" loading="lazy">
         </div>
         <div class="timeline-card-body">
           <p>I presented our paper, <strong>“An AST-Guided Approach for SVRF Code Synthesis,”</strong> at the inaugural <strong>IEEE International Conference on LLM-Aided Design (ICLAD 2025)</strong>, hosted at <strong>Stanford University</strong>.</p>
@@ -222,7 +222,7 @@ description: Recent professional updates, academic milestones, and research pres
 }
 
 .timeline-category-tag.conference {
-  background: rgba(131, 56, 236, 0.08);
+  background: color-mix(in srgb, var(--global-theme-color) 8%, transparent);
   color: var(--global-theme-color);
 }
 
