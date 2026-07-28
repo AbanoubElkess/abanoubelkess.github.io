@@ -40,3 +40,6 @@ client_secret*.json
 *.ntvs*
 *.njsproj
 *.sln
+# Python bytecode from the figure scripts
+__pycache__/
+*.pyc
