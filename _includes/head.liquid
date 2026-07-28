@@ -90,6 +90,19 @@
   <script>
     initTheme();
   </script>
+{% else %}
+  <!--
+    Dark mode is off, so theme.js is not loaded and determineComputedTheme is
+    undefined. Seven bundled setup scripts (mermaid, plotly, vega, echarts,
+    diff2html, search, jupyter) call it at top level, throw a ReferenceError,
+    and die before rendering anything. That is why mermaid diagrams showed as
+    raw code. Define the one helper they need.
+  -->
+  <script>
+    function determineComputedTheme() {
+      return 'light';
+    }
+  </script>
 {% endif %}
 
 {% if page.map %}

@@ -1,4 +1,7 @@
-let mermaidTheme = determineComputedTheme();
+/* determineComputedTheme returns "light" or "dark", but mermaid's own theme names
+   are default | base | dark | forest | neutral. "light" is not one of them, so it
+   has to be mapped rather than passed straight through. */
+let mermaidTheme = determineComputedTheme() === "dark" ? "dark" : "default";
 
 /* Create mermaid diagram as another node and hide the code block, appending the mermaid node after it
     this is done to enable retrieving the code again when changing theme between light/dark */
