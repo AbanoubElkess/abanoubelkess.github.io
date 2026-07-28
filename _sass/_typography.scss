@@ -150,27 +150,42 @@ blockquote {
  * survives a font-size change.
  ******************************************************************************/
 
-.post > article,
-.post > .post-content {
-  > p,
-  > ul,
-  > ol,
-  > dl,
-  > blockquote,
-  > h1,
-  > h2,
-  > h3,
-  > h4,
-  > h5,
-  > h6 {
+// Descendant selectors, not child. The rendered markup is
+//   .post > article.post-content > div > p
+// so a child combinator misses every paragraph. Verified against the deployed
+// DOM rather than assumed.
+.post > article {
+  p,
+  ul,
+  ol,
+  dl,
+  blockquote,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     max-width: v.$reading-measure;
   }
 
-  // list items inherit the parent's constrained width, but nested prose inside
-  // a list item still needs its own bound
-  > ul > li,
-  > ol > li {
+  // Anything that carries its own layout keeps the full column: figures and
+  // their captions, tables, code, math, and the mermaid diagrams.
+  figure,
+  table,
+  pre,
+  .row,
+  .mermaid,
+  .table-wrapper,
+  mjx-container {
     max-width: none;
+
+    p,
+    ul,
+    ol,
+    figcaption {
+      max-width: none;
+    }
   }
 }
 
