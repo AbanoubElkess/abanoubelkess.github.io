@@ -88,7 +88,7 @@ ninja.data = [{
         
           title: "Predicting Professional Tennis Match Winners using Gradient Boosting",
         
-        description: "How we engineered a robust data pipeline and compared classifier ensembles to predict ATP tennis match outcomes with over 80% accuracy.",
+        description: "How we engineered a data pipeline over 182,964 ATP matches and compared five classifier families, reaching a test F1 of 0.733 with gradient boosting.",
         section: "Posts",
         handler: () => {
           
