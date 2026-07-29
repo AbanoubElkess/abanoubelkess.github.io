@@ -9,10 +9,13 @@
   --global-bg-color: #{v.$white-color};
   --global-code-bg-color: #{v.$code-bg-color-light};
   --global-text-color: #{v.$black-color};
-  --global-text-color-light: #{v.$grey-color};
+  // Not $grey-color (#828282): that yields 3.84:1 on white and fails WCAG AA for
+  // body text, which is what this token is actually used for on the card-based
+  // pages. #6f6f6f gives 5.02:1.
+  --global-text-color-light: #{v.$grey-color-muted-light};
   --global-theme-color: #{v.$purple-color};
   --global-hover-color: #{v.$purple-color};
-  --global-hover-text-color: #{v.$white-color};
+  --global-hover-text-color: var(--on-accent, #{v.$white-color});
   --global-footer-bg-color: #{v.$grey-color-dark};
   --global-footer-text-color: #{v.$grey-color-light};
   --global-footer-link-color: #{v.$white-color};
@@ -79,10 +82,10 @@ html[data-theme="dark"] {
   --global-bg-color: #{v.$grey-color-dark};
   --global-code-bg-color: #{v.$code-bg-color-dark};
   --global-text-color: #{v.$grey-color-light};
-  --global-text-color-light: #{v.$grey-color};
+  --global-text-color-light: #{v.$grey-color-muted-dark};
   --global-theme-color: #{v.$cyan-color};
   --global-hover-color: #{v.$cyan-color};
-  --global-hover-text-color: #{v.$white-color};
+  --global-hover-text-color: var(--on-accent, #{v.$white-color});
   --global-footer-bg-color: #{v.$grey-color-light};
   --global-footer-text-color: #{v.$grey-color-dark};
   --global-footer-link-color: #{v.$black-color};

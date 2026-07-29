@@ -57,8 +57,11 @@ html[data-user-theme="nord"] {
   color-scheme: dark;
   --global-bg-color: #2e3440;
   --global-card-bg-color: #3b4252;
-  --global-text-color: #d8dee9;
-  --global-text-color-light: #e5e9f0;
+  // These were inverted: the "light" (de-emphasised) token was brighter than the
+  // primary text on a dark background, reversing the hierarchy wherever the pair
+  // is used together. Nord's brightest tone belongs to primary text.
+  --global-text-color: #e5e9f0;
+  --global-text-color-light: #aab3c2;
   --global-divider-color: #4c566a;
   --global-code-bg-color: #3b4252;
   --global-newsletter-bg-color: #3b4252;
@@ -80,11 +83,15 @@ html[data-user-accent="sapphire"] {
   --global-hover-color: #00369f !important;
 }
 html[data-user-accent="emerald"] {
-  --global-theme-color: #0f9d58 !important;
+  // Darkened from #0f9d58, which gave 3.51:1 against white text on a filled
+  // button and 3.51:1 as link text on a white page. Both failed WCAG AA.
+  --global-theme-color: #0a7c44 !important;
   --global-hover-color: #0b7843 !important;
 }
 html[data-user-accent="amber"] {
-  --global-theme-color: #ff6f00 !important;
+  // #ff6f00 gave 2.79:1 with white text, the worst on the palette. Darkened to
+  // 6.07:1 while keeping the amber hue.
+  --global-theme-color: #a34700 !important;
   --global-hover-color: #e65100 !important;
 }
 html[data-user-accent="amethyst"] {
@@ -101,7 +108,7 @@ html[data-user-accent="amethyst"] {
   height: 40px;
   border-radius: 50%;
   background: var(--global-theme-color);
-  color: #fff !important;
+  color: var(--on-accent, #fff) !important;
   border: none;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
@@ -195,7 +202,7 @@ html[data-user-accent="amethyst"] {
 
     &.active {
       background: var(--global-theme-color);
-      color: #fff !important;
+      color: var(--on-accent, #fff) !important;
       border-color: var(--global-theme-color);
     }
   }
@@ -209,6 +216,10 @@ html[data-user-accent="amethyst"] {
   }
 
   .accent-opt-dot {
+    // These are real <button> elements so they are keyboard reachable; the reset
+    // below strips the user-agent chrome that would otherwise show.
+    appearance: none;
+    padding: 0;
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -237,13 +248,34 @@ html[data-user-accent="amethyst"] {
       background: #0050c0;
     }
     &.dot-emerald {
-      background: #0f9d58;
+      background: #0a7c44;
     }
     &.dot-amber {
-      background: #ff6f00;
+      background: #a34700;
     }
     &.dot-amethyst {
       background: #8e24aa;
     }
   }
+}
+
+/*******************************************************************************
+ * Foreground colour for text sitting on a filled accent surface.
+ *
+ * Filled chips and buttons previously hardcoded `color: #fff !important` in nine
+ * places. White is legible on every accent this customizer offers (teal is
+ * the floor at 4.77:1; the rest are 5.3:1 or better), but not on the default dark theme's cyan (#2698ba, 3.34:1), so the
+ * dark override covers the default accent only. It must match BOTH the
+ * no-attribute case and data-user-accent="default", because assets/js/customizer.js
+ * always writes the attribute (falling back to "default"), so :not([data-user-accent])
+ * alone never matches. A blanket dark foreground would break sapphire.
+ ******************************************************************************/
+
+:root {
+  --on-accent: #ffffff;
+}
+
+html[data-theme="dark"]:not([data-user-accent]),
+html[data-theme="dark"][data-user-accent="default"] {
+  --on-accent: #10151a; /* 5.49:1 on #2698ba */
 }

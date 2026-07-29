@@ -44,12 +44,12 @@
       <div class="customizer-section">
         <h6>Accent Color</h6>
         <div class="accent-options">
-          <span class="accent-opt-dot dot-default" data-accent="default" title="Default accent" role="button" aria-label="Default accent"></span>
-          <span class="accent-opt-dot dot-teal" data-accent="teal" title="Teal accent" role="button" aria-label="Teal accent"></span>
-          <span class="accent-opt-dot dot-sapphire" data-accent="sapphire" title="Sapphire accent" role="button" aria-label="Sapphire accent"></span>
-          <span class="accent-opt-dot dot-emerald" data-accent="emerald" title="Emerald accent" role="button" aria-label="Emerald accent"></span>
-          <span class="accent-opt-dot dot-amber" data-accent="amber" title="Amber accent" role="button" aria-label="Amber accent"></span>
-          <span class="accent-opt-dot dot-amethyst" data-accent="amethyst" title="Amethyst accent" role="button" aria-label="Amethyst accent"></span>
+          <button type="button" class="accent-opt-dot dot-default" data-accent="default" title="Default accent" aria-label="Default accent"></button>
+          <button type="button" class="accent-opt-dot dot-teal" data-accent="teal" title="Teal accent" aria-label="Teal accent"></button>
+          <button type="button" class="accent-opt-dot dot-sapphire" data-accent="sapphire" title="Sapphire accent" aria-label="Sapphire accent"></button>
+          <button type="button" class="accent-opt-dot dot-emerald" data-accent="emerald" title="Emerald accent" aria-label="Emerald accent"></button>
+          <button type="button" class="accent-opt-dot dot-amber" data-accent="amber" title="Amber accent" aria-label="Amber accent"></button>
+          <button type="button" class="accent-opt-dot dot-amethyst" data-accent="amethyst" title="Amethyst accent" aria-label="Amethyst accent"></button>
         </div>
       </div>
     `;

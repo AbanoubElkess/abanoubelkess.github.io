@@ -114,12 +114,16 @@ progress::-moz-progress-bar {
 
 // Themes transition
 
-html.transition,
-html.transition *,
-html.transition *:before,
-html.transition *:after {
-  transition: all 750ms !important;
-  transition-delay: 0 !important;
+@media (prefers-reduced-motion: no-preference) {
+  html.transition,
+  html.transition *,
+  html.transition *:before,
+  html.transition *:after {
+    // Must match the 500ms timeout in assets/js/theme.js that removes this
+    // class, otherwise the tail of the transition is cut and the flip snaps.
+    transition: all 500ms !important;
+    transition-delay: 0 !important;
+  }
 }
 
 // Copy button

@@ -1,0 +1,32 @@
+/*******************************************************************************
+ * Accessibility baseline
+ *
+ * Loaded last from `assets/css/main.scss`. Two gaps are closed here.
+ *
+ * 1. Reduced motion. `assets/js/interactive-bg.js` already checks the media
+ *    query, but no CSS did. The blanket theme-flip transition in
+ *    `_utilities.scss` is now itself wrapped in a `no-preference` query, so this
+ *    block does not have to out-specify it.
+ *
+ * 2. Focus visibility. No `:focus-visible` rule existed anywhere in the theme.
+ ******************************************************************************/
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--global-theme-color);
+  outline-offset: 2px;
+}

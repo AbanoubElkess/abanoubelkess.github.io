@@ -16,6 +16,7 @@
 /* Your project partials — convert these files to `@use "variables";`
    (or `@use "variables" as *;`) inside each file and qualify variables if needed. */
 @use "themes";
+@use "tokens";
 @use "layout";
 
 // Core styles organized by usage
@@ -25,6 +26,7 @@
 @use "blog";
 @use "publications";
 @use "components";
+@use "dashboard";
 @use "utilities";
 
 // Other specialized styles
@@ -39,4 +41,7 @@
 @use "font-awesome/regular";
 @use "customizer";
 @use "interactive-bg";
+
+// Loaded last on purpose: these rules correct earlier !important declarations.
+@use "a11y";
 

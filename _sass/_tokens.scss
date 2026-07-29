@@ -1,0 +1,64 @@
+/*******************************************************************************
+ * Design tokens
+ *
+ * The colour layer was already tokenised in `_themes.scss`; geometry, motion and
+ * type were not. These tokens currently serve `_dashboard.scss`, where they
+ * collapsed 14 border-radius values, 17 box-shadows and 25 font sizes down to
+ * 3, 2 and 4. The rest of the theme has not been migrated yet.
+ *
+ * Elevation is theme-aware on purpose. Every shadow in the theme was black with
+ * alpha between 0.01 and 0.20, which is invisible by construction on a dark
+ * background, and in light mode the card fill was identical to the page fill so
+ * a card was delimited only by a 1.25:1 hairline. The fill below adds 1.16:1 of
+ * its own separation in light and 1.17:1 in dark, on top of that border.
+ ******************************************************************************/
+
+:root {
+  /* Radius: tag, card, pill. Nothing else. */
+  --r-tag: 6px;
+  --r-card: 12px;
+  --r-pill: 9999px;
+
+  /* Motion: one fast, one slow, one easing. */
+  --dur-fast: 0.15s;
+  --dur-slow: 0.3s;
+  --ease: cubic-bezier(0.2, 0, 0.2, 1);
+
+  /* Hover lift, applied uniformly rather than at -2/-3/-4/-6px per file. */
+  --lift: -3px;
+
+  /* Type scale. The sub-1rem cluster collapses from eight steps to three. */
+  --fs-2xs: 0.72rem;
+  --fs-xs: 0.8rem;
+  --fs-sm: 0.9rem;
+  --fs-lg: 1.15rem;
+
+  /* Spacing. */
+  --sp-1: 0.4rem;
+  --sp-2: 0.75rem;
+  --sp-3: 1.25rem;
+  --sp-4: 2rem;
+
+  /* Elevation, and a card fill that is actually distinguishable from the page. */
+  --card-fill: #eeeef0; /* 1.16:1 on #ffffff, vs 1.25:1 for the border alone */
+  --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-raised: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="dark"],
+html[data-user-theme="nord"] {
+  /* A black shadow over a dark background does nothing. Darken further instead
+     and lean on the border for separation. */
+  --card-fill: #26292e;
+  --shadow-rest: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-raised: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* These two reading modes already define a card colour that suits them, so
+   track it rather than duplicating the literal and letting the two drift.
+   Light and dark keep their own values, since #ffffff and #212529 are exactly
+   what this token exists to correct. */
+html[data-user-theme="nord"],
+html[data-user-theme="sepia"] {
+  --card-fill: var(--global-card-bg-color);
+}
