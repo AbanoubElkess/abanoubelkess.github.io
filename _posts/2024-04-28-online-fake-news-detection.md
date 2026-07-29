@@ -132,13 +132,13 @@ Because Transformer feature extraction involves massive pre-trained weights that
 
 ---
 
-## 3. Error Analysis and Model Limitations
+## 3. The Planned Error Analysis
 
-A key focus of our research was performing a detailed error analysis of misclassified articles. We observed that:
+The proposal set out to characterize the limitations by analyzing misclassified instances rather than reporting an aggregate score. No models were trained, so nothing below is an observation. These are the failure modes the analysis was designed to look for, and why each one was expected:
 
-- **Sarcasm and Satire**: Models frequently misclassified satirical articles (like _The Onion_) as news because they mimic the syntactic structure and vocabulary of real news reports.
-- **Topic Bias**: Models trained purely on U.S. political datasets initially struggled on our out-of-domain validation dataset (the Syrian War corpus), highlighting the need for domain-agnostic pre-training and diverse validation datasets.
-- **Factuality vs. Style**: CNN models are highly sensitive to writing style and specific keywords. Transformer models (BERT/RoBERTa), by contrast, are designed to carry overall article context and semantic consistency across the full sequence.
+- **Sarcasm and satire**: satirical articles mimic the syntactic structure and vocabulary of real reporting, so a classifier keyed to form rather than claim has no signal separating them.
+- **Topic bias**: a model trained on U.S. political datasets and evaluated on the Syrian War corpus is an out-of-domain test by construction, which is why that corpus was chosen as the held-out set.
+- **Factuality against style**: a CNN over local windows is sensitive to writing style and keyword choice, while a transformer encoder carries context across the sequence. Comparing the two was intended to show how much of the achievable signal is stylistic rather than factual.
 
 ---
 

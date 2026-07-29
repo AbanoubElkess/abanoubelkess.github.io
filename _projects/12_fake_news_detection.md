@@ -2,7 +2,7 @@
 layout: page
 title: Online Fake News Detection
 description: CS7643 Deep Learning team project combining pre-trained Transformer embeddings with convolutional feature extraction to classify news articles as reliable or fabricated.
-importance: 12
+importance: 11
 category: academic
 area: "Machine Learning & Data Science"
 mermaid:
@@ -14,7 +14,7 @@ toc:
 
 ### Project Overview
 
-Misinformation spreads through digital media at a scale manual fact-checking cannot match. Roughly 62 percent of US adults get news from social media, and in the final three months of the 2016 US presidential campaign the top-performing fake election stories on Facebook attracted more views than the top stories from the New York Times, Washington Post, Huffington Post, or NBC News. Automated detection has to pick up subtle linguistic markers and rhetorical patterns that generalize across topics.
+Misinformation spreads through digital media at a scale manual fact-checking cannot match. The proposal opens with two figures from Kshetri and Voas (2017), both hedged there and worth keeping hedged here: one study suggested that 62 percent of US adults got news from social media, and estimates suggested that in the final three months of the 2016 US presidential campaign the top-performing fake election stories on Facebook drew more engagement than top stories from major outlets such as the New York Times. Automated detection has to pick up linguistic markers and rhetorical patterns that generalize across topics.
 
 Team project for **CS7643 Deep Learning**, Georgia Tech, with Haochi Li, Marwa F. Qabeel, and Nicholas B. Pendley, under the team name "News Detectives".
 
@@ -24,25 +24,23 @@ Team project for **CS7643 Deep Learning**, Georgia Tech, with Haochi Li, Marwa F
 
 ### Proposed Approach
 
-The plan was to combine the contextual strength of pre-trained transformers with the localized pattern extraction of convolutional networks, then measure that hybrid against the transformer alone.
+The proposal names two model families to explore and compare rather than a single fixed architecture: sequence-to-sequence transformers, and convolutional networks over word embeddings.
 
 ```mermaid
 graph TD
-    Input[Raw Article Text] --> Tokenizer[Byte-Pair Encoding / WordPiece]
-    Tokenizer --> Transformer[BERT / RoBERTa Encoder]
-    Transformer --> Embeddings[Token Embedding Sequence]
-    Embeddings --> CNN[1D CNN + Max Pooling]
-    CNN --> Dense[Fully Connected Layer]
-    Dense --> Output[Binary Classification Logits]
+    Input[Raw article text] --> A[Transformer path: BERT / RoBERTa encoder]
+    Input --> B[Convolutional path: GloVe / Word2Vec embeddings]
+    A --> AF[Fully connected layers + max pooling]
+    B --> BF[1D convolution + max pooling]
+    AF --> Compare[Compare on the same held-out corpora]
+    BF --> Compare
 ```
 
-**Contextual embeddings.** Articles are tokenized and passed through a pre-trained BERT or RoBERTa encoder. Self-attention relates every token to every other token in the sequence:
+**Why compare these two.** They fail in different places, which is the point of running both. A transformer encoder's self-attention relates every token to every other token, so it can carry a claim made in the opening paragraph to a qualification twenty sentences later. What it does not privilege is local phrasing. Fabricated articles tend to carry short, position-independent tells (sensational bigrams, particular punctuation and casing patterns, formulaic attributions), and a 1D convolution with max pooling is the cheaper detector for exactly that, sliding a fixed window and keeping the strongest activation wherever it occurs.
 
-$$\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q} \mathbf{K}^T}{\sqrt{d_k}}\right) \mathbf{V}$$
+The comparison measures something specific: how much of the achievable signal is stylistic rather than semantic. The associated risk is equally specific. Local phrasing tells are the features most tied to a particular publication era and a particular set of outlets, so a model leaning on them scores well in-distribution and degrades on sources it has not seen, which is why the out-of-domain corpus matters more here than the headline metric.
 
-where $\mathbf{Q}$, $\mathbf{K}$, and $\mathbf{V}$ are the query, key, and value projections of the input embeddings and $d_k$ is the key dimensionality. Multi-head attention repeats this projection $h$ times to learn distinct relationships:
-
-$$\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O$$
+One practical constraint bounds the transformer path and the proposal does not address it: BERT and RoBERTa cap input at 512 tokens, which is shorter than many full news articles, so the long-range context argument holds only within that window unless articles are chunked or truncated.
 
 **Fine-tuning.** The pre-trained encoders are extended with fully connected layers and max pooling, optimized with **Adam** against a **cross-entropy** objective.
 
@@ -54,7 +52,7 @@ $$\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{hea
 
 ### Datasets
 
-Three corpora were identified, the third specifically to test whether a model trained on one news domain survives contact with another:
+Three corpora were identified, the third chosen to test whether a model trained on one news domain survives contact with another:
 
 | Dataset                                  | Role                            |
 | :--------------------------------------- | :------------------------------ |
@@ -71,7 +69,7 @@ The primary corpus carries titles, authors, countries, and images, with labels i
 The methods this project builds on, and the gap each leaves:
 
 - **N-gram analysis with TF-IDF and a linear SVM** reaches 92 percent accuracy, setting the classical baseline a deep model has to beat.
-- **Hybrid CNN-RNN architectures** validated on the ISO and FA-KES datasets outperform non-hybrid baselines, and are the direct precedent for pairing convolution with a sequence model here.
+- **Hybrid CNN-RNN architectures** validated on the ISOT and FA-KES datasets outperform non-hybrid baselines, and are the direct precedent for pairing convolution with a sequence model here.
 - **Bidirectional LSTM with pre-trained word embeddings**, using back-translation to address class imbalance, outperforms plain CNN and ResNet across datasets.
 - **Multimodal consistency methods** fusing text and image features, and **language-independent filtering** applied to Twitter data during the Hong Kong protests, both point at signal outside the article body that a text-only model gives up.
 

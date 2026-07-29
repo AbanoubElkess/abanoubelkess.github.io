@@ -2,8 +2,8 @@
 layout: page
 title: Analog IC Design Optimization
 description: Automated multi-objective optimization and geometric programming routines for analog integrated circuit sizing.
-importance: 9
-category: work
+importance: 8
+category: academic
 area: "Electronic Design Automation (EDA)"
 mermaid:
   enabled: true
@@ -16,7 +16,7 @@ toc:
 
 Analog integrated circuit (IC) sizing is one of the most time-consuming steps in semiconductor design. Choosing transistor channel widths ($W$), lengths ($L$), bias currents, and passive component values means balancing competing performance specifications: low-frequency open-loop gain, unity-gain bandwidth, phase margin, power dissipation, noise, and silicon area. Because transistor behavior in sub-micron regimes is highly non-linear, designers typically rely on manual sizing and iterative SPICE simulations.
 
-We built an automated design framework that formulates transistor sizing as a **Geometric Programming (GP)** problem. By modeling performance metrics as posynomial functions and coupling the optimization with a closed-loop SPICE simulation engine, the framework sizes circuit parameters in seconds while keeping results physically accurate.
+This page covers my analog design work from 2012 to 2017, which included modeling and optimizing two-stage Miller OTAs across process variations. What follows is the **Geometric Programming (GP)** formulation of the sizing problem as I would set it up, rather than a description of a shipped tool: the process node, the load capacitance, and the SPICE calibration loop below are the setup this formulation assumes, not measurements from a system I can point you at. By modeling performance metrics as posynomial functions and coupling the optimization with a closed-loop SPICE simulation engine, the framework is designed to size circuit parameters in one solve rather than by manual iteration, with SPICE in the loop to keep the fitted models honest.
 
 ---
 
@@ -24,41 +24,9 @@ We built an automated design framework that formulates transistor sizing as a **
 
 Geometric programming is a class of mathematical optimization problems characterized by objective functions and constraints expressed as posynomials and monomials.
 
-#### 1. Monomial and Posynomial Definitions
+A GP minimizes a posynomial subject to posynomial inequality and monomial equality constraints, over strictly positive variables. Under the change of variables $y_i = \ln x_i$ the whole program becomes convex, which is what buys the global optimum and the infeasibility certificate discussed below. The solver is a standard interior-point method.
 
-Let $\mathbf{x} = (x_1, x_2, \dots, x_n)$ be a vector of $n$ real, positive variables.
-
-- A **monomial** function $g(\mathbf{x})$ is defined as:
-
-  $$g(\mathbf{x}) = c x_1^{a_1} x_2^{a_2} \dots x_n^{a_n}$$
-
-  where $c > 0$ and $a_i \in \mathbb{R}$.
-
-- A **posynomial** function $f(\mathbf{x})$ is a sum of one or more monomials:
-
-  $$f(\mathbf{x}) = \sum_{k=1}^K c_k x_1^{a_{1k}} x_2^{a_{2k}} \dots x_n^{a_{nk}}$$
-
-  where $c_k > 0$.
-
-A GP in standard form is written as:
-
-$$
-\begin{aligned}
-\text{minimize} \quad & f_0(\mathbf{x}) \\
-\text{subject to} \quad & f_i(\mathbf{x}) \le 1, \quad i = 1, \dots, m \\
-& g_i(\mathbf{x}) = 1, \quad i = 1, \dots, p
-\end{aligned}
-$$
-
-where $f_0, \dots, f_m$ are posynomials and $g_1, \dots, g_p$ are monomials.
-
-#### 2. Convex Transformation
-
-By introducing a change of variables $y_i = \ln x_i$ and taking the natural logarithm of the functions, the geometric program is transformed into a convex optimization problem:
-
-$$\text{minimize } \ln f_0(e^\mathbf{y}) \quad \text{subject to } \ln f_i(e^\mathbf{y}) \le 0, \quad \ln g_i(e^\mathbf{y}) = 0$$
-
-Because the transformed objective function is convex and the constraint set is convex, any local minimum is guaranteed to be the global optimum. We solve this transformed problem using interior-point numerical methods.
+The engineering consequence is the constraint this places on the modeling, not the algebra. Every specification has to be written as a posynomial, a sum of terms $c \, x_1^{a_1} \cdots x_n^{a_n}$ with $c > 0$ and arbitrary real exponents. Positive coefficients are the binding restriction: any physical effect that enters with a negative sign has to be rearranged into the constraint's other side or dropped. That is the reason the small-signal parameters below are fitted as monomials rather than taken from a compact model, and it is where the approximation error in this method actually lives.
 
 ---
 
@@ -66,21 +34,13 @@ Because the transformed objective function is convex and the constraint set is c
 
 To apply GP to an operational transconductance amplifier (OTA), we express its small-signal parameters and design constraints in terms of transistor dimensions.
 
-```
-                  VDD
-                   │
-           ┌───────┴───────┐
-         M3│             M4│
-           ├───────┬───────┤
-           │       │       │
-           ├───M1  M2──┐   │
-         In+   │   │   In- │
-               └───┬───┘   ├───M6─── Out
-                 M5│       │
-                   └───┬───┘
-                       │   M7
-                      VSS
-```
+The topology is the standard two-stage Miller-compensated OTA:
+
+- **First stage**: an NMOS differential pair $M_1/M_2$ driven by the inputs, loaded by a PMOS current mirror $M_3/M_4$, biased by a tail current source $M_5$.
+- **Second stage**: a common-source amplifier $M_6$ with an active load $M_7$, driving the output node.
+- **Compensation**: a Miller capacitor $C_c$ bridging the first-stage output and the second-stage output, which splits the two poles and sets the unity-gain bandwidth at $g_{m1}/C_c$.
+
+The sizing variables are the widths and lengths of $M_1$ through $M_7$, the tail current, and $C_c$.
 
 #### 1. Small-Signal Transistor Monomial Fits
 
@@ -113,7 +73,9 @@ Using these monomial fits, we formulate the amplifier specifications:
 
   $$p_2 \ge \eta \cdot GBW \implies \frac{\eta \cdot g_{m1} \cdot C_L}{g_{m6} \cdot C_c} \le 1$$
 
-  where $\eta \approx 3.0$ enforces a phase margin of $\ge 60^\circ$ under a capacitive load $C_L$.
+  where $\eta \approx 3.0$ is the usual rule of thumb for a $60^\circ$ target.
+
+  This constraint alone does not enforce that target. Miller compensation also creates a right-half-plane zero at $z \approx g_{m6}/C_c$, which subtracts phase without adding roll-off and is the dominant degrader in this topology. With $p_2 = 3\omega_u$ the pole contribution leaves roughly $72^\circ$, and the zero removes $\arctan(\omega_u/z)$ on top of that, so the achieved margin depends on $C_L/C_c$ and falls below $60^\circ$ as $C_c$ approaches $C_L$. A complete formulation adds a constraint on $z$, or a nulling resistor in series with $C_c$ to push the zero out.
 
 ---
 
@@ -133,32 +95,25 @@ flowchart TD
 
 1. **GP Execution**: The optimization engine solves the convex GP problem using the current monomial model coefficients.
 2. **Netlist Generation & SPICE Simulation**: The candidate sizing variables ($W_i, L_i, I_{D,i}$) are written to a SPICE netlist template. The system runs multi-corner AC and transient simulations using Spectre or HSPICE.
-3. **Mismatch Extraction & Model Calibration**: The framework compares the simulated performance metrics against the GP model predictions. If the errors exceed $1\%$, it updates the local fitting coefficients ($\chi, \zeta, a, b, \dots$) around the candidate sizing point using a local Jacobian matrix, and re-runs the GP solver. This loop typically converges in 3 to 5 iterations.
+3. **Mismatch Extraction & Model Calibration**: The framework compares the simulated performance metrics against the GP model predictions. If the errors exceed the fitting tolerance, it updates the local fitting coefficients ($\chi, \zeta, a, b, \dots$) around the candidate sizing point using a local Jacobian matrix, and re-runs the GP solver. Convergence of this outer loop is not guaranteed by the GP itself, since only the inner problem is convex, and no iteration count is reported here.
 
 ---
 
-### Experimental Results & Verification
+### How the Formulation Is Evaluated
 
-We sized a two-stage Miller-compensated OTA in a $65\text{ nm}$ CMOS process node, targeting a load capacitance $C_L = 5\text{ pF}$.
+> **Scope note.** No measured comparison against a manual design is reported here. A speedup claim against "an experienced engineer" is not a reproducible baseline, since the result depends entirely on which engineer, which specification, and how many iterations they were given.
 
-#### 1. Performance Comparison
+The target problem is sizing a two-stage Miller-compensated OTA in a $65\text{ nm}$ CMOS process for a load capacitance $C_L = 5\text{ pF}$, against specifications on open-loop gain, unity-gain bandwidth, and phase margin, minimizing power dissipation and silicon area.
 
-The table below compares the GP-optimized design against a manual design created by an experienced engineer:
+The reason geometric programming is the right tool here is not that it is faster than a person. A GP transforms to a convex program, so any local optimum it finds is global (the optimizer need not be unique, since the objective is convex rather than strictly convex), and infeasibility comes with a certificate. When the solver reports that no sizing satisfies the constraints, that is a proof for a strictly infeasible instance rather than a failure to search hard enough, which is information a manual iteration loop cannot produce.
 
-| Parameter                |    Specifications    |    Manual Design     |           GP-Optimized (Ours)            |
-| :----------------------- | :------------------: | :------------------: | :--------------------------------------: |
-| **Open-Loop Gain**       |  $\ge 60\text{ dB}$  |   $61.2\text{ dB}$   |           **$62.5\text{ dB}$**           |
-| **Unity-Gain Bandwidth** | $\ge 100\text{ MHz}$ |   $105\text{ MHz}$   |           **$124\text{ MHz}$**           |
-| **Phase Margin**         |    $\ge 60^\circ$    |     $61.5^\circ$     |             **$63.2^\circ$**             |
-| **Power Dissipation**    |       Minimize       |   $1.42\text{ mW}$   |  **$1.06\text{ mW}$** (25.3% reduction)  |
-| **Silicon Area**         |       Minimize       |  $340\mu\text{m}^2$  | **$210\mu\text{m}^2$** (38.2% reduction) |
-| **Execution Time**       |          -           | $\sim 2\text{ days}$ |         **$1.8\text{ minutes}$**         |
+The caveat applies to both halves of that guarantee, not just the optimum. Every constraint has to be expressible in posynomial form, so the transistor models are fitted approximations, and the certificate proves infeasibility of the fitted model rather than of the specification itself. A specification the solver declares infeasible may still be reachable by a device behaviour the posynomial fit does not capture.
 
-#### 2. Robust Multi-Corner Sizing
+#### Robust Multi-Corner Sizing
 
 To ensure manufacturing yield, the GP formulation incorporated multi-corner design constraints:
 
 - **Process Corners**: Evaluated across Slow-Slow (SS), Fast-Fast (FF), and Typical-Typical (TT) transistor corners.
 - **Temperature Extremes**: Constrained to meet specifications from $-40^\circ\text{C}$ to $125^\circ\text{C}$.
 - **Supply Voltage Corners**: Evaluated under $V_{DD} \pm 10\%$.
-- The optimizer identified a sizing solution that satisfied the minimum phase margin ($60^\circ$) and gain ($60\text{ dB}$) across all PVT corners.
+- Corner constraints enter the program directly rather than being checked afterwards, so a returned solution is feasible across the specified corners by construction. This is the formulation's guarantee, not a measured outcome, and no verified sizing result is reported on this page.

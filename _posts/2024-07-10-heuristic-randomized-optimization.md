@@ -45,7 +45,7 @@ MIMIC replaces crossover and mutation by constructing a probabilistic model of t
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-11 mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/figures/ro_converged_fitness.svg" title="Converged mean fitness by algorithm and problem size" class="img-fluid" zoomable=true caption="Converged mean fitness for each algorithm at each problem size, as stated in the project report. GA leads on both problems and its margin widens sharply with board size on N-Queens." %}
+    {% include figure.liquid loading="lazy" path="assets/img/figures/ro_converged_fitness.svg" alt="Grouped bar chart of converged mean fitness for three randomized optimization algorithms at each problem size. The genetic algorithm leads on both problems, and its margin widens as the N-Queens board size grows." title="Converged mean fitness by algorithm and problem size" class="img-fluid" zoomable=true caption="Converged mean fitness for each algorithm at each problem size, as stated in the project report. GA leads on both problems and its margin widens sharply with board size on N-Queens." %}
   </div>
 </div>
 

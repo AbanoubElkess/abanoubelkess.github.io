@@ -2,7 +2,7 @@
 layout: page
 title: DRC & Layout Verification Automation
 description: AI agentic flows and geometric engines to automate complex EDA physical verification and PDK validation.
-importance: 2
+importance: 4
 category: work
 area: "Electronic Design Automation (EDA)"
 mermaid:
@@ -46,15 +46,17 @@ DRC rules are defined as topological and spatial relations between layout polygo
 
 A minimum spacing rule between metal polygons on a layer $A$ specifies that no two edge segments can lie within a distance $d_{\text{min}}$ of each other:
 
-$$\text{Spacing}(A) = \left\{ (p_1, p_2) \in \partial A \times \partial A \mid \|p_1 - p_2\|_2 < d_{\text{min}} \right\}$$
+$$\text{Spacing}(A) = \left\{ (p_1, p_2) \in \partial P_i \times \partial P_j,\; i \neq j \mid \|p_1 - p_2\|_2 < d_{\text{min}} \right\}$$
 
-where $\partial A$ represents the boundary curves of all polygons on layer $A$, and $\|\cdot\|_2$ is the Euclidean norm. If $\text{Spacing}(A) \neq \emptyset$, the coordinates are flagged as a violation.
+where $P_i$ and $P_j$ are distinct polygons on layer $A$ and $\|\cdot\|_2$ is the Euclidean norm. If $\text{Spacing}(A) \neq \emptyset$, the coordinates are flagged as a violation.
+
+The distinct-polygon condition is what makes the definition usable. Quantifying over $\partial A \times \partial A$ without it admits adjacent points on the same boundary curve, whose separation tends to zero, so the set would be non-empty for every layout ever checked.
 
 #### 2. Enclosure and Extension Verification
 
 For overlapping layers (e.g., contact vias $A$ and metal routes $B$), the metal layer must enclose the via by a minimum extension distance $e_{\text{min}}$:
 
-$$\text{Enclosure}(A, B) = \left\{ p \in \partial A \mid \min_{q \in \partial B} \|p - q\|_2 < e_{\text{min}} \right\}$$
+$$\text{Enclosure}(A, B) = \left\{ p \in \partial A \mid p \notin B \;\text{ or }\; \min_{q \in \partial B} \|p - q\|_2 < e_{\text{min}} \right\}$$
 
 Our engine compiles these constraints into a computational DAG (Directed Acyclic Graph) of Boolean operations (AND, OR, NOT, XOR), sizing (dilation/erosion), and distance searches.
 
@@ -97,12 +99,18 @@ flowchart TD
 
    subject to:
    - Spacing constraints: $x_{i, \text{right}} - x_{j, \text{left}} \ge d_{\text{min}}$ (for horizontal spacing errors).
-   - Electrical connectivity preservation: comparing the modified layout graph against the schematic network (LVS validation) to confirm no new shorts or opens are created.
 
 ---
 
-### Key Outcomes & Technical Impact
+### What the System Does, and What It Deliberately Does Not
 
-- **Automated Repair**: Automatically resolved **$82\%$** of typical post-routing DRC violations (width, spacing, and enclosure errors) across sub-blocks, eliminating manual layout modifications.
-- **Coverage & Scaling**: Enabled parallel verification runs on heterogeneous compute clusters, leading to a **$25\%$** improvement in rule coverage validation for complex custom layouts.
-- **Cycle Time Reduction**: Decreased standard physical verification iterations from days to under 3 hours, facilitating rapid design-technology co-optimization (DTCO) workflows.
+> **Scope note.** This work was built and deployed inside Siemens EDA. Repair rates, coverage figures, and cycle times were measured against customer rule decks that I cannot publish, so no numbers are reported here.
+
+The system automatically repairs the classes of post-routing DRC violation that have a deterministic geometric fix: width, spacing, and enclosure errors within a sub-block. The design constraint that shaped everything else is that an automatic layout edit is only acceptable if it cannot silently break the circuit, so every proposed repair is gated on two checks before it is applied:
+
+- **Geometric closure**: re-running the affected rule set on the modified region to confirm the repair did not introduce a new violation elsewhere, since spacing fixes routinely create width violations one layer over.
+- **Electrical connectivity preservation**: comparing the modified layout graph against the schematic network (LVS validation) to confirm no new shorts or opens were created.
+
+Violations that do not have a unique geometric fix are escalated rather than guessed at. This is the boundary that makes the tool usable: a repair engine that resolves a high fraction of violations but occasionally alters connectivity is worse than useless, because it moves the engineer's work from fixing layout to auditing the tool.
+
+Verification runs distribute across heterogeneous compute clusters. Parallelism here buys throughput, not coverage: coverage is a property of the rule deck and the pattern set, and no amount of parallel execution changes it.

@@ -3,7 +3,7 @@ layout: page
 permalink: /publications/
 title: Publications
 description: Publications by Abanoub E. Abdelmalak, grouped by category in reverse chronological order.
-nav: false
+nav: true
 nav_order: 2
 ---
 

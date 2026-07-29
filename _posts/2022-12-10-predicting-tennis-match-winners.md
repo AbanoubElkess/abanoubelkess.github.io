@@ -38,7 +38,7 @@ We compared three feature sets to analyze the curse of dimensionality. **Feature
 
 ## Machine Learning Benchmarks
 
-We approached the prediction as a binary classification problem. Using an $80\%/20\%$ train/test split, we trained and tuned five classification algorithms using grid search and 10-fold cross-validation. We evaluated the models using the F1-score to balance precision and recall:
+We approached the prediction as a binary classification problem. Using a $70\%/30\%$ train/validation split, we trained and tuned five classification algorithms using grid search, with validation and learning curves generated to identify overfitting. We evaluated the models using the F1-score to balance precision and recall:
 
 | ML Model                 | Train F1 Score  | Test F1 Score |
 | :----------------------- | :-------------: | :-----------: |
@@ -52,7 +52,7 @@ We approached the prediction as a binary classification problem. Using an $80\%/
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-11 mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_model_f1.svg" title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Train and test F1 for the five model families tried. Gradient boosting reaches the highest test F1 at 0.733." %}
+    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_model_f1.svg" alt="Grouped bar chart of train and test F1 for five model families. Gradient boosting has the highest test F1 at 0.733, while AdaBoost reaches a training F1 of 1.000 but a much lower test F1." title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Train and test F1 for the five model families tried. Gradient boosting reaches the highest test F1 at 0.733." %}
   </div>
 </div>
 

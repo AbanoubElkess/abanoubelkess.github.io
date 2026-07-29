@@ -2,7 +2,7 @@
 layout: page
 title: OPC & Inverse Lithography
 description: GPU-accelerated Inverse Lithography Technology (ILT) and model-based Optical Proximity Correction (OPC) optimization for sub-14nm semiconductor manufacturing nodes.
-importance: 7
+importance: 2
 category: work
 area: "Electronic Design Automation (EDA)"
 mermaid:
@@ -16,7 +16,7 @@ toc:
 
 In advanced semiconductor manufacturing nodes (sub-14nm), the wavelength of light used in deep ultraviolet (DUV) photolithography ($193\text{ nm}$ argon fluoride immersion lasers) is significantly larger than the target feature sizes printed on the silicon wafer. As light passes through the scanner's projection system and photomask, severe diffraction and chemical process distortions occur. These optical distortions lead to structural defects such as line-end shortening, corner rounding, pattern merging, and overall yield loss.
 
-To address these physical limits, we developed a GPU-accelerated **Inverse Lithography Technology (ILT)** and **Model-Based Optical Proximity Correction (OPC)** engine. The software treats mask synthesis as a mathematical inverse problem. By modeling the forward optical and photoresist physics, the engine optimizes the photomask layout to minimize the discrepancy between the printed wafer contours and the target integrated circuit design.
+I worked on this at Siemens EDA as part of the Calibre RET and OPC automation effort, owning the model-building and verification automation around the engine. To address these physical limits, the team developed a GPU-accelerated **Inverse Lithography Technology (ILT)** and **Model-Based Optical Proximity Correction (OPC)** engine. The software treats mask synthesis as a mathematical inverse problem. By modeling the forward optical and photoresist physics, the engine optimizes the photomask layout to minimize the discrepancy between the printed wafer contours and the target integrated circuit design.
 
 ---
 
@@ -40,7 +40,7 @@ $$I(x, y) = \sum_{k=1}^{N_c} \lambda_k \left| \left( M * H_k \right)(x, y) \righ
 
 where:
 
-- $M(x, y) \in [0, 1]^2$ is the continuous mask transmission function ($1$ for clear quartz, $0$ for chrome).
+- $M(x, y) \in [0, 1]$ is the continuous mask transmission function ($1$ for clear quartz, $0$ for the opaque absorber).
 - $H_k(x, y)$ are the coherent kernels representing the scanner's pupil function, numerical aperture (NA), and illumination source.
 - $\lambda_k$ is the eigenvalue associated with the $k$-th coherent kernel, indicating its relative energy contribution.
 - $*$ denotes the 2D spatial convolution operation.
@@ -108,30 +108,20 @@ flowchart TD
 
 ---
 
-### Experimental Results & Verification
+### How This Was Evaluated
 
-The ILT engine was benchmarked on representative sub-14nm logic layouts (including dense contact holes and metal lines) using physical process parameters.
+> **Scope note.** This work was carried out at Siemens EDA on customer layouts and calibrated process models. Edge placement, process window, and runtime figures are internal and are not reported here.
 
-#### 1. Lithography Quality Metrics
+The evaluation used representative sub-14nm logic layouts (dense metal lines and contact hole arrays) because these two cases fail differently and a mask optimizer that handles one can easily degrade the other.
 
-We evaluated the quality of the printed patterns across three metrics: Edge Placement Error (EPE), Common Process Window (PV band area), and Mask Error Enhancement Factor (MEEF).
+Three metrics are needed together, and any one of them alone is misleading:
 
-| Layout Type              |    Metric    | Conventional OPC  | Model-Based ILT (Ours) | Improvement |
-| :----------------------- | :----------: | :---------------: | :--------------------: | :---------: |
-| **Metal Line (Dense)**   |   Max EPE    |  $4.2\text{ nm}$  |  **$1.8\text{ nm}$**   |    57.1%    |
-|                          | PV Band Area | $112\text{ nm}^2$ |  **$68\text{ nm}^2$**  |    39.3%    |
-| **Contact Hole (Array)** |   Max EPE    |  $3.5\text{ nm}$  |  **$1.2\text{ nm}$**   |    65.7%    |
-|                          |     MEEF     |        3.8        |        **2.1**         |    44.7%    |
+- **Edge Placement Error (EPE)** measures how far the printed contour sits from the target at nominal dose and focus. Optimizing EPE alone produces masks that print beautifully at nominal conditions and fail on the wafer.
+- **Process variation band area** measures contour spread across the dose and focus corners, capturing what EPE at nominal cannot: whether the solution survives real scanner drift.
+- **Mask Error Enhancement Factor (MEEF)** measures how strongly a mask writing error is amplified onto the wafer. An aggressive pixel-level solution can improve both EPE and PV band while pushing MEEF to a value the mask shop cannot manufacture, so MEEF acts as the constraint that keeps the optimization physically realizable.
 
-- **EPE Reduction**: Across all test patterns, the continuous pixel-level ILT engine reduced the maximum Edge Placement Error by over **$50\%$**, bringing the printed shapes within tolerance of the target layout geometries.
-- **Process Window Stability**: The common depth of focus (DoF) increased by **$35\%$**, indicating that the optimized mask layout maintains pattern fidelity even under focal-plane drift and exposure dose fluctuations inside the scanner.
+Runtime was measured on the full optimization loop for a standard layout block, comparing a multi-core CPU baseline against single-GPU and multi-GPU execution. The relevant question for production is not the speedup ratio but whether a full-chip run fits inside a tapeout schedule, which is a threshold rather than a slope.
 
-#### 2. GPU Speedup Benchmarks
+#### A Note on Mask Representation
 
-We measured the execution runtime of the optimization loop for a standard $100\mu\text{m} \times 100\mu\text{m}$ layout block:
-
-- **CPU-only Baseline (Intel Xeon 24-core)**: $34.5\text{ minutes}$
-- **GPU-accelerated ILT (Single NVIDIA RTX 4090)**: **$2.7\text{ minutes}$**
-- **Multi-GPU Scaling (4 $\times$ NVIDIA H100)**: **$42\text{ seconds}$** ($49\times$ total speedup)
-
-This acceleration makes full-chip model-based ILT runs computationally feasible within production timeline schedules.
+The formulation above treats the mask transmission as a real field on $[0, 1]$ constrained toward binary tone, which models an opaque-absorber-on-glass mask. This is a deliberate scope restriction. An attenuated phase-shift mask carries a signed amplitude (a nominal 6% attenuator at 180 degrees has transmission $-\sqrt{0.06}$), and a general mask model is complex-valued. Either case breaks the $[0, 1]$ box constraint, changes the forward imaging model, and changes the shape of the binarization penalty. Attenuated PSM is used on many layers at these nodes, alongside binary approaches such as OMOG combined with SRAFs, so this restriction bounds which layers the engine applies to.

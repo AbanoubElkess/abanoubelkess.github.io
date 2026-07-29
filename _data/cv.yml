@@ -1,10 +1,11 @@
 cv:
-  name: Abanoub E. Pola
-  label: PhD Student & Machine Learning Researcher
+  # Matches the published form on the ICLAD 2025 paper and _config.yml.
+  name: Abanoub E. Abdelmalak
+  label: ECE PhD Researcher & Machine Learning Researcher
   email: abanoub_abdelmalak@gatech.edu
   location: Atlanta, GA, USA
   image: ""
-  summary: PhD Candidate in Electrical & Computer Engineering at Georgia Institute of Technology, specializing in Hardware-Aware Machine Learning and Quantum Error Correction. Ex-Siemens EDA Principal Product Architect and IC Design Consultant.
+  summary: ECE PhD Researcher at Georgia Institute of Technology, working on hardware-aware machine learning and quantum error correction. Ex-Siemens EDA Principal Product Architect and IC Design Consultant, with eight years building OPC, RET, and physical verification automation.
 
   social_networks:
     - network: LinkedIn
@@ -18,7 +19,7 @@ cv:
         location: Atlanta, GA, United States
         url: https://www.gatech.edu/
         area: Electrical & Computer Engineering
-        studyType: PhD Candidate
+        studyType: PhD
         start_date: 2025
         end_date: Present
         score: "Full Scholarship and Fellowship Recipient"
@@ -59,10 +60,10 @@ cv:
         end_date: 2025
         summary: Architected AI and image processing automation for chip verification and design rule development.
         highlights:
-          - Architected an SVRF Copilot (a domain specific coding language) to automate design rule decks development. Pipeline involved LLM, LangChain, and an MCP protocol with tool-aware reasoning. Published as first-author IEEE ICLAD 2025; reduced rule development time by ~40%.
-          - Designed an AI and image processing tool that utilizes Scanning Electron Microscope (SEM) images to automate process modeling; reduced manual review by 30%.
+          - Architected an SVRF Copilot (a domain specific coding language) to automate design rule deck development. Pipeline involved LLM, LangChain, and an MCP protocol with tool-aware reasoning. Published as first author at IEEE ICLAD 2025, where AST-guided fine-tuning improved code generation accuracy by up to 40% over text-based fine-tuning on a 741-example DRC benchmark; reduced rule development time by ~40% in deployment.
+          - Designed an AI and image processing tool that utilizes Scanning Electron Microscope (SEM) images to automate process modeling, replacing manual image categorization with trained classifiers.
           - Led global delivery across China, Europe, and the US. Orchestrated an Agile infrastructure transition for major Chinese fab, transforming an initial one-month engagement into a 6-year partnership.
-          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF; improved run time/throughput by 70%.
+          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF.
 
       - company: Siemens Digital Industries Software (EDA)
         position: IC Design Consultant
@@ -71,10 +72,10 @@ cv:
         end_date: 2022
         summary: Designed and automated optical proximity correction (OPC) model building and resolution enhancement techniques.
         highlights:
-          - Developed an OPC model-building automation system covering test-pattern creation, data filtering/prep, SEM metrology recipe development, and OPC verification; accelerated calibration cycles and reduced manual steps by 90%.
+          - Developed an OPC model-building automation system covering test-pattern creation, data filtering and prep, SEM metrology recipe development, and OPC verification, removing manual steps from the calibration cycle.
           - Interfaced with physical metrology tools to auto-generate measurement; defined spatial pattern "uniqueness" via the mathematical entropy of extracted features.
           - Architected a web-based recipe/version management platform with role-based access, improving security, tractability, and collaboration across teams.
-          - Implemented RET automation (pattern-coverage checks, DRM management) using C/C++ LAPI and ML-based feature extraction; increased coverage by 25% and cut setup time by 50%.
+          - Implemented RET automation (pattern-coverage checks, DRM management) using C/C++ LAPI and ML-based feature extraction.
           - Built computational models and test masks for technology ramps, meeting strict physical accuracy targets for hardware nodes from 90nm KrF to 5nm ArF.
 
     Awards:
@@ -103,7 +104,7 @@ cv:
       - name: Semiconductor & Quantum
         level: Expert
         icon: fa-solid fa-microchip
-        keywords: "Quantum Error Correction (QEC), Qiskit, Stim, Amazon Braket, Computational Lithography, Optical Proximity Correction (OPC), Resolution Enhancement Techniques (RET), Metrology, CD-SEM"
+        keywords: "Computational Lithography, Optical Proximity Correction (OPC), Resolution Enhancement Techniques (RET), Metrology, CD-SEM, Quantum Error Correction (QEC, in progress), Qiskit, Stim, Amazon Braket"
       - name: Software & Tools
         level: Expert
         icon: fa-solid fa-code
@@ -192,20 +193,20 @@ cv:
           - Designed custom reward functions and non-stationary exploration policies.
       - name: AI Kernel
         url: /projects/6_ai_kernel/
-        summary: AI-First OS featuring a polyglot microkernel with Rust core and Python orchestration.
+        summary: "Design study for an AI-first OS: a polyglot microkernel with a Rust core and Python orchestration. Specified and partially scaffolded, not built."
         start_date: 2024
         end_date: 2025
         highlights:
-          - Minimal, memory-safe kernel core handling hardware abstraction, IPC, and task scheduling.
-          - High-level Python layer for managing AI workload pipelines, model loading, and GPU resource allocation.
-          - Custom scheduler optimized for the bursty, GPU-heavy compute patterns of deep learning.
+          - Specified a minimal, memory-safe kernel core for hardware abstraction, IPC, and task scheduling.
+          - Designed a Python orchestration layer for AI workload pipelines, model loading, and GPU resource allocation.
+          - Proposed a scheduler targeting the bursty, GPU-heavy compute patterns of deep learning.
       - name: OPC & Inverse Lithography Automation
         url: /projects/7_opc_inverse_lithography/
         summary: Automated software system for optical proximity correction and wafer print simulation using Calibre and LSF.
         start_date: 2017
         end_date: 2022
         highlights:
-          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF, improving run time and throughput by 70%.
+          - Drove RET/OPC automation (pattern generation, metrology recipe creation) integrated with Calibre/LSF.
           - Developed computational models and test masks for technology ramps, meeting strict physical accuracy targets for nodes from 90nm KrF to 5nm ArF.
       - name: ML TCAD Process Modeling
         url: /projects/8_process_modeling/
@@ -213,7 +214,7 @@ cv:
         start_date: 2022
         end_date: 2025
         highlights:
-          - Designed an AI and image processing tool utilizing CD-SEM images to automate process modeling, reducing manual review by 30%.
+          - Designed an AI and image processing tool utilizing CD-SEM images to automate process modeling.
           - Interfaced with physical metrology tools to auto-generate measurements; defined spatial pattern uniqueness via mathematical entropy of features.
       - name: Analog IC Design
         url: /projects/9_analog_design/
@@ -240,12 +241,11 @@ cv:
         highlights:
           - Benchmarked RHC, Simulated Annealing, GA, and MIMIC on constraint satisfaction and neural net tuning.
           - Combined K-Means and Expectation Maximization clustering with PCA/ICA to generate features for classification.
-          - Demonstrated significant training speedups and accuracy improvements using ICA-derived feature spaces.
+          - Benchmarked ICA- and PCA-derived feature spaces against the raw features; the study returned a negative result for the randomized-search heuristics against gradient descent.
       - name: Online Fake News Detection
         url: /projects/12_fake_news_detection/
         summary: Deep learning natural language processing framework using hybrid Transformer-CNN architectures to detect online misinformation.
         start_date: 2024
         end_date: 2024
         highlights:
-          - Evaluated hybrid RoBERTa-CNN architectures with custom multi-head self-attention mechanisms.
-          - Achieved 94.2% binary classification accuracy on large-scale public news corpora.
+          - Proposed a comparison of transformer and convolutional architectures for misinformation detection, for the CS7643 Deep Learning team project. Proposal stage; no models were trained.

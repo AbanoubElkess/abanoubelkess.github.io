@@ -1,8 +1,8 @@
 ---
 layout: page
 title: ML TCAD Process Modeling
-description: Neural-network surrogates for semiconductor process simulation (etch, deposition, CMP), accelerating TCAD workflows by 100x.
-importance: 8
+description: Fourier Neural Operator surrogates for semiconductor process simulation (etch, deposition, CMP), built at Siemens EDA to make TCAD process-window exploration interactive rather than overnight.
+importance: 3
 category: work
 area: "Electronic Design Automation (EDA)"
 mermaid:
@@ -16,7 +16,7 @@ toc:
 
 Technology Computer-Aided Design (TCAD) process simulation is essential for exploring the design space and manufacturing feasibility of advanced semiconductor architectures (such as FinFETs, nanosheets, and backside power delivery systems). However, traditional TCAD tools rely on solving coupled, non-linear Partial Differential Equations (PDEs) representing gas-phase transport, surface reaction kinetics, and level-set interface propagation. These physical simulations take hours to evaluate, creating a bottleneck for Design-Technology Co-Optimization (DTCO) workflows.
 
-To address this computational bottleneck, we developed a machine learning surrogate framework based on **Fourier Neural Operators (FNOs)** and **Physics-Informed Neural Networks (PINNs)**. The framework maps layout geometries and process recipe parameters directly to post-fabrication cross-sectional profiles. By bypassing numerical level-set PDE solvers, the surrogate models accelerate semiconductor process simulation while retaining physical accuracy.
+I built this surrogate framework at Siemens EDA. To address the computational bottleneck, it is based on **Fourier Neural Operators (FNOs)** and **Physics-Informed Neural Networks (PINNs)**. The framework maps layout geometries and process recipe parameters directly to post-fabrication cross-sectional profiles. By bypassing numerical level-set PDE solvers, the surrogate models accelerate semiconductor process simulation while retaining physical accuracy.
 
 ---
 
@@ -106,32 +106,17 @@ flowchart TD
 
    $$\nabla_{\mathbf{r}} \mathcal{J} = \frac{\partial \left\| u_{\text{pred}}(\mathbf{r}) - u_{\text{target}} \right\|^2}{\partial \mathbf{r}}$$
 
-3. **Gradient Descent Optimization**: The optimization loop updates the recipe vector $\mathbf{r}$ iteratively, finding the optimal process recipe in seconds.
+3. **Gradient Descent Optimization**: The optimization loop updates the recipe vector $\mathbf{r}$ iteratively, searching the recipe space directly.
 
 ---
 
-### Experimental Results & Verification
+### Validation Approach
 
-We validated the FNO surrogate against 3D profiles from a commercial TCAD solver (Sentaurus Process) simulating high-aspect-ratio reactive ion etching (RIE) and plasma-enhanced chemical vapor deposition (PECVD) processes.
+The accuracy and runtime figures from this work stay inside Siemens, so what follows is how the surrogate was evaluated rather than what it scored. The surrogate was validated against 3D profiles from a numerical process simulator covering high-aspect-ratio reactive ion etching (RIE) and plasma-enhanced chemical vapor deposition (PECVD).
 
-#### 1. Profile Accuracy Metrics
+Two categories of error matter for this problem, and reporting only one of them hides the failure mode that actually costs silicon:
 
-The table below summarizes the structural error between the surrogate predictions and numerical TCAD solutions:
+- **Structural error** was measured per process step against the numerical solution: sidewall angle and trench bottom width for the etch case, step coverage and void volume for the deposition case. These are the quantities a downstream device model consumes, so a surrogate that matches an aggregate loss while missing sidewall angle is not usable.
+- **Contour error** was measured as mean Chamfer distance between surrogate and TCAD contours, which captures shape agreement that per-dimension metrics can miss.
 
-| Process Step            |      Profile Metric       |    FNO Surrogate    |   Target Bounds   |
-| :---------------------- | :-----------------------: | :-----------------: | :---------------: |
-| **Silicon Trench Etch** |   Sidewall Angle Error    |  **$0.15^\circ$**   |  $< 0.30^\circ$   |
-|                         | Trench Bottom Width Error | **$0.8\text{ nm}$** | $< 1.5\text{ nm}$ |
-| **Oxide Deposition**    |    Step Coverage Error    |     **$1.1\%$**     |     $< 2.0\%$     |
-|                         |     Void Volume Error     |     **$2.4\%$**     |     $< 5.0\%$     |
-
-- **Geometrical Fidelity**: The FNO surrogate achieved a mean Chamfer distance error of less than **$1.0\text{ nm}$** compared to numerical TCAD contours, matching the target dimensions.
-
-#### 2. Runtime Speedup Analysis
-
-We compared the execution times required to evaluate a batch of $500$ distinct process recipes:
-
-- **Numerical Level-Set Solver (Multi-core CPU)**: $8.4\text{ hours}$
-- **FNO Surrogate (Single NVIDIA RTX A6000 GPU)**: **$3.6\text{ seconds}$** ($8400\times$ speedup)
-
-This runtime reduction enables high-throughput DTCO space exploration and yield optimization pipelines.
+The runtime comparison evaluates a batch of distinct process recipes end to end on the numerical level-set solver (multi-core CPU) against the FNO surrogate (single NVIDIA RTX A6000), since per-call latency understates the gain when a DTCO sweep amortizes model loading across hundreds of evaluations. The design objective was to make process-window exploration interactive rather than overnight, which changes how a DTCO study is run: a sweep that must be queued gets specified once and accepted, while a sweep that returns in seconds gets iterated.

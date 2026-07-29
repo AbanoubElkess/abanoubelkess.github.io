@@ -2,7 +2,7 @@
 layout: page
 title: Randomized Optimization & Clustering Benchmarks
 description: Two CS7641 studies benchmarking randomized search heuristics on discrete problems and neural network weights, and clustering with dimensionality reduction on stock and tennis datasets.
-importance: 11
+importance: 7
 category: academic
 area: "Machine Learning & Data Science"
 img: /assets/img/figures/ro_converged_fitness.svg
@@ -47,7 +47,7 @@ where $\pi(j)$ is the parent of index $j$ in the tree. It captures variable depe
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-11 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/figures/ro_converged_fitness.svg" title="Converged mean fitness by algorithm and problem size" class="img-fluid" zoomable=true caption="Figure 1: Converged mean fitness for each algorithm at each problem size, as stated in the project report. GA leads on both problems and its margin widens sharply with board size on N-Queens. The report gives several of these values as approximations in prose rather than in a results table." %}
+    {% include figure.liquid loading="eager" path="assets/img/figures/ro_converged_fitness.svg" alt="Grouped bar chart of converged mean fitness for three randomized optimization algorithms at each problem size. The genetic algorithm leads on both problems, and its margin widens as the N-Queens board size grows." title="Converged mean fitness by algorithm and problem size" class="img-fluid" zoomable=true caption="Figure 1: Converged mean fitness for each algorithm at each problem size, as stated in the project report. GA leads on both problems and its margin widens sharply with board size on N-Queens. The report gives several of these values as approximations in prose rather than in a results table." %}
   </div>
 </div>
 
@@ -61,23 +61,27 @@ The third task replaced backpropagation with randomized search for the weights o
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-9 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/figures/ro_nn_generalization_gap.svg" title="Train and test metrics for randomized-optimization network weights" class="img-fluid" zoomable=true caption="Figure 2: Mean train and test scores over 272 runs, from Table IV of the report. Every metric loses a quarter to over a third of its value on the test set." %}
+    {% include figure.liquid loading="eager" path="assets/img/figures/ro_nn_generalization_gap.svg" alt="Paired bar chart of mean train and test scores over 272 runs of neural network weight optimization. Every metric loses between a quarter and a third of its value on the test set." title="Train and test metrics for randomized-optimization network weights" class="img-fluid" zoomable=true caption="Figure 2: Mean train and test scores over 272 runs, from Table IV of the report. Every metric loses a quarter to over a third of its value on the test set." %}
   </div>
 </div>
 
 This is a negative result and worth reporting as one. Mean test accuracy is 0.294 against 0.471 on train, and mean test F1 is 0.210 against 0.356. Wall-clock cost varied from 3.6 seconds to nearly 5,000 seconds across configurations.
 
+One caveat has to come before any interpretation of those numbers. On a binary task, chance is 0.5, and both the test mean (0.294) and the train mean (0.471) sit below it, with a test median of 0.227. A classifier performing that far under chance on both splits usually indicates a defect in the evaluation rather than a property of the search algorithms. The report's accuracy definition is written as $(TP+TN+FP+FN)/(TP+TN)$, which is inverted, and accuracy equals recall at every quantile in Table IV. I am reporting the table as published, but I would not draw an algorithmic conclusion from it without recomputing the metrics.
+
+MIMIC is introduced above as the fourth heuristic but appears in none of the results: the report's MIMIC subsection is empty and its hyperparameters are listed as not applicable, so only three algorithms are plotted.
+
 The mean also hides how wide the spread is. Table IV reports a full five-number summary over the 272 runs, which is exactly what a box plot encodes:
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-9 mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/figures/ro_run_spread.svg" title="Distribution of test scores across 272 runs" class="img-fluid" zoomable=true caption="Figure 3: Test F1 ranges from 0.022 to 0.653 across configurations, with a median of 0.102. Whiskers are the observed minimum and maximum from Table IV, not a 1.5x IQR rule. Accuracy and recall are identical in the source table, so they share one box." %}
+    {% include figure.liquid loading="lazy" path="assets/img/figures/ro_run_spread.svg" alt="Box plot of test scores across 272 configurations. Test F1 ranges from 0.022 to 0.653 with a median of 0.102. Accuracy and recall share a single box because they are identical in the source table." title="Distribution of test scores across 272 runs" class="img-fluid" zoomable=true caption="Figure 3: Test F1 ranges from 0.022 to 0.653 across configurations, with a median of 0.102. Whiskers are the observed minimum and maximum from Table IV, not a 1.5x IQR rule. Accuracy and recall are identical in the source table, so they share one box." %}
   </div>
 </div>
 
 The best single configuration reached a test F1 of 0.653, close to the tennis classifier's 0.733 on a different problem. But the median run scored 0.102. On this task the choice of hidden layers, activation, population size and cooling schedule matters more than the choice of search algorithm.
 
-The report's conclusion is that gradient descent remains the better choice for this task on both efficiency and generalization, with SA and GA justified only where the loss surface is genuinely non-smooth.
+The report concludes that gradient descent remains the better choice for this task on both efficiency and generalization, with SA and GA justified only where the loss surface is genuinely non-smooth. Given the metric problem above, that conclusion is not supported by this table, whatever its merits on other grounds.
 
 ---
 

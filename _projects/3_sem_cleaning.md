@@ -2,7 +2,7 @@
 layout: page
 title: SEM Image Deep Learning Cleaning
 description: Deep neural network pipelines and interactive dashboards to classify, filter, and clean Scanning Electron Microscope (SEM) data for chip metrology.
-importance: 3
+importance: 5
 category: work
 area: "Electronic Design Automation (EDA)"
 mermaid:
@@ -88,7 +88,7 @@ where $E_{\text{internal}}$ maintains curve smoothness and $E_{\text{external}} 
 
 ### Multi-Threaded PyQt Visualization Dashboard
 
-To allow calibration engineers to audit the neural network's predictions, we built a cross-platform desktop application using Python, PyQt5, and PySide.
+I designed and delivered this tool at Siemens EDA. To let calibration engineers audit the network's predictions, I built a cross-platform desktop application using Python, PyQt5, and PySide.
 
 ```mermaid
 flowchart TD
@@ -102,13 +102,13 @@ flowchart TD
     pool -- "Results returned to UI" --> UI
 ```
 
-- **Asynchronous QThread Execution**: By dispatching disk I/O and GPU neural network inference to a managed `QThreadPool`, we kept the user interface fully interactive at $60\text{ fps}$ even when processing gigabytes of raw TIFF files.
+- **Asynchronous QThread Execution**: By dispatching disk I/O and GPU neural network inference to a managed `QThreadPool`, the user interface stays responsive while inference runs, even when processing gigabytes of raw TIFF files. No frame-rate figure is reported here.
 - **Interactive Annotation**: Integrated interactive canvas tools using `QGraphicsView`, enabling users to adjust metrology search boxes and inspect individual sub-pixel edge points overlaid on the denoised image.
 
 ---
 
-### Key Outcomes & Technical Impact
+### Outcomes
 
-- **Metrology Precision**: Denoised SEM scans achieved a **$15\%$** reduction in CD measurement variance compared to classical Gaussian or median filtering.
-- **Workflow Efficiency**: Reduced the manual verification overhead for RET/OPC modeling files by **$30\%$**, replacing manual image categorization with automated deep learning classifiers.
-- **Robustness**: Enabled successful metrology extraction on low-contrast, thin-resist nodes that were previously rejected as unmeasurable by classical edge-detection tools.
+Because this ran inside Siemens EDA against customer SEM data, the measurement-variance and workflow figures stay internal. The result that mattered operationally was not precision on images that already worked. It was extraction on images that previously did not: low-contrast, thin-resist nodes that classical edge-detection tools rejected as unmeasurable. Those rejected images are not a uniform sample of the wafer, so discarding them biases the OPC model that the metrology feeds, and recovering them changes the calibration rather than merely improving its error bar.
+
+The precision evaluation compared CD measurement variance against classical Gaussian and median filtering on the same scans, broken out per node and per resist stack rather than pooled, since the denoiser's benefit is concentrated exactly where the classical filters degrade. Those results were measured internally and are the figures withheld above, rather than work that was never done.

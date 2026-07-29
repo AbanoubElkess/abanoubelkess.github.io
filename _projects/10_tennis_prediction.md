@@ -2,7 +2,7 @@
 layout: page
 title: Tennis Match Winner Predictions
 description: Match-winner classifier for men's professional tennis, built on 16,049 filtered matches and 12 engineered features, deployed as an interactive Dash application.
-importance: 10
+importance: 6
 category: academic
 area: "Machine Learning & Data Science"
 img: /assets/img/figures/tennis_model_f1.svg
@@ -14,7 +14,7 @@ toc:
 
 Tennis is a one-on-one sport with no clock and decades of consistently recorded match data, which makes it well suited to predictive modeling. Most public analysis stops at isolated statistics, and most prediction sits locked inside betting platforms with no visualization layer. This project set out to combine the two: a classifier that estimates which of two players wins a given match, wrapped in a web application that shows the statistics behind the prediction.
 
-Team project for **CSE6242 Data & Visual Analytics**, Georgia Tech, Fall 2022, with [Sheikh Jalaluddin Mohammad](mailto:jalal@gatech.edu), [Michael S. Rivera](mailto:mrivera63@gatech.edu), and [Mohamad A. Elsayed](mailto:melsayed31@gatech.edu).
+Team project for **CSE6242 Data & Visual Analytics**, Georgia Tech, Fall 2022, with Sheikh Jalaluddin Mohammad, Michael S. Rivera, and Mohamad A. Elsayed.
 
 ---
 
@@ -37,11 +37,11 @@ Twelve features were selected using entropy and information gain, aided by domai
 
 The problem was treated as binary classification. Five model families were tried, from a plain decision tree up through boosted ensembles, a distance-based method, and a neural network. Data was split 70/30 into training and validation, scaled where the model required it, and each family was tuned by grid search over its own hyperparameters, with validation and learning curves generated to identify overfitting.
 
-**F1 was chosen as the scoring metric** rather than accuracy, since it balances in-sample and out-of-sample behaviour across both classes and is applied identically to the training and test sets.
+**F1 was the report's chosen scoring metric**, stated there as balancing in-sample and out-of-sample behaviour. That rationale does not describe what F1 does: it balances precision against recall on the positive class, while in-sample versus out-of-sample is a property of the split, not of the metric. Note also that scrambling winner and loser into player 1 and player 2 makes the classes almost exactly balanced, so F1 and accuracy nearly coincide here and little rides on the choice.
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-10 mt-3 mt-md-0">
-    {% include figure.liquid loading="eager" path="assets/img/figures/tennis_model_f1.svg" title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Figure 1: Gradient boosting reaches the highest test F1 at 0.733. AdaBoost fits the training set perfectly (F1 = 1.000) without beating it on test, which is memorization rather than skill. Values transcribed from the project report, Section 5.4." %}
+    {% include figure.liquid loading="eager" path="assets/img/figures/tennis_model_f1.svg" alt="Grouped bar chart of train and test F1 for five model families. Gradient boosting has the highest test F1 at 0.733, while AdaBoost reaches a training F1 of 1.000 but a much lower test F1." title="Train and test F1 by model family" class="img-fluid" zoomable=true caption="Figure 1: Gradient boosting reaches the highest test F1 at 0.733. AdaBoost fits the training set perfectly (F1 = 1.000) and still lands within 0.002 of the best test score, so the perfect fit costs it almost nothing in generalization here. Values transcribed from the project report, Section 5.4." %}
   </div>
 </div>
 
@@ -53,13 +53,13 @@ The problem was treated as binary classification. Five model families were tried
 | Ada Boost           |   1.000   |   0.731   |
 | K Nearest Neighbors |   0.719   |   0.684   |
 
-Gradient boosting was selected as the final model. Two results are worth stating plainly rather than glossing over. AdaBoost's perfect training F1 buys it nothing on test, which is exactly the overfitting signature the validation curves were generated to catch. And the neural network, despite the lowest test score of the ensembles, has the narrowest train/test gap of any model tried.
+Gradient boosting was selected as the final model. Two things in the table are worth reading carefully. AdaBoost's perfect training F1 buys it almost nothing on test (0.731 against gradient boosting's 0.733), which is a large train/test gap rather than a failure to generalize: the gap diagnoses how the model fits, not how well it predicts. And the neural network has the narrowest gap of any model tried while scoring below the ensembles, which is worth noticing without treating a small gap as a selection criterion when held-out scores are available.
 
 Reading the same table as a question about generalization rather than raw score makes the difference visible:
 
 <div class="row justify-content-sm-center">
   <div class="col-sm-9 mt-3 mt-md-0">
-    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_generalization_slope.svg" title="Train to test F1 by model" class="img-fluid" zoomable=true caption="Figure 2: AdaBoost drops 0.269 from train to test, the steepest fall of any model. The neural network loses only 0.006, so it is the most honest fit even though it never tops the table." %}
+    {% include figure.liquid loading="lazy" path="assets/img/figures/tennis_generalization_slope.svg" alt="Slope chart showing F1 falling from train to test for each model. AdaBoost drops 0.269, the steepest fall, while the neural network drops only 0.006." title="Train to test F1 by model" class="img-fluid" zoomable=true caption="Figure 2: AdaBoost drops 0.269 from train to test, the steepest fall of any model, though it still finishes second on test. The neural network loses only 0.006, the flattest slope in the table. The slope measures fit, not skill." %}
   </div>
 </div>
 

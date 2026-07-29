@@ -2,7 +2,7 @@
 layout: page
 title: Reinforcement Learning for Stock Trading
 description: Deep reinforcement learning models and non-stationary policy optimization engines for automated financial trading.
-importance: 5
+importance: 10
 category: academic
 area: "Machine Learning & Data Science"
 mermaid:
@@ -16,7 +16,7 @@ toc:
 
 Financial markets represent a highly challenging domain for classical machine learning due to low signal-to-noise ratios, non-stationarity, and regime-dependent dynamics (e.g., shifts in volatility, macroeconomic conditions, or monetary policy). Reinforcement learning (RL) agents often suffer from policy collapse or severe overfitting when trained on historical data, as standard formulations assume a stationary Markov Decision Process (MDP).
 
-This project developed a deep reinforcement learning framework that uses adaptive policy exploration and dynamic, risk-adjusted reward functions to keep trading performance stable across shifting market regimes. A transaction cost simulator and non-stationary policy regularization help the agent hold risk-adjusted returns while limiting drawdowns.
+This project developed a deep reinforcement learning framework that uses adaptive policy exploration and dynamic, risk-adjusted reward functions to keep trading performance stable across shifting market regimes. A transaction cost simulator and non-stationary policy regularization are intended to help the agent hold risk-adjusted returns while limiting drawdowns.
 
 ---
 
@@ -52,11 +52,9 @@ The actor network outputs raw allocation changes, which are processed through a 
 - Negative values represent selling or reducing exposure.
 - Zero represents holding the current position.
 
-The target allocation weights $\mathbf{w}_t$ are calculated as:
+The target allocation weights $\mathbf{w}_t$ are obtained by projecting $\mathbf{w}_{t-1} + \mathbf{a}_t$ onto the simplex extended with the cash position, so that $\sum_{i=1}^D w_{t, i} + c_t = 1$ with every component non-negative, which also prevents short-selling.
 
-$$\mathbf{w}_{t} = \text{Softmax}(\mathbf{w}_{t-1} + \mathbf{a}_t)$$
-
-This formulation enforces the self-financing constraint $\sum_{i=1}^D w_{t, i} = 1$ and prevents short-selling (allocations are constrained to non-negative values).
+A plain softmax is the obvious choice here and it is the wrong one, for two reasons worth stating. It forces $\sum_i w_{t,i} = 1$, which drives cash to zero and makes the $c_t$ state variable inert, contradicting the $\le 1$ constraint above. It is also not idempotent, so a null action $\mathbf{a}_t = \mathbf{0}$ would silently rebalance the portfolio instead of holding it, while the action space defines zero as holding. The projection preserves both properties.
 
 #### 3. Risk-Adjusted Reward Function $\mathcal{R}_t$
 
@@ -100,7 +98,7 @@ To process sequential dependencies in financial data, the policy and value netwo
 
 #### 2. Regime-Aware Exploration Regularization
 
-In financial markets, high-volatility regimes require the agent to explore safer hedging strategies, whereas low-volatility regimes permit exploitation of stable trends. We introduced dynamic entropy regularization scaled by market volatility:
+In financial markets, high-volatility regimes require the agent to explore safer hedging strategies, while low-volatility regimes permit exploitation of stable trends. We introduced dynamic entropy regularization scaled by market volatility:
 
 $$\mathcal{L}_{\text{entropy}}(\theta) = \beta(v_t) \mathcal{H}\left(\pi_{\theta}(\cdot | \mathbf{s}_t)\right)$$
 
@@ -115,20 +113,13 @@ where:
 - $\beta_0$ is the baseline entropy regularization coefficient.
 - Under high market stress ($v_t \gg \bar{v}$), $\beta(v_t)$ increases, prompting the agent to maintain high policy entropy $\mathcal{H}$, which delays premature convergence and sustains exploration.
 
-#### 3. Proximal Policy Optimization (PPO) Clip Loss
+#### 3. Why PPO Rather Than a Value-Based Method
 
-The policy parameter updates are bounded using the clipped surrogate objective to ensure stable policy updates:
+PPO is used as published, with its standard clipped surrogate objective and generalized advantage estimation. The choice is the interesting part rather than the loss function.
 
-$$\mathcal{L}_{\text{CLIP}}(\theta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta)\hat{A}_t, \text{clip}\left(r_t(\theta), 1-\epsilon, 1+\epsilon\right)\hat{A}_t \right) \right]$$
+Portfolio allocation has a continuous action space (a weight per asset), which rules out the value-based methods that assume a small discrete action set. Among policy-gradient methods, PPO's clipping removes the incentive to move far on any single sample by zeroing the gradient contribution once the probability ratio leaves its band. It is a heuristic and not a true trust region, since multi-epoch PPO can still produce updates whose divergence exceeds the implied bound, but it empirically damps the step size, and that matters more here than in most benchmarks: financial data is non-stationary and its reward signal has a very low signal-to-noise ratio, so an undamped update can move the policy a long way on what turns out to be one lucky quarter.
 
-where:
-
-- $r_t(\theta) = \frac{\pi_{\theta}(a_t|\mathbf{s}_t)}{\pi_{\theta_{\text{old}}}(a_t|\mathbf{s}_t)}$ is the probability ratio.
-- $\hat{A}_t$ is the generalized advantage estimator (GAE) computed by the Critic network:
-
-  $$\hat{A}_t = \sum_{l=0}^{\infty} (\gamma \lambda)^l \delta_{t+l}^V$$
-
-  with $\delta_t^V = R_t + \gamma V_{\phi}(\mathbf{s}_{t+1}) - V_{\phi}(\mathbf{s}_t)$.
+The cost is that PPO is on-policy and so needs many samples, which is a real constraint when the amount of genuinely independent market history is fixed and small. Every additional epoch over the same decade increases the chance of fitting that decade rather than the process that generated it.
 
 ---
 
@@ -153,29 +144,19 @@ $$\text{Cost}(\Delta w) = \text{Commission} + \text{Slippage}$$
 
 To limit overfitting to specific historical regimes, we used the following evaluation pipeline:
 
-- **Walk-Forward Validation**: The model is trained on a rolling window of 3 years, validated on the subsequent 6 months, and tested on the following 6 months, stepping forward iteratively.
-- **Regime-Specific Stress Testing**: We evaluated the policy on historical high-stress periods, including the 2008 financial crisis and the 2020 market crash, to test drawdown mitigation.
+- **Walk-Forward Validation**: The model is trained on a rolling window of 3 years, validated on the subsequent 6 months, and tested on the following 6 months, stepping forward iteratively. A single fixed train/test split is close to meaningless here, because a policy fitted to one volatility regime can look excellent until the regime changes.
+- **Regime-Specific Stress Testing**: The policy is evaluated separately on high-stress sub-periods inside the evaluation window, since an aggregate Sharpe ratio computed across a mostly-rising market hides exactly the drawdown behaviour the regime-aware term is meant to control.
 
 ---
 
-### Experimental Results & Performance Benchmarks
+### Why This Page Has No Results Table
 
-The model was evaluated using historical data of a diversified basket of 20 liquid equities spanning the period from 2015 to 2023.
+> **No backtest results are reported here.** I have not re-run this study against a return series I can publish, and reporting performance metrics for a trading policy without the underlying series and the exact evaluation window is not a claim a reader can check.
 
-#### 1. Performance Metrics
+This matters more for trading than for most machine learning applications. Three specific failure modes make backtest numbers unusually easy to overstate, and all three are invisible in a summary table:
 
-The table below compares the performance of the proposed regime-aware PPO agent against standard baselines:
+- **Regime leakage.** Any evaluation window that includes a sustained bull market flatters a long-biased policy, so the choice of window is itself a result and has to be stated with the metrics.
+- **Some summary ratios carry no information beyond the rows above them, and some do.** Sharpe is excess return over volatility, so a Sharpe printed beside an annualized return and an annualized volatility is a restatement of those two numbers and confirms nothing on its own; a value equal to their exact quotient also implies $R_f = 0$, which has to be stated rather than inferred. Sortino and Calmar are different: downside deviation and maximum drawdown are path-dependent statistics that cannot be recovered from a mean and a standard deviation, so those two ratios do carry information about the tails, which is exactly why they need the return series published alongside them rather than a summary table.
+- **Friction assumptions dominate.** Under the transaction cost model above, small changes to the impact coefficient $\eta$ change the ranking of policies, so a result quoted without its friction parameters is not reproducible.
 
-| Metric                    | Buy & Hold | Standard PPO | Regime-Aware PPO (Ours) |
-| :------------------------ | :--------: | :----------: | :---------------------: |
-| **Annualized Return**     |   10.4%    |    14.2%     |        **18.7%**        |
-| **Annualized Volatility** |   16.2%    |    13.8%     |        **11.5%**        |
-| **Sharpe Ratio**          |    0.64    |     1.03     |        **1.63**         |
-| **Sortino Ratio**         |    0.88    |     1.41     |        **2.24**         |
-| **Max Drawdown**          |   -32.4%   |    -21.1%    |       **-12.8%**        |
-| **Calmar Ratio**          |    0.32    |     0.67     |        **1.46**         |
-
-#### 2. Policy Robustness Analysis
-
-- **Drawdown Mitigation**: During simulated market shocks, the dynamic volatility-scaled entropy constraint successfully forced the agent to reallocate capital into liquid cash and low-beta assets, reducing the maximum drawdown by $18\%$ compared to standard PPO.
-- **Slippage Robustness**: Under high friction ($\lambda_{\text{cost}} > 0.002$), the agent learned to reduce trading frequency, avoiding unprofitable short-term trades and focusing on medium-term macroeconomic trends.
+The engineering content of this project is the environment design: the regime-conditioned state representation, the volatility-scaled entropy term, and the transaction cost model described above. Those are the parts worth reviewing, and they stand independent of any performance figure.

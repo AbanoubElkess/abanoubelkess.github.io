@@ -1,10 +1,9 @@
 ---
 layout: page
 title: AI Kernel
-description: "AI-First OS: Polyglot microkernel with Rust core and Python orchestration for AI workloads."
-importance: 6
+description: "Design study for an AI-first operating system: a polyglot microkernel with a Rust core and Python orchestration, specified around the scheduling problem that GPU-bound inference creates. Not yet built."
+importance: 12
 category: academic
-github: https://github.com/AbanoubElkess/ai-kernel
 area: "Systems & Quantum Computing"
 mermaid:
   enabled: true
@@ -17,13 +16,15 @@ toc:
 
 Modern general-purpose operating systems (such as Linux or Windows) balance interactive desktop responsiveness, generic file system access, and network I/O. Under deep learning workloads, this design adds overhead from frequent CPU-GPU context switches, complex virtual memory hierarchies, and CPU thread schedulers that are blind to tensor pipeline execution states, which leaves the accelerator starved and lowers hardware efficiency.
 
-To address this, we built **AI-Kernel**, a polyglot microkernel operating system. A bare-metal kernel core written in Rust handles hardware-level safety, while a Python orchestration layer manages tensor compute graph scheduling, giving machine learning workloads a dedicated high-throughput, low-latency operating environment.
+> **This page is a design study.** AI-Kernel is specified and partially scaffolded, not built. It has never been booted on hardware and there are no measurements. Everything below describes an intended design and the reasoning behind it, in the conditional throughout.
+
+To address this, **AI-Kernel** is specified as a polyglot microkernel operating system. A bare-metal kernel core written in Rust would handle hardware-level safety, while a Python orchestration layer manages tensor compute graph scheduling, with the goal of giving machine learning workloads a dedicated high-throughput, low-latency operating environment.
 
 ---
 
-### System Architecture & Microkernel Core
+### Proposed Architecture and Microkernel Core
 
-AI-Kernel uses a microkernel design where only essential services (such as physical memory allocation, process coordination, and interrupt handling) run in supervisor mode (ring 0). All other services, including device drivers and the graph parser, run in user mode (ring 3).
+The design places only essential services (such as physical memory allocation, process coordination, and interrupt handling) in supervisor mode (ring 0). All other services, including device drivers and the graph parser, would run in user mode (ring 3).
 
 ```mermaid
 flowchart TD
@@ -46,27 +47,27 @@ To bypass virtual memory translation overhead and page-fault latency during mass
 
 $$\mathcal{M}_{\text{DMA}}: \mathbf{V}_{\text{addr}} \to \mathbf{P}_{\text{addr}}$$
 
-When a tensor computation graph is initialized, the physical memory allocator reserves a contiguous pool of physical pages. By keeping these pages pinned (preventing the OS from swapping or moving them), the CPU can delegate memory transfers entirely to the GPU's DMA engine. This reduces kernel-space memory copying and removes virtual-to-physical address translation overhead during active training and inference runs.
+When a tensor computation graph is initialized, the physical memory allocator reserves a contiguous pool of physical pages. By keeping these pages pinned (preventing the OS from swapping or moving them), the CPU can delegate memory transfers entirely to the GPU's DMA engine. This removes bounce-buffer copies and reduces TLB pressure during active training and inference runs. It does not remove address translation itself, since the MMU still translates every CPU access.
 
 #### 2. Shared-Memory Lockless IPC
 
-Because microkernel components communicate frequently via Inter-Process Communication (IPC), traditional locking mechanisms (such as mutexes) can become system-wide bottlenecks. To mitigate this, we implemented a lockless circular ring buffer in shared memory.
+Because microkernel components communicate frequently via Inter-Process Communication (IPC), traditional locking mechanisms (such as mutexes) can become system-wide bottlenecks. The design calls for a lockless circular ring buffer in shared memory.
 
 The buffer synchronizes write (producer) and read (consumer) pointers using atomic Compare-And-Swap (CAS) instructions:
 
 $$\text{CAS}(P, V_{\text{expected}}, V_{\text{new}}) = \begin{cases} \text{true} & \text{if } *P = V_{\text{expected}} \text{ (set } *P = V_{\text{new}}\text{)} \\ \text{false} & \text{otherwise} \end{cases}$$
 
-The atomic pointer updates let user-space drivers and the kernel core exchange control commands with sub-microsecond latency, avoiding message-queue bottlenecks while preserving thread safety.
+Atomic pointer updates would let user-space drivers and the kernel core exchange control commands without taking a lock, which is the property the design needs; no latency has been measured.
 
 ---
 
 ### Polyglot Interface & PyO3 Bindings
 
-Rather than implementing complex, rapidly changing deep learning schedulers in compiled low-level Rust, we structured AI-Kernel as a polyglot system. A Python orchestration layer parses model execution graphs (e.g., ONNX, PyTorch) and manages execution pipelines, while PyO3 bindings link this layer to the Rust kernel.
+Rather than implementing complex, rapidly changing deep learning schedulers in compiled low-level Rust, AI-Kernel is structured as a polyglot system. A Python orchestration layer would parse model execution graphs (e.g., ONNX, PyTorch) and manage execution pipelines, while PyO3 bindings link this layer to the Rust kernel.
 
 #### 1. Cross-Language Zero-Copy FFI
 
-Using the **PyO3** framework, we exposed the kernel's low-level system interfaces directly to Python as a native module. The PyO3 bindings map NumPy and PyTorch tensor memory buffers directly to the underlying raw C-aligned arrays in Rust without copying:
+Using the **PyO3** framework, the kernel's low-level system interfaces would be exposed to Python as a native module, with the bindings mapping NumPy and PyTorch tensor memory buffers onto the underlying raw C-aligned arrays in Rust without copying:
 
 ```rust
 #[pyfunction]
@@ -77,7 +78,7 @@ fn register_dma_tensor(py: Python, array: &PyArray2<f32>) -> PyResult<u64> {
 }
 ```
 
-This layout allows the Python orchestration layer to pass multi-gigabyte weight matrices to the low-level PCIe device drivers in a single CPU instruction cycle, bypassing serialization and deserialization steps.
+This layout would let the Python orchestration layer hand multi-gigabyte weight matrices to the low-level PCIe device drivers as a pointer rather than a serialization pass. The hand-off is constant time in the size of the tensor, though registering the region still costs work proportional to it.
 
 #### 2. Threading & GIL Management
 
@@ -102,7 +103,7 @@ Unlike standard operating system schedulers (such as Linux's Completely Fair Sch
 
 The scheduler prioritizes tasks to maximize the overlapping of host-to-device memory transfers with computation on the accelerator:
 
-$$\text{Throughput} = \max \sum_{i=1}^{M} \frac{\text{BatchSize}_i}{T_{\text{transfer}}(i) + T_{\text{compute}}(i) - T_{\text{overlap}}(i)}$$
+$$\text{Throughput} = \frac{\sum_{i=1}^{M} \text{BatchSize}_i}{\sum_{i=1}^{M} \left( T_{\text{transfer}}(i) + T_{\text{compute}}(i) - T_{\text{overlap}}(i) \right)}$$
 
 where:
 
@@ -121,25 +122,11 @@ By analyzing the DAG structure, the scheduler schedules the transfer of layer $i
 
 ---
 
-### Boot Validation, Benchmarks & Technical Impact
+### Status and What Remains Unbuilt
 
-#### 1. Bare-Metal Boot and Drivers
+Two components are specified in enough detail to implement and are the natural first milestones:
 
-We verified the kernel on x86_64 hardware:
+- **Multiboot2 boot path**: a custom bootloader conforming to the Multiboot2 specification, transitioning from 32-bit protected mode to 64-bit long mode.
+- **PCIe discovery**: a minimalist bus driver that scans the physical bus, identifies the accelerator, and configures the Base Address Registers (BARs) to enable direct memory mapping.
 
-- **Multiboot2 Compliance**: The kernel uses a custom bootloader conforming to the Multiboot2 specification, transitioning from 32-bit protected mode to 64-bit long mode.
-- **PCIe Discovery**: A minimalist PCIe bus driver scans the physical bus, identifies the GPU device, and configures the Base Address Registers (BARs) to enable direct memory mapping.
-
-#### 2. Performance Benchmarks
-
-The prototype was benchmarked against a standard Linux kernel (Ubuntu 22.04 LTS, kernel v5.15) on identical x86_64 hardware:
-
-| Benchmark                               | Ubuntu 22.04 |    AI-Kernel    | Improvement |
-| :-------------------------------------- | :----------: | :-------------: | :---------: |
-| **Context Switch Latency**              | 1.85 $\mu$s  | **0.42 $\mu$s** |    77.3%    |
-| **IPC Roundtrip Latency**               | 4.20 $\mu$s  | **0.85 $\mu$s** |    79.7%    |
-| **GPU Tensor Pipeline Idle Time**       |    14.2%     |    **2.8%**     |    80.2%    |
-| **LLM Inference Throughput (tokens/s)** |     42.5     |    **51.8**     |    21.8%    |
-
-- **GPU Idle Reduction**: By implementing the hardware-direct DMA mapping and the overlap-maximizing scheduler, AI-Kernel reduced GPU idle time from $14.2\%$ to $2.8\%$, translating to a direct $21.8\%$ increase in throughput for concurrent LLM inference runs.
-- **IPC Efficiency**: The lockless circular ring buffer maintained sub-microsecond IPC latency even under maximum concurrent load, validating the microkernel approach for high-frequency control loops.
+The claim this design would have to earn is that a scheduler aware of the DAG structure of an inference graph can keep an accelerator busier than a general-purpose scheduler that treats tensor kernels as opaque work. Testing that claim honestly requires measuring accelerator idle fraction and end-to-end throughput separately, since the two are not interchangeable: eliminating idle time bounds the throughput gain by the ratio of utilizations, and any measured gain beyond that bound comes from somewhere else and needs its own explanation.

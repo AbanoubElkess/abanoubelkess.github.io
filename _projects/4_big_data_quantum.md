@@ -2,7 +2,7 @@
 layout: page
 title: Big Data Quantum Mechanics
 description: High-throughput Density Functional Theory (DFT) simulations and equivariant GNN modeling for material adsorption energies.
-importance: 4
+importance: 9
 category: academic
 area: "Systems & Quantum Computing"
 mermaid:
@@ -34,7 +34,7 @@ We wrote Python wrappers to construct Quantum Espresso input decks. The pipeline
 
 #### 2. Plane-Wave Cutoff Validation
 
-Calculations utilized Vanderbilt ultrasoft pseudopotentials. We conducted convergence tests to set the kinetic energy cutoff for wavefunctions at $40\text{ Ry}$ and the charge density cutoff at $400\text{ Ry}$, ensuring numerical error in computed energies was below $0.001\text{ Ry}$ per atom.
+Calculations utilized Vanderbilt ultrasoft pseudopotentials, with the wavefunction and charge-density cutoffs fixed by convergence testing rather than assumed. The achieved convergence threshold is itself a measured quantity, so like the model results below it is not quoted here without a citable source.
 
 ---
 
@@ -42,21 +42,13 @@ Calculations utilized Vanderbilt ultrasoft pseudopotentials. We conducted conver
 
 We executed first-principles quantum simulations to establish ground-truth relaxed atomic geometries and adsorption energies.
 
-#### 1. The Kohn-Sham Self-Consistent Field (SCF) Equations
+#### 1. Choosing the Exchange-Correlation Functional
 
-The multi-electron Schrödinger equation is mapped to a system of non-interacting single-particle equations:
+The Kohn-Sham construction replaces the interacting multi-electron problem with a set of single-particle equations, and everything that is not exactly known is pushed into one term: the exchange-correlation potential. Choosing that term is the only real decision in the DFT half of this pipeline, and it fixes an accuracy ceiling for everything downstream.
 
-$$\left[ -\frac{1}{2}\nabla^2 + V_{\text{eff}}(\mathbf{r}) \right] \psi_i(\mathbf{r}) = \epsilon_i \psi_i(\mathbf{r})$$
+We used the Generalized Gradient Approximation (GGA-PBE). The tradeoff is explicit: PBE is cheap enough to relax thousands of adsorbate-catalyst configurations, which is what makes a training set possible at all, but it carries a known systematic error on adsorption energies relative to experiment. That error is not noise the model can average away. It is baked into every label, so a surrogate trained on PBE data can at best reproduce PBE, and a reported error against a PBE-derived test set says little about absolute agreement with a real catalyst surface. The saving grace is that the error is systematic and partially cancels in relative and reaction energies, which is why PBE-based screening still ranks candidates usefully even where its absolute numbers are off.
 
-where:
-
-- $\psi_i(\mathbf{r})$ represents the single-particle Kohn-Sham wavefunctions.
-- $\epsilon_i$ are the energy eigenvalues.
-- $V_{\text{eff}}(\mathbf{r})$ is the effective local potential, defined as:
-
-$$V_{\text{eff}}(\mathbf{r}) = V_{\text{ext}}(\mathbf{r}) + \int \frac{n(\mathbf{r}')}{|\mathbf{r} - \mathbf{r}'|} d\mathbf{r}' + V_{\text{xc}}(\mathbf{r})$$
-
-Here, $V_{\text{ext}}$ is the external ionic potential, the integral is the classical Hartree electrostatic potential of the electron density $n(\mathbf{r})$, and $V_{\text{xc}}$ is the exchange-correlation potential, which we modeled using the Generalized Gradient Approximation (GGA-PBE).
+This is the point worth carrying: a machine learning model inherits its labels' bias to the extent that it fits them, and no quantity of additional data drawn from the same functional removes it. Reducing it means either a higher level of theory or an explicit uncertainty estimate across functionals.
 
 #### 2. Energy Minimization
 
@@ -99,8 +91,13 @@ where $\lambda_{\text{force}} = 10.0$ balances energy and force training.
 
 ---
 
-### Key Outcomes & Technical Impact
+### Scope and Outcomes
 
-- **Database Generation**: Constructed and managed a local database of thousands of relaxed adsorbate-catalyst configurations, modeled after the Open Catalyst Project (OC20) specifications.
-- **Model Accuracy**: Achieved a Mean Absolute Error (MAE) of **$0.12\text{ eV}$** in out-of-sample adsorption energy predictions, outperforming classical non-equivariant graph networks (such as CGCNN) by **$45\%$**.
-- **Accelerated Screening**: Reduced the calculation time for evaluating candidate catalyst alloy surface sites from several hours (via DFT) to **milliseconds** (via GNN inference), enabling high-speed screening of catalyst spaces.
+> **Scope note.** No accuracy or speedup figures are reported here. This was Vertically Integrated Project work supervised by Prof. Andrew J. Medford, and I do not have a report I can cite for the model results. Publishing an unsourced error metric under a supervisor's name is worse than publishing none.
+
+What the project produced was the data pipeline: a local database of relaxed adsorbate-catalyst configurations, constructed and managed following the Open Catalyst Project (OC20) specifications so that the representation would be compatible with pretrained checkpoints.
+
+Two points about how a result here should be read, which matter more than any single error metric:
+
+- **Dataset scale bounds the claim.** OC20-scale accuracy comes from on the order of a million relaxations. A local database of thousands supports fine-tuning or evaluating a pretrained checkpoint; it does not support a from-scratch model competitive with published benchmarks, and any MAE quoted without saying which of those two was done is uninterpretable.
+- **A speedup against DFT is a category comparison, not a benchmark.** Inference is orders of magnitude faster than a relaxation by construction. The number that carries information is the accuracy retained at that speed, on a held-out set drawn from a different distribution than the training set, since screening is only useful when it extrapolates.
