@@ -9,49 +9,35 @@ ninja.data = [{
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "dropdown-projects",
-              title: "Projects",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/projects/";
-              },
-            },{id: "dropdown-publications",
-              title: "Publications",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/publications/";
-              },
-            },{id: "dropdown-cv",
-              title: "CV",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/cv/";
-              },
-            },{id: "dropdown-blog",
-              title: "Blog",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/blog/";
-              },
-            },{id: "dropdown-activity",
-              title: "Activity",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/activity/";
-              },
-            },{id: "dropdown-travel-amp-fun",
-              title: "Travel &amp; Fun",
-              description: "",
-              section: "Dropdown",
-              handler: () => {
-                window.location.href = "/travel/";
-              },
-            },{id: "post-unsupervised-learning-clustering-and-dimensionality-reduction-in-high-noise-domains",
+  },{id: "nav-projects",
+          title: "Projects",
+          description: "Research, industrial, and academic work in EDA, machine learning, and systems. Ordered by how much of each project a reader can independently check: published work first, then industrial deployment by depth, then academic work whose results trace to a cited report, then work with no results to report, and finally work that was designed but never built.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/projects/";
+          },
+        },{id: "nav-publications",
+          title: "Publications",
+          description: "Publications by Abanoub E. Abdelmalak, grouped by category in reverse chronological order.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/publications/";
+          },
+        },{id: "nav-cv",
+          title: "CV",
+          description: "Curriculum vitae of Abanoub E. Abdelmalak, ECE PhD Researcher at Georgia Tech working on hardware-aware machine learning and quantum error correction, and former Principal Product Architect at Siemens EDA.",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/cv/";
+          },
+        },{id: "nav-blog",
+          title: "Blog",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/blog/";
+          },
+        },{id: "post-unsupervised-learning-clustering-and-dimensionality-reduction-in-high-noise-domains",
         
           title: "Unsupervised Learning: Clustering and Dimensionality Reduction in High-Noise Domains",
         
@@ -95,7 +81,16 @@ ninja.data = [{
             window.location.href = "/blog/2022/predicting-tennis-match-winners/";
           
         },
-      },{id: "projects-tennis-match-winner-predictions",
+      },{id: "news-completed-my-msc-in-computer-science-machine-learning-specialization-at-georgia-tech",
+          title: 'Completed my MSc in Computer Science (Machine Learning specialization) at Georgia Tech.',
+          description: "",
+          section: "News",},{id: "news-presented-an-ast-guided-llm-approach-for-svrf-code-synthesis-at-the-inaugural-ieee-international-conference-on-llm-aided-design-iclad-2025-stanford-university",
+          title: 'Presented An AST-guided LLM Approach for SVRF Code Synthesis at the inaugural IEEE...',
+          description: "",
+          section: "News",},{id: "news-started-my-phd-in-electrical-amp-amp-computer-engineering-at-georgia-tech-advised-by-prof-ali-adibi",
+          title: 'Started my PhD in Electrical &amp;amp;amp; Computer Engineering at Georgia Tech, advised by...',
+          description: "",
+          section: "News",},{id: "projects-tennis-match-winner-predictions",
           title: 'Tennis Match Winner Predictions',
           description: "Match-winner classifier for men&#39;s professional tennis, built on 16,049 filtered matches and 12 engineered features, deployed as an interactive Dash application.",
           section: "Projects",handler: () => {
@@ -112,7 +107,7 @@ ninja.data = [{
               window.location.href = "/projects/12_fake_news_detection/";
             },},{id: "projects-domain-specific-language-copilot",
           title: 'Domain Specific Language Copilot',
-          description: "Generative AI tool that automatically writes Standard Verification Rule Format (SVRF) language code from natural language prompts.",
+          description: "AST-guided fine-tuning and retrieval-augmented generation for synthesizing Standard Verification Rule Format (SVRF) code from natural language, evaluated on a 741-example DRC benchmark and published at IEEE ICLAD 2025.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/1_dsl_copilot/";
             },},{id: "projects-drc-amp-layout-verification-automation",
@@ -137,7 +132,7 @@ ninja.data = [{
               window.location.href = "/projects/5_rl_stock_trading/";
             },},{id: "projects-ai-kernel",
           title: 'AI Kernel',
-          description: "AI-First OS: Polyglot microkernel with Rust core and Python orchestration for AI workloads.",
+          description: "Design study for an AI-first operating system: a polyglot microkernel with a Rust core and Python orchestration, specified around the scheduling problem that GPU-bound inference creates. Not yet built.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/6_ai_kernel/";
             },},{id: "projects-opc-amp-inverse-lithography",
@@ -147,7 +142,7 @@ ninja.data = [{
               window.location.href = "/projects/7_opc_inverse_lithography/";
             },},{id: "projects-ml-tcad-process-modeling",
           title: 'ML TCAD Process Modeling',
-          description: "Neural-network surrogates for semiconductor process simulation (etch, deposition, CMP), accelerating TCAD workflows by 100x.",
+          description: "Fourier Neural Operator surrogates for semiconductor process simulation (etch, deposition, CMP), built at Siemens EDA to make TCAD process-window exploration interactive rather than overnight.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/8_process_modeling/";
             },},{id: "projects-analog-ic-design-optimization",
@@ -156,13 +151,6 @@ ninja.data = [{
           section: "Projects",handler: () => {
               window.location.href = "/projects/9_analog_design/";
             },},{
-        id: 'social-cv',
-        title: 'CV',
-        section: 'Socials',
-        handler: () => {
-          window.open("/assets/pdf/Abanoub_Abdelmalak_CV.pdf", "_blank");
-        },
-      },{
         id: 'social-email',
         title: 'email',
         section: 'Socials',
@@ -175,6 +163,13 @@ ninja.data = [{
         section: 'Socials',
         handler: () => {
           window.open("https://github.com/AbanoubElkess", "_blank");
+        },
+      },{
+        id: 'social-scholar',
+        title: 'Google Scholar',
+        section: 'Socials',
+        handler: () => {
+          window.open("https://scholar.google.com/citations?user=BI9VvmkAAAAJ", "_blank");
         },
       },{
         id: 'social-linkedin',
