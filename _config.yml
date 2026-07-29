@@ -9,9 +9,9 @@ last_name: Abdelmalak
 contact_note: >
   Feel free to reach out via email or LinkedIn.
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  PhD Candidate in Electrical & Computer Engineering at Georgia Institute of Technology, specializing in Hardware-Aware Machine Learning and Quantum Error Correction.
+  ECE PhD Researcher at Georgia Institute of Technology, working on hardware-aware machine learning and quantum error correction. Previously Principal Product Architect at Siemens EDA, where he worked on OPC, RET, and LLM tooling for physical verification.
 footer_text: ""
-keywords: machine-learning, quantum-error-correction, photonics, eda, semiconductor, portfolio
+keywords: machine-learning, quantum-error-correction, photonics, eda, opc, semiconductor, portfolio
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: "AA" # the initials used as the favicon (alternatively, provide image name in /assets/img/)
 
@@ -65,9 +65,9 @@ max_width: 930px
 # -----------------------------------------------------------------------------
 # Display links to the page with a preview object on social media.
 # see https://schema.org/docs/faq.html for more information
-serve_og_meta: false # Include Open Graph meta tags in the HTML head
-serve_schema_org: false # Include Schema.org in the HTML head
-og_image: # The site-wide (default for all links) Open Graph preview image
+serve_og_meta: true # Include Open Graph meta tags in the HTML head
+serve_schema_org: true # Include Schema.org in the HTML head
+og_image: https://abanoubelkess.github.io/assets/img/PersonalPhoto.jpg # Must be an absolute URL; _includes/metadata.liquid emits it verbatim
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
@@ -146,7 +146,9 @@ collections:
   news:
     defaults:
       layout: post
-    output: true
+    # Entries are inline-rendered by _includes/news.liquid; they carry no title,
+    # so standalone pages would publish with an empty <h1>.
+    output: false
   projects:
     output: true
   teachings:

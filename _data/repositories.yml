@@ -3,5 +3,5 @@ github_users:
 
 repo_description_lines_max: 2
 
-github_repos:
-  - AbanoubElkess/ai-kernel
+# Only list public repositories here; a private repo renders as a broken card.
+github_repos: []
