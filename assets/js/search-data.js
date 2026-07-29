@@ -30,58 +30,7 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/cv/";
           },
-        },{id: "nav-blog",
-          title: "Blog",
-          description: "",
-          section: "Navigation",
-          handler: () => {
-            window.location.href = "/blog/";
-          },
-        },{id: "post-unsupervised-learning-clustering-and-dimensionality-reduction-in-high-noise-domains",
-        
-          title: "Unsupervised Learning: Clustering and Dimensionality Reduction in High-Noise Domains",
-        
-        description: "Benchmarking K-Means, Expectation Maximization, PCA, ICA, and Randomized Projections, and their integration as feature generators for Neural Network classifiers.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2024/unsupervised-learning-dimensionality-reduction/";
-          
-        },
-      },{id: "post-heuristic-optimization-analyzing-rhc-simulated-annealing-and-genetic-algorithms",
-        
-          title: "Heuristic Optimization: Analyzing RHC, Simulated Annealing, and Genetic Algorithms",
-        
-        description: "A comparative study of randomized optimization heuristics across binary, combinatorial, and neural network weight space problems.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2024/heuristic-randomized-optimization/";
-          
-        },
-      },{id: "post-online-fake-news-detection-using-convolutional-neural-networks-and-transformers",
-        
-          title: "Online Fake News Detection using Convolutional Neural Networks and Transformers",
-        
-        description: "A deep learning framework comparing pre-trained Transformer embeddings and CNN architectures to classify and detect online misinformation.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2024/online-fake-news-detection/";
-          
-        },
-      },{id: "post-predicting-professional-tennis-match-winners-using-gradient-boosting",
-        
-          title: "Predicting Professional Tennis Match Winners using Gradient Boosting",
-        
-        description: "How we engineered a data pipeline over 182,964 ATP matches and compared five classifier families, reaching a test F1 of 0.733 with gradient boosting.",
-        section: "Posts",
-        handler: () => {
-          
-            window.location.href = "/blog/2022/predicting-tennis-match-winners/";
-          
-        },
-      },{id: "news-completed-my-msc-in-computer-science-machine-learning-specialization-at-georgia-tech",
+        },{id: "news-completed-my-msc-in-computer-science-machine-learning-specialization-at-georgia-tech",
           title: 'Completed my MSc in Computer Science (Machine Learning specialization) at Georgia Tech.',
           description: "",
           section: "News",},{id: "news-presented-an-ast-guided-llm-approach-for-svrf-code-synthesis-at-the-inaugural-ieee-international-conference-on-llm-aided-design-iclad-2025-stanford-university",
@@ -177,12 +126,5 @@ ninja.data = [{
         section: 'Socials',
         handler: () => {
           window.open("https://www.linkedin.com/in/abanoub-wahib", "_blank");
-        },
-      },{
-        id: 'social-rss',
-        title: 'RSS Feed',
-        section: 'Socials',
-        handler: () => {
-          window.open("/feed.xml", "_blank");
         },
       },];
