@@ -20,11 +20,6 @@ announcements:
   enabled: true # includes a list of news items
   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
   limit: 5 # leave blank to include all the news in the `_news` folder
-
-latest_posts:
-  enabled: false
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 3 # leave blank to include all the blog posts
 ---
 
 I spent eight years inside an EDA vendor watching which parts of the semiconductor stack actually break in a fab. I am now an ECE PhD Researcher at the **Georgia Institute of Technology**, advised by Prof. Ali Adibi, working on the same problems from the physics side.

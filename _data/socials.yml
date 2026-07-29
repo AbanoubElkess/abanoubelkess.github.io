@@ -8,4 +8,4 @@ email: abanoub_abdelmalak@gatech.edu # your email address
 github_username: AbanoubElkess # your GitHub username
 scholar_userid: BI9VvmkAAAAJ # Google Scholar profile ID
 linkedin_username: abanoub-wahib # your LinkedIn username
-rss_icon: true # comment this line to hide the RSS icon
+# rss_icon: true  # re-enable if a posts collection is ever reintroduced

@@ -6,8 +6,7 @@
  * partial, driven by the tokens in `_tokens.scss`.
  ******************************************************************************/
 
-.projects-dashboard,
-.blogs-dashboard {
+.projects-dashboard {
   margin-top: var(--sp-3);
 }
 
@@ -164,15 +163,13 @@
 
 /* ---------- Layout ---------- */
 
-.projects-container.grid-layout,
-.blogs-container.grid-layout {
+.projects-container.grid-layout {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--sp-3);
 }
 
-.projects-container.list-layout,
-.blogs-container.list-layout {
+.projects-container.list-layout {
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
@@ -180,8 +177,7 @@
 
 /* ---------- Cards ---------- */
 
-.project-card,
-.blog-card {
+.project-card {
   background: var(--card-fill);
   border: 1px solid var(--global-divider-color);
   border-radius: var(--r-card);
@@ -194,28 +190,24 @@
   display: flex;
 }
 
-.project-card.hidden,
-.blog-card.hidden {
+.project-card.hidden {
   display: none;
 }
 
-.project-card:hover,
-.blog-card:hover {
+.project-card:hover {
   transform: translateY(var(--lift));
   box-shadow: var(--shadow-raised);
   border-color: var(--global-theme-color);
 }
 
-.project-link,
-.blog-link {
+.project-link {
   color: inherit !important;
   text-decoration: none !important;
   width: 100%;
   display: flex;
 }
 
-.project-card-inner,
-.blog-card-inner {
+.project-card-inner {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -247,24 +239,21 @@
   transform: scale(1.03);
 }
 
-.project-details,
-.blog-details {
+.project-details {
   padding: var(--sp-3);
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.project-header,
-.blog-header {
+.project-header {
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
   margin-bottom: var(--sp-2);
 }
 
-.project-title,
-.blog-title {
+.project-title {
   font-size: var(--fs-lg);
   font-weight: 700;
   margin: 0;
@@ -286,23 +275,7 @@
   white-space: nowrap;
 }
 
-.blog-meta-badges {
-  display: flex;
-  gap: var(--sp-2);
-  flex-wrap: wrap;
-}
-
-.blog-date-badge,
-.blog-read-badge {
-  font-size: var(--fs-2xs);
-  color: var(--global-text-color-light);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.project-description,
-.blog-description {
+.project-description {
   font-size: var(--fs-sm);
   color: var(--global-text-color-light);
   line-height: 1.5;
@@ -310,8 +283,7 @@
   flex-grow: 1;
 }
 
-.project-footer,
-.blog-footer {
+.project-footer {
   display: flex;
   align-items: center;
   border-top: 1px solid var(--global-divider-color);
@@ -323,13 +295,7 @@
   justify-content: space-between;
 }
 
-/* A single child, so space-between would pin it left. */
-.blog-footer {
-  justify-content: flex-end;
-}
-
-.project-category-badge,
-.blog-category-badge {
+.project-category-badge {
   font-size: var(--fs-2xs);
   color: var(--global-text-color-light);
   background: var(--global-bg-color);
